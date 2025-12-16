@@ -5,6 +5,7 @@ const userStrategy = require("../strategies/user.strategy");
 
 const router = express.Router();
 
+///////// DONORS
 //  GET /api/donors
 router.get("/", (req, res) => {
   const sqlText = `SELECT * FROM donors ORDER BY name;`;
@@ -34,9 +35,71 @@ router.post("/", (req, res) => {
       res.sendStatus(500);
     });
 });
+
+// GET by id
+router.get("/:id", async (req, res) => {
+  const donorId = req.params.id;
+
+  const sqlText = `
+    SELECT *
+    FROM donors
+    WHERE id = $1;
+  `;
+
+  try {
+    const result = await pool.query(sqlText, [donorId]);
+
+    if (result.rowCount === 0) {
+      return res.sendStatus(404); 
+    }
+
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error("GET /api/donors/:id error:", err);
+    res.sendStatus(500);
+  }
+});
+
 //  PUT /api/donors/:id
+router.put("/:id", async (req, res) => {
+  const donorId = req.params.id;
+  const { name, type } = req.body;
+
+  const sqlText = `
+    UPDATE donors
+    SET name = $1, type = $2, updated_at = CURRENT_TIMESTAMP
+    WHERE id = $3
+    RETURNING *;
+    `;
+
+  try {
+    const result = await pool.query(sqlText, [name, type, donorId]);
+
+    if (result.rowCount === 0) {
+      return res.sendStatus(404);
+    }
+
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.error("PUT error", error);
+    res.sendStatus(500);
+  }
+});
 
 //  DELETE /api/donors/:id
+router.delete("/:id", (req, res) => {
+  const sqlText = `DELETE FROM donors WHERE id = $1;`;
+
+  pool
+    .query(sqlText, [req.params.id])
+    .then(() => res.sendStatus(204))
+    .catch((error) => {
+      console.error("DELETE donor error", error);
+      res.sendStatus(500);
+    });
+});
+
+///////// DONATIONS
 
 //  GET /api/donations
 
@@ -45,6 +108,5 @@ router.post("/", (req, res) => {
 //  PUT /api/donations/:id
 
 //  DELETE /api/donations/:id
-
 
 module.exports = router;
