@@ -20,7 +20,7 @@ router.get("/", (req, res) => {
 // Handles the logic for creating a new user. The one extra wrinkle here is
 // that we hash the password before inserting it into the database.
 router.post("/register", (req, res, next) => {
-  const { username, email, first_name, last_name, role, department } = req.body;
+  const { username, email, firstName, lastName, role, department } = req.body;
   const hashedPassword = encryptLib.encryptPassword(req.body.password);
 
   const sqlText = `
@@ -34,8 +34,8 @@ router.post("/register", (req, res, next) => {
     username,
     hashedPassword,
     email,
-    first_name,
-    last_name,
+    firstName,
+    lastName,
     role,
     department,
   ];
