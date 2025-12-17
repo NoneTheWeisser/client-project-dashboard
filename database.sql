@@ -33,7 +33,7 @@ CREATE TABLE "user" (
 ---------Donations
 
 CREATE TABLE "donors" (
-  "id" BIGSERIAL PRIMARY KEY,
+  "id" SERIAL PRIMARY KEY,
   "name" VARCHAR(255) NOT NULL,
   "type" VARCHAR(50) NOT NULL,
   "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -41,8 +41,8 @@ CREATE TABLE "donors" (
 );
 
 CREATE TABLE "donations" (
-  "id" BIGSERIAL PRIMARY KEY,
-  "donor_id" BIGINT NOT NULL REFERENCES donors(id),
+  "id" SERIAL PRIMARY KEY,
+  "donor_id" INTEGER NOT NULL REFERENCES donors(id),
   "date" DATE NOT NULL,
   "amount" DECIMAL(8,2) NOT NULL,
   "notable" BOOLEAN NOT NULL DEFAULT FALSE,
@@ -50,6 +50,7 @@ CREATE TABLE "donations" (
   "notes" TEXT,
   "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
   "updated_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
 
   
 ---------kitchen table
@@ -63,6 +64,26 @@ CREATE TABLE "kitchen" (
   "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   "updated_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   UNIQUE(week_start_date, week_end_date)
+);
+---------Volunteers tables
+CREATE TABLE "volunteers" (
+  "id" SERIAL PRIMARY KEY,
+  "name" VARCHAR(255) NOT NULL,
+  "type" VARCHAR(50) NOT NULL, 
+  "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
+  "updated_at" TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE TABLE "volunteer_events" (
+  "id" SERIAL PRIMARY KEY,
+  "volunteer_id" INTEGER NOT NULL
+    REFERENCES volunteers(id),
+  "event_date" DATE NOT NULL,
+  location VARCHAR(255) NOT NULL,
+  "number_volunteers" INTEGER NOT NULL DEFAULT 1,
+  "software_signups" INTEGER NOT NULL DEFAULT 0,
+  "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
+  "updated_at" TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
 -------------------------------------------------------
