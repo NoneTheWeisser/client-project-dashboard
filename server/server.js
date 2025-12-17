@@ -16,6 +16,7 @@ const userRouter = require('./routes/user.router');
 const donorRouter = require('./routes/donor.router');
 const donationRouter = require('./routes/donation.router');
 const volunteersRouter = require('./routes/volunteers.router');
+const weekCompliance = require('./routes/complianceWeekly.router');
 
 
 // Apply middleware:
@@ -31,8 +32,7 @@ app.use('/api/user', userRouter);
 app.use('/api/donors', donorRouter);
 app.use('/api/donations', donationRouter);
 app.use('/api/volunteers', volunteersRouter);
-
-
+app.use('/api/compliance/weekly', weekCompliance)
 
 
 // Start the server:
