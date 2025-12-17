@@ -3,7 +3,6 @@ const pool = require("../modules/pool");
 const {
   rejectUnauthenticated,
 } = require("../modules/authentication-middleware");
-
 const router = express.Router();
 
 //  GET /api/donations
@@ -85,6 +84,42 @@ router.post("/", rejectUnauthenticated, async (req, res) => {
 });
 
 //  PUT /api/donations/:id
+router.put("/:id", rejectUnauthenticated, async (req, res) => {
+  const { date, amount, notable, restricted, notes } = req.body;
+
+  const sqlText = `
+    UPDATE donations
+    SET
+      date = $1,
+      amount = $2,
+      notable = $3,
+      restricted = $4,
+      notes = $5,
+      updated_at = NOW()
+    WHERE id = $6
+    RETURNING *;
+  `;
+
+  try {
+    const result = await pool.query(sqlText, [
+      date,
+      amount,
+      notable,
+      restricted,
+      notes,
+      req.params.id,
+    ]);
+
+    if (result.rowCount === 0) {
+      return res.sendStatus(404);
+    }
+
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error("PUT /api/donations/:id error:", err);
+    res.sendStatus(500);
+  }
+});
 
 //  DELETE /api/donations/:id
 
