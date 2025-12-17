@@ -13,6 +13,7 @@ const passport = require('./strategies/user.strategy');
 
 // Require router files:
 const userRouter = require('./routes/user.router');
+const donorRouter = require('./routes/donor.router');
 const donationRouter = require('./routes/donation.router');
 
 
@@ -26,7 +27,9 @@ app.use(passport.session());
 
 // Apply router files:
 app.use('/api/user', userRouter);
-app.use('/api/donors', donationRouter);
+app.use('/api/donors', donorRouter);
+app.use('/api/donations', donationRouter);
+
 
 
 // Start the server:

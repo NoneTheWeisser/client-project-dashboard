@@ -30,6 +30,7 @@ CREATE TABLE "user" (
     "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
     "updated_at" TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+---------Donations
 
 CREATE TABLE "donors" (
   "id" BIGSERIAL PRIMARY KEY,
@@ -49,6 +50,8 @@ CREATE TABLE "donations" (
   "notes" TEXT,
   "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
   "updated_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+
+  
 ---------kitchen table
 CREATE TABLE "kitchen" (
   "id" SERIAL PRIMARY KEY,
