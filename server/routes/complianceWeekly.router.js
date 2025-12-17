@@ -99,14 +99,30 @@ router.get("/:id", rejectUnauthenticated, async (req, res) => {
   }
 });
 
-// POST /api/compliance/weekly
+// POST /api/compliance/weekly// POST /api/compliance/weekly
 router.post("/", rejectUnauthenticated, (req, res) => {
   const {
-    week_start_date, hh_without_children, hh_with_children,
-    adults, children, seniors_55_plus,
-    female, male, other_gender,
-    white, black_african_american, native_american, other_race, multi_racial,
-    one_condition, two_conditions, three_plus_conditions, total_exits
+    week_start_date,
+    week_end_date,
+    fiscal_year,
+    week_number,
+    hh_without_children,
+    hh_with_children,
+    adults,
+    children,
+    seniors_55_plus,
+    female,
+    male,
+    other_gender,
+    white,
+    black_african_american,
+    native_american,
+    other_race,
+    multi_racial,
+    one_condition,
+    two_conditions,
+    three_plus_conditions,
+    total_exits
   } = req.body;
 
   // Validation
@@ -129,17 +145,32 @@ router.post("/", rejectUnauthenticated, (req, res) => {
       one_condition, two_conditions, three_plus_conditions, total_exits, created_by
     )
     VALUES (
-      $1, get_week_end($1), get_fiscal_year($1), get_week_number($1),
-      $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19
+      $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22
     )
     RETURNING *;`;
 
   pool.query(sqlText, [
-    week_start_date, hh_without_children || 0, hh_with_children || 0,
-    adults || 0, children || 0, seniors_55_plus || 0,
-    female || 0, male || 0, other_gender || 0,
-    white || 0, black_african_american || 0, native_american || 0, other_race || 0, multi_racial || 0,
-    one_condition || 0, two_conditions || 0, three_plus_conditions || 0, total_exits || 0,
+    week_start_date,
+    week_end_date,
+    fiscal_year,
+    week_number,
+    hh_without_children || 0,
+    hh_with_children || 0,
+    adults || 0,
+    children || 0,
+    seniors_55_plus || 0,
+    female || 0,
+    male || 0,
+    other_gender || 0,
+    white || 0,
+    black_african_american || 0,
+    native_american || 0,
+    other_race || 0,
+    multi_racial || 0,
+    one_condition || 0,
+    two_conditions || 0,
+    three_plus_conditions || 0,
+    total_exits || 0,
     req.user.id
   ])
     .then((result) => res.status(201).json(result.rows[0]))
