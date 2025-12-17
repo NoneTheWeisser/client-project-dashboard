@@ -122,5 +122,24 @@ router.put("/:id", rejectUnauthenticated, async (req, res) => {
 });
 
 //  DELETE /api/donations/:id
+router.delete("/:id", rejectUnauthenticated, async (req, res) => {
+  const sqlText = ` 
+  DELETE FROM donations 
+  WHERE id = $1 
+  RETURNING id;`;
+
+  try {
+    const result = await pool.query(sqlText, [req.params.id]);
+
+    if (result.rowCount === 0) {
+      return res.sendStatus(404);
+    }
+
+    res.sendStatus(204);
+  } catch (err) {
+    console.error("DELETE /api/donations/:id error:", err);
+    res.sendStatus(500);
+  }
+});
 
 module.exports = router;

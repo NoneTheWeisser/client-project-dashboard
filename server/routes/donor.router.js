@@ -1,6 +1,8 @@
 const express = require("express");
 const pool = require("../modules/pool");
-const { rejectUnauthenticated } = require("../modules/authentication-middleware");
+const {
+  rejectUnauthenticated,
+} = require("../modules/authentication-middleware");
 
 const router = express.Router();
 
@@ -86,16 +88,22 @@ router.put("/:id", rejectUnauthenticated, async (req, res) => {
 });
 
 //  DELETE /api/donors/:id
-router.delete("/:id", rejectUnauthenticated, (req, res) => {
-  const sqlText = `DELETE FROM donors WHERE id = $1;`;
+router.delete("/:id", rejectUnauthenticated, async (req, res) => {
+  const donorId = req.params.id;
+  const sqlText = `DELETE FROM donors WHERE id = $1 RETURNING *;`;
 
-  pool
-    .query(sqlText, [req.params.id])
-    .then(() => res.sendStatus(204))
-    .catch((error) => {
-      console.error("DELETE donor error", error);
-      res.sendStatus(500);
-    });
+  try {
+    const result = await pool.query(sqlText, [donorId]);
+
+    if (result.rowCount === 0) {
+      return res.sendStatus(404);
+    }
+
+    res.sendStatus(204);
+  } catch (error) {
+    console.error("DELETE donor error:", error);
+    res.sendStatus(500);
+  }
 });
 
 module.exports = router;
