@@ -7,6 +7,7 @@ const {
 const router = express.Router();
 
 //  GET /api/donations
+// Returns all donations, joined with donor info for easier display on client.
 router.get("/", rejectUnauthenticated, async (req, res) => {
   const sqlText = `
   SELECT
@@ -28,6 +29,31 @@ router.get("/", rejectUnauthenticated, async (req, res) => {
     res.json(result.rows);
   } catch (err) {
     console.error("GET /api/donations error:", err);
+    res.sendStatus(500);
+  }
+});
+
+// GET by :id
+router.get("/:id", rejectUnauthenticated, async (req, res) => {
+  const sqlText = `
+    SELECT
+      d.*,
+      donors.name AS donor_name
+    FROM donations d
+    JOIN donors ON d.donor_id = donors.id
+    WHERE d.id = $1;
+  `;
+
+  try {
+    const result = await pool.query(sqlText, [req.params.id]);
+
+    if (result.rowCount === 0) {
+      return res.sendStatus(404);
+    }
+
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error("GET /api/donations/:id error:", err);
     res.sendStatus(500);
   }
 });
