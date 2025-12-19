@@ -59,6 +59,109 @@ router.post("/", rejectUnauthenticated, async (req, res) => {
   }
 });
 
+// Report section
+// GET /api/volunteer-events/reports/weekly
+router.get("/reports/weekly", rejectUnauthenticated, async (req, res) => {
+  const sqlText = `
+    SELECT
+      week_start,
+      TO_CHAR(week_start, 'Mon DD') || '-' || TO_CHAR(week_start + INTERVAL '6 days', 'Mon DD') AS week_range,
+      SUM(number_volunteers) AS total_volunteers,
+      SUM(software_signups) AS total_signups,
+      COUNT(DISTINCT volunteer_id) AS volunteer_count
+    FROM (
+      SELECT *, DATE_TRUNC('week', event_date)::date AS week_start
+      FROM volunteer_events
+    ) ve
+    GROUP BY week_start
+    ORDER BY week_start DESC;
+  `;
+
+  try {
+    const result = await pool.query(sqlText);
+    res.json(result.rows);
+  } catch (err) {
+    console.error("GET /api/volunteer-events/reports/weekly error:", err);
+    res.sendStatus(500);
+  }
+});
+
+// GET /api/volunteer-events/reports/monthly
+router.get("/reports/monthly", rejectUnauthenticated, async (req, res) => {
+  const sqlText = `
+    SELECT
+      month_start,
+      TO_CHAR(month_start, 'Mon YYYY') AS month_name,
+      SUM(number_volunteers) AS total_volunteers,
+      SUM(software_signups) AS total_signups,
+      COUNT(DISTINCT volunteer_id) AS volunteer_count
+    FROM (
+      SELECT *, DATE_TRUNC('month', event_date)::date AS month_start
+      FROM volunteer_events
+    ) ve
+    GROUP BY month_start
+    ORDER BY month_start DESC;
+  `;
+
+  try {
+    const result = await pool.query(sqlText);
+    res.json(result.rows);
+  } catch (err) {
+    console.error("GET /api/volunteer-events/reports/monthly error:", err);
+    res.sendStatus(500);
+  }
+});
+
+// GET /api/volunteer-events/reports/location
+router.get("/reports/location", rejectUnauthenticated, async (req, res) => {
+  const sqlText = `
+    SELECT
+      location,
+      SUM(number_volunteers) AS total_volunteers,
+      SUM(software_signups) AS total_signups,
+      COUNT(DISTINCT volunteer_id) AS volunteer_count
+    FROM volunteer_events
+    GROUP BY location
+    ORDER BY total_volunteers DESC;
+  `;
+
+  try {
+    const result = await pool.query(sqlText);
+    res.json(result.rows);
+  } catch (err) {
+    console.error("GET /api/volunteer-events/reports/location error:", err);
+    res.sendStatus(500);
+  }
+});
+
+// GET /api/volunteer-events/reports/monthly-location
+router.get("/reports/monthly-location", rejectUnauthenticated, async (req, res) => {
+  const sqlText = `
+    SELECT
+      month_start,
+      TO_CHAR(month_start, 'Mon YYYY') AS month_name,
+      location,
+      SUM(number_volunteers) AS total_volunteers,
+      SUM(software_signups) AS total_signups,
+      COUNT(DISTINCT volunteer_id) AS volunteer_count
+    FROM (
+      SELECT *, DATE_TRUNC('month', event_date)::date AS month_start
+      FROM volunteer_events
+    ) ve
+    GROUP BY month_start, location
+    ORDER BY month_start DESC, total_volunteers DESC;
+  `;
+
+  try {
+    const result = await pool.query(sqlText);
+    res.json(result.rows);
+  } catch (err) {
+    console.error("GET /api/volunteer-events/reports/monthly-location error:", err);
+    res.sendStatus(500);
+  }
+});
+
+// By Id 
 // GET /api/volunteer-events/:id
 router.get("/:id", rejectUnauthenticated, async (req, res) => {
   const eventId = req.params.id;
