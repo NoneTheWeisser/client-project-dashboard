@@ -74,9 +74,17 @@ router.put("/:id", rejectUnauthenticated, async (req, res) => {
   const volunteerId = req.params.id;
   const { name, type } = req.body;
 
+  const allowedTypes = ["Individual", "Group"];
+  if (type !== undefined && !allowedTypes.includes(type)) {
+    return res.status(400).json({ error: "Invalid type" });
+  }
+
   const sqlText = `
     UPDATE volunteers
-    SET name = $1, type = $2, updated_at = CURRENT_TIMESTAMP
+    SET
+        name = COALESCE($1, name),
+        type = COALESCE($2, type),
+        updated_at = CURRENT_TIMESTAMP
     WHERE id = $3
     RETURNING *;
     `;
