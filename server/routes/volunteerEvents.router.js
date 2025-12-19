@@ -65,7 +65,7 @@ router.get("/reports/weekly", rejectUnauthenticated, async (req, res) => {
   const sqlText = `
     SELECT
       week_start,
-      TO_CHAR(week_start, 'Mon DD') || '-' || TO_CHAR(week_start + INTERVAL '6 days', 'Mon DD') AS week_range,
+      TO_CHAR(week_start, 'Month DD') || '-' || TO_CHAR(week_start + INTERVAL '6 days', 'Month DD') AS week_range,
       SUM(number_volunteers) AS total_volunteers,
       SUM(software_signups) AS total_signups,
       COUNT(DISTINCT volunteer_id) AS volunteer_count
@@ -91,7 +91,7 @@ router.get("/reports/monthly", rejectUnauthenticated, async (req, res) => {
   const sqlText = `
     SELECT
       month_start,
-      TO_CHAR(month_start, 'Mon YYYY') AS month_name,
+      TO_CHAR(month_start, 'Month YYYY') AS month_name,
       SUM(number_volunteers) AS total_volunteers,
       SUM(software_signups) AS total_signups,
       COUNT(DISTINCT volunteer_id) AS volunteer_count
@@ -139,7 +139,7 @@ router.get("/reports/monthly-location", rejectUnauthenticated, async (req, res) 
   const sqlText = `
     SELECT
       month_start,
-      TO_CHAR(month_start, 'Mon YYYY') AS month_name,
+      TO_CHAR(month_start, 'Month YYYY') AS month_name,
       location,
       SUM(number_volunteers) AS total_volunteers,
       SUM(software_signups) AS total_signups,
