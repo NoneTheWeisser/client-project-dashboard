@@ -70,7 +70,7 @@ CREATE TABLE "events" (
     "venue" VARCHAR(255) NOT NULL,
     "type" VARCHAR(255) NOT NULL,
     "shelter_id" INTEGER REFERENCES shelters(id),
-    "notes" VARCHAR(255) NOT NULL,
+    "notes" VARCHAR(255),
     "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
