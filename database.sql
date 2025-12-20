@@ -73,6 +73,111 @@ VALUES
   "created_by" INTEGER REFERENCES "user"(id) ON DELETE SET NULL,
   "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   "updated_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+
+---------Event table
+CREATE TABLE "events" (
+    "id" SERIAL PRIMARY KEY, 
+    "name" VARCHAR(255) NOT NULL,
+    "datetime" TIMESTAMPTZ NOT NULL, 
+    "venue" VARCHAR(255) NOT NULL,
+    "type" VARCHAR(255) NOT NULL,
+    "shelter_id" INTEGER REFERENCES shelters(id),
+    "notes" VARCHAR(255),
+    "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+---------Shelter tables
+CREATE TABLE "shelters" (
+    "id" SERIAL PRIMARY KEY,
+    "name" VARCHAR(255) NOT NULL,
+    "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE "shelter_info" (
+    "id" SERIAL PRIMARY KEY,    
+    "shelter_id" INTEGER NOT NULL REFERENCES shelters(id),
+    "occupancy_percent" DECIMAL(5,2),
+    "operational_reserves" DECIMAL(12,2),
+    "replacement_reserves" DECIMAL(12,2),
+    "current_vacancies" INTEGER,
+    "upcoming_vacancies" INTEGER,
+    "upcoming_new_leases" INTEGER,
+    "notes" TEXT,
+    "last_updated" TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+);
+
+---------Donation tables
+
+CREATE TABLE "donations" (
+  "id" BIGSERIAL PRIMARY KEY,
+  "donor_id" BIGINT NOT NULL REFERENCES donors(id),
+  "date" DATE NOT NULL,
+  "amount" DECIMAL(8,2) NOT NULL,
+  "notable" BOOLEAN NOT NULL DEFAULT FALSE,
+  "restricted" BOOLEAN NOT NULL DEFAULT FALSE,
+  "notes" TEXT,
+  "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  "updated_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE "donors" (
+  "id" BIGSERIAL PRIMARY KEY,
+  "name" VARCHAR(255) NOT NULL,
+  "type" VARCHAR(50) NOT NULL,
+  "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  "updated_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+
+
+
+-- ============================================
+-- COMPLIANCE WEEKLY TABLE - FRESH START
+-- ============================================
+
+-- Drop existing table if exists
+DROP TABLE IF EXISTS compliance_weekly CASCADE;
+
+-- Create table
+CREATE TABLE "compliance_weekly" (
+    "id" SERIAL PRIMARY KEY,
+    "date" DATE NOT NULL UNIQUE,
+    
+    "hh_without_children" INTEGER NOT NULL DEFAULT 0 CHECK (hh_without_children >= 0),
+    "hh_with_children" INTEGER NOT NULL DEFAULT 0 CHECK (hh_with_children >= 0),
+    "total_households" INTEGER GENERATED ALWAYS AS (hh_without_children + hh_with_children) STORED,
+    
+    "adults" INTEGER NOT NULL DEFAULT 0 CHECK (adults >= 0),
+    "children" INTEGER NOT NULL DEFAULT 0 CHECK (children >= 0),
+    "seniors_55_plus" INTEGER NOT NULL DEFAULT 0 CHECK (seniors_55_plus >= 0),
+    "total_individuals" INTEGER GENERATED ALWAYS AS (adults + children + seniors_55_plus) STORED,
+    
+    "female" INTEGER NOT NULL DEFAULT 0 CHECK (female >= 0),
+    "male" INTEGER NOT NULL DEFAULT 0 CHECK (male >= 0),
+    "other_gender" INTEGER NOT NULL DEFAULT 0 CHECK (other_gender >= 0),
+    "total_gender" INTEGER GENERATED ALWAYS AS (female + male + other_gender) STORED,
+    
+    "white" INTEGER NOT NULL DEFAULT 0 CHECK (white >= 0),
+    "black_african_american" INTEGER NOT NULL DEFAULT 0 CHECK (black_african_american >= 0),
+    "native_american" INTEGER NOT NULL DEFAULT 0 CHECK (native_american >= 0),
+    "other_race" INTEGER NOT NULL DEFAULT 0 CHECK (other_race >= 0),
+    "multi_racial" INTEGER NOT NULL DEFAULT 0 CHECK (multi_racial >= 0),
+    "total_race" INTEGER GENERATED ALWAYS AS (white + black_african_american + native_american + other_race + multi_racial) STORED,
+    
+    "one_condition" INTEGER NOT NULL DEFAULT 0 CHECK (one_condition >= 0),
+    "two_conditions" INTEGER NOT NULL DEFAULT 0 CHECK (two_conditions >= 0),
+    "three_plus_conditions" INTEGER NOT NULL DEFAULT 0 CHECK (three_plus_conditions >= 0),
+    "total_conditions" INTEGER GENERATED ALWAYS AS (one_condition + two_conditions + three_plus_conditions) STORED,
+    
+    "total_exits" INTEGER NOT NULL DEFAULT 0 CHECK (total_exits >= 0),
+    
+    "created_by" INTEGER REFERENCES "user"(id) ON DELETE SET NULL,
+    "submitted_by" INTEGER REFERENCES "user"(id) ON DELETE SET NULL,
+    "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
+    "updated_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
+    "submitted_at" TIMESTAMPTZ
 );
 // fake seed data for hr weekly testing 
 INSERT INTO "hr_weekly"
