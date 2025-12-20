@@ -15,7 +15,7 @@ DROP TABLE IF EXISTS "user";
 --   "password" VARCHAR (1000) NOT NULL,
 --   "inserted_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
 --   "updated_at" TIMESTAMPTZ NOT NULL DEFAULT now()
--- );
+-- );;
 
 -- Proposed user table 
 CREATE TABLE "user" (
@@ -60,6 +60,19 @@ VALUES
   ('2024-12-09', 6, 13, 28, 20, 6, 495.75, 'Holiday rush', 1),
   ('2024-12-16', 3, 8, 16, 11, 2, 350.00, 'Holiday week', 1);
 
+// hr_weekly table
+   CREATE TABLE "hr_weekly" (
+  "id" SERIAL PRIMARY KEY,
+  "week_date" DATE NOT NULL UNIQUE,
+  "total_positions" INTEGER NOT NULL DEFAULT 0 CHECK (total_positions >= 0),
+  "open_positions" INTEGER NOT NULL DEFAULT 0 CHECK (open_positions >= 0),
+  "new_hires_this_week" INTEGER NOT NULL DEFAULT 0 CHECK (new_hires_this_week >= 0),
+  "employee_turnover" INTEGER NOT NULL DEFAULT 0 CHECK (employee_turnover >= 0),
+  "evaluations_due" INTEGER NOT NULL DEFAULT 0 CHECK (evaluations_due >= 0),
+  "notes" TEXT,
+  "created_by" INTEGER REFERENCES "user"(id) ON DELETE SET NULL,
+  "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  "updated_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 
 
 ---------Event table
@@ -166,22 +179,20 @@ CREATE TABLE "compliance_weekly" (
     "updated_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
     "submitted_at" TIMESTAMPTZ
 );
+// fake seed data for hr weekly testing 
+INSERT INTO "hr_weekly"
+  ("week_date", "total_positions", "open_positions", "new_hires_this_week", "employee_turnover", "evaluations_due", "notes", "created_by")
+VALUES
+  ('2024-11-04', 12, 2, 0, 0, 3, 'Normal week', 1),
+  ('2024-11-11', 12, 2, 1, 0, 2, 'One new hire in Kitchen', 1),
+  ('2024-11-18', 12, 1, 0, 0, 4, 'Thanksgiving prep week', 1),
+  ('2024-11-25', 12, 1, 0, 1, 1, 'One termination', 1),
+  ('2024-12-02', 13, 2, 1, 0, 5, 'New development position added', 1),
+  ('2024-12-09', 13, 2, 0, 0, 3, 'Holiday season', 1),
+  ('2024-12-16', 13, 1, 1, 0, 2, 'End of year hiring', 1);
 
--- Create indexes
-CREATE INDEX idx_compliance_date ON compliance_weekly(date);
-CREATE INDEX idx_compliance_year ON compliance_weekly((EXTRACT(YEAR FROM date)));
-CREATE INDEX idx_compliance_created_by ON compliance_weekly(created_by);
-CREATE INDEX idx_compliance_submitted_by ON compliance_weekly(submitted_by);
 
--- Add comments
-COMMENT ON TABLE compliance_weekly IS 'Weekly compliance reports - date is always Monday via DATE_TRUNC on INSERT';
-COMMENT ON COLUMN compliance_weekly.date IS 'Always stores Monday of the week (enforced by DATE_TRUNC in INSERT)';
-
--- Success message
-SELECT 'compliance_weekly table created successfully!' AS status;
-
--------------------------------------------------------
---------------------------------------------------
+-
 -- SEED DATA:
 --   You'll need to actually register users via the application in order to get hashed
 --   passwords. Once you've done that, you can modify this INSERT statement to include
