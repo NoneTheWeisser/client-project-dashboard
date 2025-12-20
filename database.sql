@@ -86,6 +86,8 @@ CREATE TABLE "volunteer_events" (
   "updated_at" TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
+
+
 ---------Event table
 CREATE TABLE "events" (
     "id" SERIAL PRIMARY KEY, 

@@ -19,13 +19,16 @@ router.get("/", rejectUnauthenticated, (req, res) => {
     });
 });
 
+// POST /api/volunteers
 router.post("/", rejectUnauthenticated, (req, res) => {
   const { name, type } = req.body;
 
   if (!name || !type) {
     return res.status(400).json({ error: "Name and type are required" });
   }
-
+  if (typeof name !== "string" || name.trim().length === 0) {
+    return res.status(400).json({ error: "Name cannot be empty" });
+  }
   const allowedTypes = ["Individual", "Group"];
   if (!allowedTypes.includes(type)) {
     return res.status(400).json({ error: "Invalid type" });

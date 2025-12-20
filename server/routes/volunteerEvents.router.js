@@ -31,10 +31,28 @@ router.post("/", rejectUnauthenticated, async (req, res) => {
     software_signups,
   } = req.body;
 
-  if (!volunteer_id || !event_date || !location) {
-    return res
-      .status(400)
-      .json({ error: "volunteer_id, event_date, and location are required" });
+  // guards
+  if (
+    number_volunteers !== undefined &&
+    (!Number.isInteger(number_volunteers) || number_volunteers < 1)
+  ) {
+    return res.status(400).json({
+      error: "number_volunteers must be a positive integer",
+    });
+  }
+
+  if (
+    software_signups !== undefined &&
+    (!Number.isInteger(software_signups) || software_signups < 0)
+  ) {
+    return res.status(400).json({
+      error: "software_signups must be 0 or greater",
+    });
+  }
+  if (isNaN(Date.parse(event_date))) {
+    return res.status(400).json({
+      error: "event_date must be a valid date",
+    });
   }
 
   const sqlText = `
@@ -62,6 +80,7 @@ router.post("/", rejectUnauthenticated, async (req, res) => {
 // Report section
 // GET /api/volunteer-events/reports/weekly
 router.get("/reports/weekly", rejectUnauthenticated, async (req, res) => {
+  
   const sqlText = `
     SELECT
       week_start,
@@ -135,8 +154,11 @@ router.get("/reports/location", rejectUnauthenticated, async (req, res) => {
 });
 
 // GET /api/volunteer-events/reports/monthly-location
-router.get("/reports/monthly-location", rejectUnauthenticated, async (req, res) => {
-  const sqlText = `
+router.get(
+  "/reports/monthly-location",
+  rejectUnauthenticated,
+  async (req, res) => {
+    const sqlText = `
     SELECT
       month_start,
       TO_CHAR(month_start, 'Month YYYY') AS month_name,
@@ -152,16 +174,20 @@ router.get("/reports/monthly-location", rejectUnauthenticated, async (req, res) 
     ORDER BY month_start DESC, total_volunteers DESC;
   `;
 
-  try {
-    const result = await pool.query(sqlText);
-    res.json(result.rows);
-  } catch (err) {
-    console.error("GET /api/volunteer-events/reports/monthly-location error:", err);
-    res.sendStatus(500);
+    try {
+      const result = await pool.query(sqlText);
+      res.json(result.rows);
+    } catch (err) {
+      console.error(
+        "GET /api/volunteer-events/reports/monthly-location error:",
+        err
+      );
+      res.sendStatus(500);
+    }
   }
-});
+);
 
-// By Id 
+// By Id
 // GET /api/volunteer-events/:id
 router.get("/:id", rejectUnauthenticated, async (req, res) => {
   const eventId = req.params.id;
@@ -195,7 +221,7 @@ router.put("/:id", rejectUnauthenticated, async (req, res) => {
     UPDATE volunteer_events
     SET
       volunteer_id = COALESCE($1, volunteer_id),
-      event_date = COALESCE($2, event_date),
+      event_date = COALESCE(DATE_TRUNC('week', $2::date), event_date),
       location = COALESCE($3, location),
       number_volunteers = COALESCE($4, number_volunteers),
       software_signups = COALESCE($5, software_signups),
