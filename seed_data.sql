@@ -92,3 +92,22 @@ VALUES
 (4, '2025-02-10', 75.00,  FALSE, FALSE, 'Anonymous cash donation'),
 (1, '2025-03-01', 200.00, TRUE,  FALSE, 'Winter support donation'),
 (5, '2025-03-15', 1000.00, TRUE,  TRUE,  'Annual grant restricted to shelter services');
+
+INSERT INTO "shelter_info" (
+    "shelter_id",
+    "month_date",
+    "occupancy_percent",
+    "operational_reserves",
+    "replacement_reserves",
+    "current_vacancies",
+    "upcoming_vacancies",
+    "upcoming_new_leases",
+    "notes"
+)
+VALUES
+-- December 2025
+(1, DATE '2025-12-01', 90.5, 12000.00, 5000.00, 2, 1, 1, 'All systems normal'),
+(2, DATE '2025-12-01', 85.0, 15000.00, 7000.00, 3, 2, 0, 'Preparing for winter'),
+-- January 2026
+(1, DATE '2026-01-01', 88.0, 12500.00, 5000.00, 1, 2, 1, 'Monthly maintenance completed'),
+(2, DATE '2026-01-01', 80.0, 15500.00, 7000.00, 4, 1, 2, 'New lease agreements starting');
