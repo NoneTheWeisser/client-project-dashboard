@@ -89,6 +89,67 @@ router.post("/", rejectUnauthenticated, async (req, res) => {
     res.sendStatus(500);
   }
 });
+
+// Reporting
+// GET /api/shelter/information/reports/monthly
+router.get("/reports/monthly", rejectUnauthenticated, async (req, res) => {
+  const sqlText = `
+    SELECT
+      DATE_TRUNC('month', month_date)::date AS month_start,
+      TO_CHAR(DATE_TRUNC('month', month_date), 'YYYY-MM-DD') || ' - ' ||
+      TO_CHAR(DATE_TRUNC('month', month_date) + INTERVAL '1 month - 1 day', 'YYYY-MM-DD') AS month_range,
+      s.name AS shelter_name,
+      occupancy_percent,
+      operational_reserves,
+      replacement_reserves,
+      current_vacancies,
+      upcoming_vacancies,
+      upcoming_new_leases,
+      notes
+    FROM shelter_info si
+    JOIN shelters s ON s.id = si.shelter_id
+    ORDER BY month_start DESC, s.name;
+  `;
+
+  try {
+    const result = await pool.query(sqlText);
+    res.json(result.rows);
+  } catch (err) {
+    console.error("GET /api/shelter/information/reports/monthly error:", err);
+    res.sendStatus(500);
+  }
+});
+
+// GET /api/shelter/information/reports/monthly-summary
+// summary of both shelters
+router.get("/reports/monthly-summary", rejectUnauthenticated, async (req, res) => {
+  const sqlText = `
+    SELECT
+      DATE_TRUNC('month', month_date)::date AS month_start,
+      TO_CHAR(DATE_TRUNC('month', month_date), 'YYYY-MM-DD') || ' - ' ||
+      TO_CHAR(DATE_TRUNC('month', month_date) + INTERVAL '1 month - 1 day', 'YYYY-MM-DD') AS month_range,
+      ROUND(AVG(occupancy_percent), 2) AS avg_occupancy_percent,
+      SUM(operational_reserves) AS total_operational_reserves,
+      SUM(replacement_reserves) AS total_replacement_reserves,
+      SUM(current_vacancies) AS total_current_vacancies,
+      SUM(upcoming_vacancies) AS total_upcoming_vacancies,
+      SUM(upcoming_new_leases) AS total_upcoming_new_leases
+    FROM shelter_info
+    GROUP BY DATE_TRUNC('month', month_date)
+    ORDER BY month_start DESC;
+  `;
+
+  try {
+    const result = await pool.query(sqlText);
+    res.json(result.rows);
+  } catch (err) {
+    console.error("GET /api/shelter/information/reports/monthly-summary error:", err);
+    res.sendStatus(500);
+  }
+});
+
+
+
 // PUT /api/shelters/information/:shelterId/:month
 router.put("/:shelterId/:month", rejectUnauthenticated, async (req, res) => {
   const { shelterId, month } = req.params;
