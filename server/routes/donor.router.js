@@ -23,28 +23,25 @@ router.get("/", rejectUnauthenticated, (req, res) => {
 
 //  POST /api/development/donors
 router.post("/", rejectUnauthenticated, (req, res) => {
+  console.log("POST /api/development/donors body:", req.body);
   const { name, type } = req.body;
-
-  if (!name || !name.trim()) {
+  if (!name || !name.trim())
     return res.status(400).json({ error: "Name is required" });
-  }
-  if (!allowedTypes.includes(type)) {
+  if (!allowedTypes.includes(type))
     return res
       .status(400)
       .json({ error: `Type must be one of: ${allowedTypes.join(", ")}` });
-  }
 
-  const sqlText = `
-    INSERT INTO donors (name, type)
-    VALUES ($1, $2)
-    RETURNING *;`;
-
+  const sqlText = `INSERT INTO donors (name, type) VALUES ($1, $2) RETURNING *;`;
   pool
     .query(sqlText, [name, type])
-    .then((result) => res.status(201).json(result.rows[0]))
+    .then((result) => {
+      console.log("INSERT result:", result.rows[0]);
+      res.status(201).json(result.rows[0]);
+    })
     .catch((error) => {
       console.error("POST donor error", error);
-      res.sendStatus(500);
+      res.status(500).json({ error: error.message });
     });
 });
 
