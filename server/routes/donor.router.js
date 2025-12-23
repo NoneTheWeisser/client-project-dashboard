@@ -7,7 +7,7 @@ const {
 const router = express.Router();
 
 ///////// DONORS
-//  GET /api/donors
+//  GET /api/development/donors
 router.get("/", rejectUnauthenticated, (req, res) => {
   const sqlText = `SELECT * FROM donors ORDER BY name;`;
 
@@ -20,7 +20,7 @@ router.get("/", rejectUnauthenticated, (req, res) => {
     });
 });
 
-//  POST /api/donors
+//  POST /api/development/donors
 router.post("/", rejectUnauthenticated, (req, res) => {
   const { name, type } = req.body;
   const sqlText = `
@@ -61,7 +61,7 @@ router.get("/:id", rejectUnauthenticated, async (req, res) => {
   }
 });
 
-//  PUT /api/donors/:id
+//  PUT /api/development/donors/:id
 router.put("/:id", rejectUnauthenticated, async (req, res) => {
   const donorId = req.params.id;
   const { name, type } = req.body;
@@ -87,7 +87,7 @@ router.put("/:id", rejectUnauthenticated, async (req, res) => {
   }
 });
 
-//  DELETE /api/donors/:id
+//  DELETE /api/development/donors/:id
 router.delete("/:id", rejectUnauthenticated, async (req, res) => {
   const donorId = req.params.id;
   const sqlText = `DELETE FROM donors WHERE id = $1 RETURNING *;`;
