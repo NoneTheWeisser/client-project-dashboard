@@ -3,6 +3,8 @@ import useStore from "../../zustand/store";
 
 export default function DonationsPage() {
   const fetchDonations = useStore((state) => state.fetchDonations);
+  const deleteDonation = useStore((state) => state.deleteDonation);
+  const editDonation = useStore((state) => state.editDonation);
   const donations = useStore((state) => state.donations);
   const loading = useStore((state) => state.loading);
   const error = useStore((state) => state.error);
@@ -17,6 +19,7 @@ export default function DonationsPage() {
   const [notable, setNotable] = useState(false);
   const [restricted, setRestricted] = useState(false);
   const [notes, setNotes] = useState("");
+  const [editId, setEditId] = useState("");
 
   useEffect(() => {
     fetchDonations();
@@ -29,19 +32,21 @@ export default function DonationsPage() {
   const handleAddDonation = async (e) => {
     e.preventDefault();
 
-    if (!donorId || !date || !amount) {
-      alert("Donor, date, and amount are required");
-      return;
-    }
-
-    await addDonation({
+    const payload = {
       donor_id: donorId,
       date,
       amount,
       notable,
       restricted,
       notes,
-    });
+    };
+
+    if (editId) {
+      await editDonation(editId, payload);
+      setEditId(null);
+    } else {
+      await addDonation(payload);
+    }
 
     setDonorId("");
     setDate("");
@@ -49,6 +54,26 @@ export default function DonationsPage() {
     setNotable(false);
     setRestricted(false);
     setNotes("");
+  };
+
+  const handleEdit = (donation) => {
+    setEditId(donation.id);
+    setDonorId(donation.donor_id);
+    setDate(donation.date.slice(0, 10));
+    setAmount(donation.amount);
+    setNotable(donation.notable);
+    setRestricted(donation.restricted);
+    setNotes(donation.notes || "");
+  };
+
+  const handleDelete = async (id) => {
+    if (
+      window.confirm(
+        "Are you sure you want to delete this donation? This cannot be undone."
+      )
+    ) {
+      await deleteDonation(id);
+    }
   };
 
   if (loading) return <p>Loading donations...</p>;
@@ -69,7 +94,11 @@ export default function DonationsPage() {
           ))}
         </select>
 
-        <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+        <input
+          type="date"
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+        />
 
         <input
           type="number"
@@ -133,8 +162,10 @@ export default function DonationsPage() {
                 <td>{donation.restricted ? "Yes" : "No"}</td>
                 <td>{donation.notes || "—"}</td>
                 <td>
-                  <button disabled>Edit</button>
-                  <button disabled>Delete</button>
+                  <button onClick={() => handleEdit(donation)}>Edit</button>
+                  <button onClick={() => handleDelete(donation.id)}>
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
