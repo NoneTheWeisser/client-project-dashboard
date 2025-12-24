@@ -18,17 +18,21 @@ export default function DonorsPage() {
     fetchDonors();
   }, [fetchDonors]);
 
-  const handleSubmit = async (e) => {
+  const handleAddDonor = async (e) => {
     e.preventDefault();
-    if (!name.trim()) return;
 
-    if (editId) {
-      await editDonor(editId, name, type);
-      setEditId(null);
-    } else {
-      await addDonor(name, type);
+    if (!name.trim()) return;
+    // prevent duplicates
+    const nameExists = donors.some(
+      (d) => d.name.toLowerCase() === name.trim().toLowerCase()
+    );
+
+    if (nameExists) {
+      alert("A donor with this name already exists.");
+      return;
     }
 
+    await addDonor(name, type);
     setName("");
     setType("Individual");
   };
@@ -56,7 +60,7 @@ export default function DonorsPage() {
     <div>
       <h2>Donors</h2>
       <h3>{editId ? "Edit Donor" : "Add Donor"}</h3>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleAddDonor}>
         <input
           placeholder="Name"
           value={name}

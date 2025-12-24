@@ -1,0 +1,67 @@
+import axios from "axios";
+
+const donationsSlice = (set, get) => ({
+  donations: [],
+  loading: false,
+  error: null,
+
+  fetchDonations: async () => {
+    set({ loading: true, error: null });
+    try {
+      const res = await axios.get("/api/development/donations");
+      set({
+        donations: res.data,
+        loading: false,
+      });
+    } catch (err) {
+      console.error("fetchDonations error:", err);
+      set({
+        error: "Failed to fetch donations",
+        loading: false,
+      });
+    }
+  },
+  // Add donation
+addDonation: async (donation) => {
+  set({ loading: true, error: null });
+  try {
+    await axios.post("/api/development/donations", donation);
+    // testing re-sync with backend so joined donor_name is present
+    await get().fetchDonations();
+
+    set({ loading: false });
+  } catch (err) {
+    console.error("addDonation error:", err);
+    set({ error: "Failed to add donation", loading: false });
+  }
+},
+
+  // EDIT donation
+editDonation: async (id, donation) => {
+  set({ loading: true, error: null });
+  try {
+    await axios.put(`/api/development/donations/${id}`, donation);
+    await get().fetchDonations();
+
+    set({ loading: false });
+  } catch (err) {
+    console.error("editDonation error:", err);
+    set({ error: "Failed to update donation", loading: false });
+  }
+},
+  // DELETE donation
+deleteDonation: async (id) => {
+  set({ loading: true, error: null });
+  try {
+    await axios.delete(`/api/development/donations/${id}`);
+    await get().fetchDonations();
+
+    set({ loading: false });
+  } catch (err) {
+    console.error("deleteDonation error:", err);
+    set({ error: "Failed to delete donation", loading: false });
+  }
+},
+});
+
+export default donationsSlice;
