@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useStore from "../../zustand/store";
 
 export default function DonationsPage() {
@@ -7,28 +7,105 @@ export default function DonationsPage() {
   const loading = useStore((state) => state.loading);
   const error = useStore((state) => state.error);
 
-  const formatDate = (dateString) =>
-    new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "numeric",
-      day: "numeric",
-    });
+  const donors = useStore((state) => state.donors);
+  const fetchDonors = useStore((state) => state.fetchDonors);
+  const addDonation = useStore((state) => state.addDonation);
+
+  const [donorId, setDonorId] = useState("");
+  const [date, setDate] = useState("");
+  const [amount, setAmount] = useState("");
+  const [notable, setNotable] = useState(false);
+  const [restricted, setRestricted] = useState(false);
+  const [notes, setNotes] = useState("");
 
   useEffect(() => {
     fetchDonations();
-  }, [fetchDonations]);
+    fetchDonors();
+  }, [fetchDonations, fetchDonors]);
+
+  const formatDate = (dateString) =>
+    new Date(dateString).toLocaleDateString("en-US");
+
+  const handleAddDonation = async (e) => {
+    e.preventDefault();
+
+    if (!donorId || !date || !amount) {
+      alert("Donor, date, and amount are required");
+      return;
+    }
+
+    await addDonation({
+      donor_id: donorId,
+      date,
+      amount,
+      notable,
+      restricted,
+      notes,
+    });
+
+    setDonorId("");
+    setDate("");
+    setAmount("");
+    setNotable(false);
+    setRestricted(false);
+    setNotes("");
+  };
 
   if (loading) return <p>Loading donations...</p>;
   if (error) return <p>Error: {error}</p>;
-// todo - wire up form, decide if we do tables and form as components. then move on to reports
+
   return (
     <div>
       <h2>Donations</h2>
+
       <h3>Add Donation</h3>
-      <form>
-        <input></input>
-        <button>Submit</button>
+      <form onSubmit={handleAddDonation}>
+        <select value={donorId} onChange={(e) => setDonorId(e.target.value)}>
+          <option value="">Select donor</option>
+          {donors.map((d) => (
+            <option key={d.id} value={d.id}>
+              {d.name}
+            </option>
+          ))}
+        </select>
+
+        <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+
+        <input
+          type="number"
+          step="0.01"
+          placeholder="Amount"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+        />
+
+        <label>
+          <input
+            type="checkbox"
+            checked={notable}
+            onChange={(e) => setNotable(e.target.checked)}
+          />
+          Notable
+        </label>
+
+        <label>
+          <input
+            type="checkbox"
+            checked={restricted}
+            onChange={(e) => setRestricted(e.target.checked)}
+          />
+          Restricted
+        </label>
+
+        <input
+          placeholder="Notes"
+          value={notes}
+          onChange={(e) => setNotes(e.target.value)}
+        />
+
+        <button type="submit">Add Donation</button>
       </form>
+
       <h3>All Donations</h3>
 
       {donations.length === 0 ? (
@@ -56,9 +133,8 @@ export default function DonationsPage() {
                 <td>{donation.restricted ? "Yes" : "No"}</td>
                 <td>{donation.notes || "—"}</td>
                 <td>
-                    {/* todo */}
-                  <button onClick={() => handleEdit(donor)}>Edit</button>
-                  <button onClick={() => handleDelete(donor.id)}>Delete</button>
+                  <button disabled>Edit</button>
+                  <button disabled>Delete</button>
                 </td>
               </tr>
             ))}

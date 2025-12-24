@@ -22,20 +22,20 @@ const donationsSlice = (set, get) => ({
     }
   },
   // Add donation
-  addDonation: async (donation) => {
-    set({ loading: true, error: null });
-    try {
-      const res = await axios.post("/api/development/donations", donation);
+addDonation: async (donation) => {
+  set({ loading: true, error: null });
+  try {
+    await axios.post("/api/development/donations", donation);
+    // testing re-sync with backend so joined donor_name is present
+    await get().fetchDonations();
 
-      set((state) => ({
-        donations: [res.data, ...state.donations],
-        loading: false,
-      }));
-    } catch (err) {
-      console.error("addDonation error:", err);
-      set({ error: "Failed to add donation", loading: false });
-    }
-  },
+    set({ loading: false });
+  } catch (err) {
+    console.error("addDonation error:", err);
+    set({ error: "Failed to add donation", loading: false });
+  }
+},
+
   // EDIT donation
   editDonation: async (id, donation) => {
     set({ loading: true, error: null });
