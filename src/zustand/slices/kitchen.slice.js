@@ -36,6 +36,33 @@ const kitchenSlice = (set, get) => ({
       return null;
     }
   },
+
+  // Add kitchen record
+  addKitchenRecord: async (week_date, total_meals_served, notes) => {
+    set({ loading: true, error: null });
+    try {
+      const response = await axios.post("/api/kitchen", {
+        week_date,
+        total_meals_served,
+        notes,
+      });
+      set((state) => ({
+        kitchenRecords: [response.data, ...state.kitchenRecords],
+        loading: false,
+      }));
+    } catch (err) {
+      console.error("addKitchenRecord error:", err);
+      
+      // Handle specific error messages from backend
+      if (err.response?.status === 409) {
+        set({ error: `A record for ${week_date} already exists`, loading: false });
+      } else if (err.response?.status === 400) {
+        set({ error: err.response.data.message, loading: false });
+      } else {
+        set({ error: "Failed to add kitchen record", loading: false });
+      }
+    }
+  },
 });
 
 export default kitchenSlice;
