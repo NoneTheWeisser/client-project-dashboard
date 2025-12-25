@@ -110,6 +110,33 @@ const kitchenSlice = (set, get) => ({
       }
     }
   },
+
+  // Fetch weekly reports
+  fetchWeeklyReports: async () => {
+    set({ loading: true, error: null });
+    try {
+      const res = await fetch("/api/kitchen/reports/weekly");
+      const data = await res.json();
+      set({ weeklyReports: data, loading: false });
+    } catch (err) {
+      set({ error: err.message, loading: false });
+    }
+  },
+
+  // Fetch monthly reports
+  fetchMonthlyReports: async () => {
+    set({ loading: true, error: null });
+    try {
+      const res = await fetch("/api/kitchen/reports/monthly");
+      const data = await res.json();
+      set({ monthlyReports: data, loading: false });
+    } catch (err) {
+      set({ error: err.message, loading: false });
+    }
+  },
+
+  // Clear error
+  clearKitchenError: () => set({ error: null }),
 });
 
 export default kitchenSlice;
