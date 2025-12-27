@@ -31,17 +31,6 @@ const handleEdit = (record) => {
   setNotes(record.notes || "");
 };
 
-  // Delete record with confirmation
-const handleDelete = async (id) => {
-  if (
-    window.confirm(
-      "Are you sure you want to delete this record? This cannot be undone."
-    )
-  ) {
-    await deleteKitchenRecord(id);
-  }
-};
-
   // Handle form submission for add and edit
 const handleAddKitchenRecord = async (e) => {
   e.preventDefault();
@@ -52,8 +41,6 @@ const handleAddKitchenRecord = async (e) => {
   } else {
     await addKitchenRecord(weekDate, parseInt(totalMeals), notes);
   }
-
-
 
   // Clear form
   setWeekDate("");
@@ -138,10 +125,9 @@ const handleAddKitchenRecord = async (e) => {
           <td>{record.total_meals_served}</td>
           <td>{record.notes || "—"}</td>
           <td>User #{record.created_by}</td>
-         <td>
-  <button onClick={() => handleEdit(record)}>Edit</button>
-  <button onClick={() => handleDelete(record.id)}>Delete</button>
-</td>
+          <td>
+            <button onClick={() => handleEdit(record)}>Edit</button>
+          </td>
         </tr>
       ))}
     </tbody>
