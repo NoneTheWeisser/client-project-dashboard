@@ -23,12 +23,78 @@ export default function KitchenPage() {
   const formatDate = (dateString) =>
     new Date(dateString).toLocaleDateString("en-US");
 
+  // Handle form submission for add and edit
+const handleAddKitchenRecord = async (e) => {
+  e.preventDefault();
+
+  if (editId) {
+    await editKitchenRecord(editId, parseInt(totalMeals), notes);
+    setEditId(null);
+  } else {
+    await addKitchenRecord(weekDate, parseInt(totalMeals), notes);
+  }
+
+  // Clear form
+  setWeekDate("");
+  setTotalMeals("");
+  setNotes("");
+};
+
   if (loading) return <p>Loading kitchen records...</p>;
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div>
-      <h2>Kitchen Operations</h2>
-    </div>
-  );
+  <div>
+    <h2>Kitchen Operations</h2>
+
+    <h3>{editId ? "Edit Kitchen Record" : "Add Kitchen Record"}</h3>
+
+    <form onSubmit={handleAddKitchenRecord}>
+      {/* Date input */}
+      <input
+        type="date"
+        value={weekDate}
+        onChange={(e) => setWeekDate(e.target.value)}
+        disabled={editId}
+        required
+      />
+
+      {/* Meals served */}
+      <input
+        type="number"
+        placeholder="Total Meals Served"
+        value={totalMeals}
+        onChange={(e) => setTotalMeals(e.target.value)}
+        min="0"
+        required
+      />
+
+      {/* Optional notes */}
+      <input
+        placeholder="Notes (optional)"
+        value={notes}
+        onChange={(e) => setNotes(e.target.value)}
+      />
+
+      <button type="submit">
+        {editId ? "Update Record" : "Add Record"}
+      </button>
+
+      {/* Cancel button only shows when editing */}
+      {editId && (
+        <button
+          type="button"
+          onClick={() => {
+            setEditId(null);
+            setWeekDate("");
+            setTotalMeals("");
+            setNotes("");
+          }}
+        >
+          Cancel
+        </button>
+      )}
+    </form>
+  </div>
+);
 }
