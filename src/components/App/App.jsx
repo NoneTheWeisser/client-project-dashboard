@@ -26,7 +26,7 @@ function App() {
   return (
     <>
       <header>
-        <h1>Churches United Dashboard</h1>
+        <h2>Churches United Dashboard</h2>
         <Nav />
       </header>
       <main>

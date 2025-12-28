@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import useStore from "../../zustand/store"; 
+// import EventsReporting from "../Development/EventsReporting";
 
 export default function DonationReporting() {
   const [activeTab, setActiveTab] = useState("weekly");
@@ -99,7 +100,7 @@ export default function DonationReporting() {
 
   return (
     <div>
-      <h1>Donation Reports</h1>
+      <h2>Donation Reports</h2>
       <div>
         <button onClick={() => setActiveTab("weekly")}>Weekly</button>
         <button onClick={() => setActiveTab("monthly")}>Monthly</button>
@@ -111,6 +112,7 @@ export default function DonationReporting() {
         {activeTab === "monthly" && renderMonthly()}
         {activeTab === "byDonor" && renderByDonor()}
       </div>
+      {/* <EventsReporting  /> */}
     </div>
   );
 }
