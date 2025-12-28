@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import React from "react";
+import EventsReporting from "../Development/EventsReporting";
+import DonationReporting from "./DonationReporting";
 
 export default function DevelopmentHome() {
   const sections = [
@@ -17,7 +19,12 @@ export default function DevelopmentHome() {
             <Link to={s.path}>{s.label}</Link>
           </li>
         ))}
+        {/* <li>
+          <Link to="/development/reports">Reports</Link>
+        </li> */}
       </ul>
+      <DonationReporting  />
+      <EventsReporting  />
     </div>
   );
 }
