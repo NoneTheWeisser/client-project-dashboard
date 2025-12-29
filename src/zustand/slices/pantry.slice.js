@@ -74,6 +74,26 @@ const pantrySlice = (set, get) => ({
       }
     }
   },
+
+    // Delete kitchen record
+  deleteKitchenRecord: async (id) => {
+    set({ loading: true, error: null });
+    try {
+      await axios.delete(`/api/kitchen/${id}`);
+      set((state) => ({
+        kitchenRecords: state.kitchenRecords.filter((record) => record.id !== id),
+        loading: false,
+      }));
+    } catch (err) {
+      console.error("deleteKitchenRecord error:", err);
+      
+      if (err.response?.status === 404) {
+        set({ error: "Record not found", loading: false });
+      } else {
+        set({ error: "Failed to delete kitchen record", loading: false });
+      }
+    }
+  },
   
 
 
