@@ -108,9 +108,23 @@ const pantrySlice = (set, get) => ({
     }
   },
   
+  // Fetch monthly reports
+  fetchMonthlyReports: async () => {
+    set({ loading: true, error: null });
+    try {
+      const res = await fetch("/api/kitchen/reports/monthly");
+      const data = await res.json();
+      set({ monthlyReports: data, loading: false });
+    } catch (err) {
+      set({ error: err.message, loading: false });
+    }
+  },
 
+  // Clear error
+  clearKitchenError: () => set({ error: null }),
+});
 
   
-});
+
 
 export default pantrySlice;
