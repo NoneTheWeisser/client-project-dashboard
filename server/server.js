@@ -43,7 +43,8 @@ app.use('/api/development/donations', donationRouter);
 app.use('/api/development/events', eventsRouter);
 app.use('/api/volunteers/engagements', volunteerEngagements);
 app.use('/api/volunteers', volunteersRouter);
-app.use('/api/compliance/weekly', weekCompliance)
+app.use('/api/compliance/weekly', weekCompliance);
+app.use('/api/shelter', shelterWeeklyRouter);  
 app.use('/api/kitchen', kitchenRouter);
 app.use('/api/pantry', pantryWeeklyRouter);
 app.use('/api/housing', housingRouter);

@@ -60,7 +60,6 @@ function ShelterWeeklyForm() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     
-    // For number inputs, filter non-digits and convert to number
     if (name !== 'date' && name !== 'notes') {
       const numericValue = value.replace(/[^0-9]/g, '');
       setFormData(prev => ({
@@ -103,7 +102,6 @@ function ShelterWeeklyForm() {
         
         <fieldset>
           <legend>Week Information</legend>
-          
           <div>
             <label>Week Of (Monday):</label>
             <input
@@ -243,7 +241,6 @@ function ShelterWeeklyForm() {
         
         <fieldset>
           <legend>Notes</legend>
-          
           <div>
             <label>Additional Notes:</label>
             <textarea

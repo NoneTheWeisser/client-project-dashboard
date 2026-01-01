@@ -7,6 +7,7 @@ function HomePage() {
   const logOut = useStore((state) => state.logOut);
   const sections = [
     { path: "/compliance", label: "Compliance", description: "Weekly compliance checks" },
+    { path: "/shelter", label: "Shelter", description: "Weekly shelter operations and guest tracking" },  
     { path: "/outreach", label: "Community Outreach", description: "Volunteers & Volunteer Engagement" },
     { path: "/development", label: "Development", description: "Donor, donations, and notable events" },
     { path: "/finance", label: "Finance", description: "Weekly financials" },

@@ -16,8 +16,8 @@ import ComplianceWeeklyForm from "../ComplianceWeekly/ComplianceWeeklyForm";
 import ComplianceReporting from "../ComplianceWeekly/ComplianceReporting";
 import KitchenPage from "../kitchen/kitchenPage";
 
-import ShelterWeeklyList from "../Shelter/ShelterWeeklyList";
-import ShelterWeeklyForm from "../Shelter/ShelterWeeklyForm";
+import ShelterWeeklyList from "../shelter/ShelterWeeklyList";
+import ShelterWeeklyForm from "../shelter/ShelterWeeklyForm";
 import ShelterReporting from "../shelter/ShelterReporting";
 
 

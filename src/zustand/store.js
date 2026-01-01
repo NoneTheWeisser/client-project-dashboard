@@ -23,7 +23,7 @@ const useStore = create(
     ...donationsSlice(...args),
     ...complianceWeeklySlice(...args),
     ...complianceReportsSlice(...args),
-        ...shelterWeeklySlice(...args),        
+    ...shelterWeeklySlice(...args),        
     ...shelterReportsSlice(...args), 
     ...eventsSlice(...args),
     ...kitchenSlice(...args),

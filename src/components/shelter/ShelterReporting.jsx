@@ -5,19 +5,16 @@ function ShelterReporting() {
   const [activeTab, setActiveTab] = useState("guests");
   const [year, setYear] = useState(2025);
 
-  // Get all reports data from store
   const summary = useStore((state) => state.shelterReports?.summary);
   const guests = useStore((state) => state.shelterReports?.guests);
   const incidents = useStore((state) => state.shelterReports?.incidents);
   const loading = useStore((state) => state.shelterReports?.loading);
   const error = useStore((state) => state.shelterReports?.error);
 
-  // Get fetch actions
   const fetchSummary = useStore((state) => state.fetchShelterSummary);
   const fetchGuests = useStore((state) => state.fetchShelterGuests);
   const fetchIncidents = useStore((state) => state.fetchShelterIncidents);
 
-  // Fetch data when tab or year changes
   useEffect(() => {
     if (activeTab === "summary") fetchSummary(year);
     if (activeTab === "guests") fetchGuests(year);
@@ -27,7 +24,6 @@ function ShelterReporting() {
   if (loading) return <p>⏳ Loading reports...</p>;
   if (error) return <p style={{ color: 'red' }}>❌ Error: {error}</p>;
 
-  // Render Summary Tab (Weekly Data)
   const renderSummary = () => {
     if (!summary || summary.length === 0) return <p>No summary data available</p>;
 
@@ -44,10 +40,8 @@ function ShelterReporting() {
               <th>Single Women</th>
               <th>Housing Women</th>
               <th>Families</th>
-              <th>Hybrid/VA</th>
               <th>Incidents</th>
               <th>Community Served</th>
-              <th>Nights Outside</th>
             </tr>
           </thead>
           <tbody>
@@ -60,10 +54,8 @@ function ShelterReporting() {
                 <td>{week.single_women || 0}</td>
                 <td>{week.housing_women || 0}</td>
                 <td>{week.families || 0}</td>
-                <td>{week.hybrid_va_holdover || 0}</td>
                 <td>{week.incident_reports || 0}</td>
                 <td>{week.community_members_served || 0}</td>
-                <td>{week.nights_found_sleeping_outside || 0}</td>
               </tr>
             ))}
           </tbody>
@@ -72,7 +64,6 @@ function ShelterReporting() {
     );
   };
 
-  // Render Guests Tab (Breakdown with Percentages)
   const renderGuests = () => {
     if (!guests) return <p>No guest data available</p>;
 
@@ -138,12 +129,6 @@ function ShelterReporting() {
                 <td>{guests.avg_families_per_week || 0}</td>
                 <td>{guests.pct_families || 0}%</td>
               </tr>
-              <tr>
-                <td>Hybrid/VA Holdover</td>
-                <td>{guests.total_hybrid_va?.toLocaleString() || 0}</td>
-                <td>-</td>
-                <td>-</td>
-              </tr>
             </tbody>
           </table>
         </fieldset>
@@ -151,7 +136,6 @@ function ShelterReporting() {
     );
   };
 
-  // Render Incidents Tab
   const renderIncidents = () => {
     if (!incidents) return <p>No incidents data available</p>;
 
@@ -180,7 +164,7 @@ function ShelterReporting() {
                 <td>{incidents.avg_community_served_per_week || 0}</td>
               </tr>
               <tr>
-                <td><strong>Total Nights Found Sleeping Outside:</strong></td>
+                <td><strong>Total Nights Outside:</strong></td>
                 <td>{incidents.total_nights_outside?.toLocaleString() || 0}</td>
               </tr>
               <tr>
@@ -198,7 +182,6 @@ function ShelterReporting() {
     <div>
       <h2>Shelter Reports - {year}</h2>
 
-      {/* Year Selector */}
       <div style={{ marginBottom: '20px' }}>
         <label>Year: </label>
         <select value={year} onChange={(e) => setYear(parseInt(e.target.value))}>
@@ -209,14 +192,12 @@ function ShelterReporting() {
         </select>
       </div>
 
-      {/* Tab Buttons */}
       <div style={{ marginBottom: '20px' }}>
         <button onClick={() => setActiveTab("guests")}>Guest Breakdown</button>
         <button onClick={() => setActiveTab("incidents")}>Incidents & Outreach</button>
         <button onClick={() => setActiveTab("summary")}>Weekly Summary</button>
       </div>
 
-      {/* Tab Content */}
       <div>
         {activeTab === "guests" && renderGuests()}
         {activeTab === "incidents" && renderIncidents()}
