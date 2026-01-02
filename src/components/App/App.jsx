@@ -19,7 +19,7 @@ import KitchenPage from "../kitchen/kitchenPage";
 import ShelterWeeklyList from "../shelter/ShelterWeeklyList";
 import ShelterWeeklyForm from "../shelter/ShelterWeeklyForm";
 import ShelterReporting from "../shelter/ShelterReporting";
-
+import PantryPage from "../pantry/PantryPage";
 
 function App() {
   const user = useStore((state) => state.user);
@@ -119,22 +119,29 @@ function App() {
           <Route path="/media" element={<h2>Media</h2>} />
           <Route path="/kitchen" element={<KitchenPage />} />
 
-          <Route path="/pantry" element={<h2>Pantry</h2>} />
           <Route path="/finance" element={<h2>Finance</h2>} />
           <Route path="/hr" element={<h2>HR</h2>} />
           <Route path="/outreach" element={<h2>Volunteers</h2>} />
           <Route path="/compliance" element={<ComplianceWeeklyList />} />
-          <Route path="/compliance/weekly/new" element={<ComplianceWeeklyForm />}/>
-          <Route path="/compliance/weekly/edit/:id" element={<ComplianceWeeklyForm />}/>
+          <Route
+            path="/compliance/weekly/new"
+            element={<ComplianceWeeklyForm />}
+          />
+          <Route
+            path="/compliance/weekly/edit/:id"
+            element={<ComplianceWeeklyForm />}
+          />
           <Route path="/compliance/reports" element={<ComplianceReporting />} />
 
           <Route path="/shelter" element={<ShelterWeeklyList />} />
           <Route path="/shelter/weekly/new" element={<ShelterWeeklyForm />} />
-          <Route path="/shelter/weekly/edit/:id" element={<ShelterWeeklyForm />} />
+          <Route
+            path="/shelter/weekly/edit/:id"
+            element={<ShelterWeeklyForm />}
+          />
           <Route path="/shelter/reports" element={<ShelterReporting />} />
-
+          <Route path="/pantry" element={<PantryPage />} />
         </Routes>
-        
       </main>
       <footer>
         <p>Copyright © {new Date().getFullYear()}</p>
