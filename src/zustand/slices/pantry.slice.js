@@ -42,31 +42,28 @@ fetchPantryRecords: async () => {
 },
 
   // Edit kitchen record
-  editKitchenRecord: async (id, total_meals_served, notes) => {
-    set({ loading: true, error: null });
-    try {
-      const response = await axios.put(`/api/kitchen/${id}`, {
-        total_meals_served,
-        notes,
-      });
-      set((state) => ({
-        kitchenRecords: state.kitchenRecords.map((record) =>
-          record.id === id ? response.data : record
-        ),
-        loading: false,
-      }));
-    } catch (err) {
-      console.error("editKitchenRecord error:", err);
+editPantryRecord: async (id, recordData) => {
+  set({ loading: true, error: null });
+  try {
+    const response = await axios.put(`/api/pantry/${id}`, recordData);
+    set((state) => ({
+      pantryRecords: state.pantryRecords.map((record) =>
+        record.id === id ? response.data : record
+      ),
+      loading: false,
+    }));
+  } catch (err) {
+    console.error("editPantryRecord error:", err);
 
-      if (err.response?.status === 404) {
-        set({ error: "Record not found", loading: false });
-      } else if (err.response?.status === 400) {
-        set({ error: err.response.data.message, loading: false });
-      } else {
-        set({ error: "Failed to edit kitchen record", loading: false });
-      }
+    if (err.response?.status === 404) {
+      set({ error: "Record not found", loading: false });
+    } else if (err.response?.status === 400) {
+      set({ error: err.response.data.message, loading: false });
+    } else {
+      set({ error: "Failed to edit pantry record", loading: false });
     }
-  },
+  }
+},
 
   // Delete kitchen record
   deleteKitchenRecord: async (id) => {
