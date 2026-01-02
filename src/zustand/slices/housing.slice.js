@@ -5,7 +5,7 @@ const housingSlice = (set, get) => ({
   housingRecords: [],
   loadingHousing: false,
 
-  fetchingHousingBuildings: async () => {
+  fetchHousingBuildings: async () => {
     set({ loadingHousing: true });
     try {
       const res = await axios.get("/api/housing/buildings");
@@ -33,8 +33,17 @@ const housingSlice = (set, get) => ({
     set({ loadingHousing: true });
     try {
       const res = await axios.post("/api/housing", newRecord);
+      // Find the building name from existing housingBuildings array
+      const building = get().housingBuildings.find(
+        (b) => b.id === res.data.housing_building_id
+      );
+
+      const recordWithBuildingName = {
+        ...res.data,
+        building_name: building?.name || "",
+      };
       set((state) => ({
-        housingRecords: [...state.housingRecords, res.data],
+        housingRecords: [...state.housingRecords, recordWithBuildingName],
       }));
     } catch (err) {
       console.error("Error adding housing record:", err);
@@ -51,31 +60,6 @@ const housingSlice = (set, get) => ({
         updates
       );
 
-      // Replace the updated record in state
-      set((state) => ({
-        housingRecords: state.housingRecords.map((record) =>
-          record.housing_building_id === buildingId &&
-          record.month_date === res.data.month_date
-            ? res.data
-            : record
-        ),
-      }));
-    } catch (err) {
-      console.error("Error updating housing record:", err);
-    } finally {
-      set({ loadingHousing: false });
-    }
-  },
-  
-  updateHousingRecord: async (buildingId, month, updates) => {
-    set({ loadingHousing: true });
-    try {
-      const res = await axios.put(
-        `/api/housing/${buildingId}/${month}`,
-        updates
-      );
-
-      // Replace the updated record in state
       set((state) => ({
         housingRecords: state.housingRecords.map((record) =>
           record.housing_building_id === buildingId &&
@@ -94,13 +78,14 @@ const housingSlice = (set, get) => ({
   deleteHousingRecord: async (buildingId, month) => {
     set({ loadingHousing: true });
     try {
+      const normalizedMonth = month.length === 7 ? month + "-01" : month;
       await axios.delete(`/api/housing/${buildingId}/${month}`);
       set((state) => ({
         housingRecords: state.housingRecords.filter(
           (record) =>
             !(
               record.housing_building_id === buildingId &&
-              record.month_date.startsWith(month)
+              record.month_date.startsWith(normalizedMonth)
             )
         ),
       }));
