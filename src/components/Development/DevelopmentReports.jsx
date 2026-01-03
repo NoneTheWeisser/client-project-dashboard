@@ -1,6 +1,6 @@
 import React from "react";
-import DonationReporting from "./DonationReporting";
-import EventsReporting from "./EventsReporting";
+import DonationReporting from "./Reports/DonationReporting";
+import EventsReporting from "./Reports/EventsReporting";
 
 export default function DevelopmentReports() {
   return (

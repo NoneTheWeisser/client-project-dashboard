@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import useStore from "../../zustand/store";
+import useStore from "../../../zustand/store";
 
 export default function UpcomingEventsReport() {
   const upcomingEvents = useStore((state) => state.upcomingEvents);

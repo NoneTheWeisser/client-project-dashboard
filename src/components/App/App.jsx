@@ -1,15 +1,13 @@
 import { useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import "../../styles/tables.css";
-
 import useStore from "../../zustand/store";
 import Nav from "../Nav/Nav";
 import HomePage from "../HomePage/HomePage";
 import LoginPage from "../LoginPage/LoginPage";
 import RegisterPage from "../RegisterPage/RegisterPage";
-import DonorsPage from "../Development/Donors";
-import Events from "../Development/Events";
-import DonationsPage from "../Development/DonationsPage";
+import DonorsPage from "../Development/Donors/Donors";
+import Events from "../Development/Events/Events";
 import ComplianceWeeklyList from "../ComplianceWeekly/ComplianceWeeklyList";
 import ComplianceWeeklyForm from "../ComplianceWeekly/ComplianceWeeklyForm";
 import ComplianceReporting from "../ComplianceWeekly/ComplianceReporting";
@@ -23,6 +21,7 @@ import DepartmentLayout from "../DepartmentLayout/DepartmentLayout";
 import DevelopmentHome from "../Development/DevelopmentHome";
 import DevelopmentReports from "../Development/DevelopmentReports";
 import PantryPage from "../pantry/PantryPage";
+import DonationsPage from "../Development/Donors/DonationsPage";
 
 
 function App() {
@@ -129,7 +128,7 @@ function App() {
           >
             <Route index element={<DevelopmentHome />} />
             <Route path="donors" element={<DonorsPage />} />
-            <Route path="donations" element={<DonationsPage />} />
+            <Route path="donations" element={<DonationsPage  />} />
             <Route path="events" element={<Events />} />
             <Route path="reports" element={<DevelopmentReports />} />
           </Route>

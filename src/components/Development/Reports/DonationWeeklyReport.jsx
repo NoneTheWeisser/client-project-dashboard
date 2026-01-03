@@ -1,4 +1,4 @@
-import useStore from "../../zustand/store";
+import useStore from "../../../zustand/store";
 import { useEffect } from "react";
 
 export default function DonationWeeklyReport() {

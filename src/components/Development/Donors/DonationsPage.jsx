@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import useStore from "../../zustand/store";
+import useStore from "../../../zustand/store";
 import DonationForm from "./DonationForm";
 import DonationTable from "./DonationTable";
 
