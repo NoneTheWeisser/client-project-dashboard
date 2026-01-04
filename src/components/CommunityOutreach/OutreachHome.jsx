@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 export default function OutreachHome() {
   return (
     <div>
-      <h2>Community Outreach</h2>
+      <h2>Volunteer Information</h2>
       <nav>
         <ul>
           <li>
@@ -12,9 +12,6 @@ export default function OutreachHome() {
           <li>
             <Link to="engagements">Volunteer Engagement</Link>
           </li>
-          <li>
-            <Link to="events">Events</Link>
-          </li> 
         </ul>
       </nav>
 
