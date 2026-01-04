@@ -5,6 +5,7 @@ import useStore from "../../zustand/store";
 import Nav from "../Nav/Nav";
 
 import HomePage from "../HomePage/HomePage";
+import AboutPage from "../AboutPage/AboutPage";
 import LoginPage from "../LoginPage/LoginPage";
 import RegisterPage from "../RegisterPage/RegisterPage";
 import DonorsPage from "../Development/Donors/Donors";
@@ -26,6 +27,8 @@ import DonationsPage from "../Development/Donors/DonationsPage";
 import FinanceWeeklyList from "../Finance/FinanceWeeklyList";
 import FinanceWeeklyForm from "../Finance/FinanceWeeklyForm";
 import FinanceReporting from "../Finance/FinanceReporting";
+import VolunteerPage from "../CommunityOutreach/Volunteer/VolunteerPage";
+import OutreachHome from "../CommunityOutreach/OutreachHome";
 
 function App() {
   const user = useStore((state) => state.user);
@@ -76,64 +79,30 @@ function App() {
               )
             }
           />
-          <Route
-            exact
-            path="/about"
-            element={
-              <>
-                <h2>About Page</h2>
-                <p>
-                  Intelligence doesn’t seem like an aspect of personal
-                  character, and it isn’t. Coincidentally, great intelligence is
-                  only loosely connected to being a good programmer.
-                </p>
-                <p>What? You don’t have to be superintelligent?</p>
-                <p>
-                  No, you don’t. Nobody is really smart enough to program
-                  computers. Fully understanding an average program requires an
-                  almost limitless capacity to absorb details and an equal
-                  capacity to comprehend them all at the same time. The way you
-                  focus your intelligence is more important than how much
-                  intelligence you have…
-                </p>
-                <p>
-                  …most of programming is an attempt to compensate for the
-                  strictly limited size of our skulls. The people who are the
-                  best programmers are the people who realize how small their
-                  brains are. They are humble. The people who are the worst at
-                  programming are the people who refuse to accept the fact that
-                  their brains aren’t equal to the task. Their egos keep them
-                  from being great programmers. The more you learn to compensate
-                  for your small brain, the better a programmer you’ll be.
-                  <span className="squiggle">
-                    {" "}
-                    The more humble you are, the faster you’ll improve.
-                  </span>
-                </p>
-                <p>
-                  --From Steve McConnell's <em>Code Complete</em>.
-                </p>
-              </>
-            }
-          />
+          <Route exact path="/about" element={<AboutPage />} />
           <Route path="/housing" element={<DepartmentLayout title="Housing" />}>
             <Route index element={<HousingHome />} />
             <Route path="reports" element={<HousingReports />} />
           </Route>
-          {/* todo - delete if approved */}
-          {/* <Route path="/development" element={<Development />} />
-          <Route path="/development/donors" element={<DonorsPage />} />
-          <Route path="/development/donations" element={<DonationsPage />} />
-          <Route path="/development/events" element={<Events />} /> */}
           <Route
             path="/development"
             element={<DepartmentLayout title="Development Dashboard" />}
           >
             <Route index element={<DevelopmentHome />} />
             <Route path="donors" element={<DonorsPage />} />
-            <Route path="donations" element={<DonationsPage  />} />
+            <Route path="donations" element={<DonationsPage />} />
             <Route path="events" element={<Events />} />
             <Route path="reports" element={<DevelopmentReports />} />
+          </Route>
+          <Route
+            path="/outreach"
+            element={<DepartmentLayout title="Community Outreach Dashboard" />}
+          >
+            <Route index element={<OutreachHome />} />
+            <Route path="volunteers" element={<VolunteerPage />} />
+            {/* later */}
+            {/* <Route path="engagements" element={<VolunteerEngagementsPage />} /> */}
+            {/* <Route path="reports" element={<OutreachReports />} /> */}
           </Route>
 
           <Route path="/media" element={<h2>Media</h2>} />
@@ -163,7 +132,10 @@ function App() {
 
           <Route path="/finance" element={<FinanceWeeklyList />} />
           <Route path="/finance/weekly/new" element={<FinanceWeeklyForm />} />
-          <Route path="/finance/weekly/edit/:id" element={<FinanceWeeklyForm />} />
+          <Route
+            path="/finance/weekly/edit/:id"
+            element={<FinanceWeeklyForm />}
+          />
           <Route path="/finance/reports" element={<FinanceReporting />} />
 
           <Route path="/pantry" element={<PantryPage />} />
