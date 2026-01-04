@@ -47,10 +47,10 @@ const PantryRecordsList = () => {
                 <td>{new Date(record.week_date).toLocaleDateString()}</td>
                 <td>{record.first_time_households}</td>
                 <td>{record.returning_households}</td>
-                <td>{record.adults}</td>
-                <td>{record.children}</td>
-                <td>{record.seniors}</td>
-                <td>{record.total_pounds}</td>
+                <td>{record.total_adults}</td>
+                <td>{record.total_children}</td>
+                <td>{record.total_seniors}</td>
+                <td>{record.total_pounds_distributed}</td>
                 <td>
                   <button onClick={() => handleDelete(record.id)}>
                     Delete
