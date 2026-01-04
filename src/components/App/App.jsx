@@ -29,6 +29,7 @@ import FinanceWeeklyForm from "../Finance/FinanceWeeklyForm";
 import FinanceReporting from "../Finance/FinanceReporting";
 import VolunteerPage from "../CommunityOutreach/Volunteer/VolunteerPage";
 import OutreachHome from "../CommunityOutreach/OutreachHome";
+import VolunteerEngagementPage from "../CommunityOutreach/Volunteer/VolunteerEngagementPage";
 
 function App() {
   const user = useStore((state) => state.user);
@@ -100,9 +101,8 @@ function App() {
           >
             <Route index element={<OutreachHome />} />
             <Route path="volunteers" element={<VolunteerPage />} />
-            {/* later */}
-            {/* <Route path="engagements" element={<VolunteerEngagementsPage />} /> */}
-            {/* <Route path="reports" element={<OutreachReports />} /> */}
+            <Route path="engagements" element={<VolunteerEngagementPage />} />
+            {/* <Route path="reports" element={<VolunteerReportsPage />} /> */}
           </Route>
 
           <Route path="/media" element={<h2>Media</h2>} />
