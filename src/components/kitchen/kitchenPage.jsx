@@ -130,20 +130,19 @@ export default function KitchenPage() {
               <th>Actions</th>
             </tr>
           </thead>
-          <tbody>
-            {kitchenRecords.map((record) => (
-              <tr key={record.id}>
-                <td>{formatDate(record.week_date)}</td>
-                <td>{record.total_meals_served}</td>
-                <td>{record.notes || "—"}</td>
-                <td>User #{record.created_by}</td>
-                <td>
-                  <button onClick={() => handleEdit(record)}>Edit</button>
-                  <button onClick={() => handleDelete(record.id)}>Delete</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
+         <tbody>
+  {kitchenRecords.map((record) => (
+    <tr key={record.id}>
+      <td>{formatDate(record.week_date)}</td>
+      <td>{record.total_meals_served}</td>
+      <td>{record.notes || "—"}</td>
+      <td>
+        <button onClick={() => handleEdit(record)}>Edit</button>
+        <button onClick={() => handleDelete(record.id)}>Delete</button>
+      </td>
+    </tr>
+  ))}
+</tbody>
         </table>
       )}
     </div>
