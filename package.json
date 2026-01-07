@@ -6,9 +6,13 @@
     "node": ">=18.x"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/material": "^7.3.6",
     "@vitest/mocker": "^3.0.6",
     "axios": "^1.6.8",
     "bcryptjs": "^3.0.2",
+    "bootstrap": "^5.3.8",
     "connect-pg-simple": "^10.0.0",
     "dotenv": "^16.0.3",
     "esbuild": "0.25.0",
