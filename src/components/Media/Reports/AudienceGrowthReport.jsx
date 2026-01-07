@@ -2,11 +2,9 @@ import { useEffect } from "react";
 import useStore from "../../../zustand/store";
 
 export default function AudienceGrowthReport() {
-  const {
-    audienceGrowthReport,
-    fetchAudienceGrowthReport,
-    loadingMediaReports,
-  } = useStore();
+  const audienceGrowthReport = useStore((state) => state.audienceGrowthReport);
+  const fetchAudienceGrowthReport = useStore((state) => state.fetchAudienceGrowthReport);
+  const loadingMediaReports = useStore((state) => state.loadingMediaReports);
 
   useEffect(() => {
     fetchAudienceGrowthReport();

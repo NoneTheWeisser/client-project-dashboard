@@ -3,6 +3,7 @@ import useStore from "../../../zustand/store";
 import MonthlyMediaReport from "./MonthlyMediaReport";
 import NewsletterReport from "./NewsletterReport";
 import AudienceGrowthReport from "./AudienceGrowthReport";
+import TableToolbar from "../../TableToolBar/TableToolBar";
 
 export default function MediaReports() {
   const fetchMonthlyMediaReport = useStore(
@@ -29,8 +30,6 @@ export default function MediaReports() {
 
   return (
     <>
-      <h2>Media Reports</h2>
-
       <div style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
         <button onClick={() => setActiveTab("monthly")}>Monthly</button>
         <button onClick={() => setActiveTab("newsletter")}>Newsletter</button>

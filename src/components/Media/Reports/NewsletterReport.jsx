@@ -2,8 +2,9 @@ import { useEffect } from "react";
 import useStore from "../../../zustand/store";
 
 export default function NewsletterReport() {
-  const { newsletterReport, fetchNewsletterReport, loadingMediaReports } =
-    useStore();
+  const newsletterReport = useStore((state) => state.newsletterReport);
+  const fetchNewsletterReport = useStore((state) => state.fetchNewsletterReport);
+  const loadingMediaReports = useStore((state) => state.loadingMediaReports);
 
   useEffect(() => {
     fetchNewsletterReport();
