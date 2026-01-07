@@ -33,6 +33,7 @@ import VolunteerEngagementPage from "../CommunityOutreach/Volunteer/VolunteerEng
 import VolunteerReportsPage from "../CommunityOutreach/Reports/VolunteerReportsPage";
 import MediaPage from "../Media/MediaPage";
 import ReportsDashboard from "../ReportingHub/ReportsDashboard";
+import MediaReports from "../Media/Reports/MediaReports";
 
 function App() {
   const user = useStore((state) => state.user);
@@ -90,7 +91,7 @@ function App() {
           </Route>
           <Route path="/media" element={<DepartmentLayout title="Media" />}>
             <Route index element={<MediaPage />} />
-            {/* <Route path="reports" element={<HousingReports />} /> */}
+            <Route path="reports" element={<MediaReports />} />
           </Route>
           <Route
             path="/development"

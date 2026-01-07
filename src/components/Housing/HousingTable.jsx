@@ -26,7 +26,7 @@ export default function HousingTable({ onEdit }) {
   if (loadingHousing) return <p>Loading housing records...</p>;
 
   return (
-    <div className="table-container" style={{ maxWidth: "1400px" }}>
+    <div className="table-container" style={{ maxWidth: "100%" }}>
       <table className="table-app table-hover table-striped">
         <thead>
           <tr>
