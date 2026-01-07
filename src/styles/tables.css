@@ -36,6 +36,7 @@ table {
 .table-app th {
   padding: 16px;
   text-align: left;
+  font-size: 1rem;
   font-weight: 600;
   white-space: nowrap;
 }
@@ -55,12 +56,13 @@ table {
   background-color: var(--brand-primary-soft);
 }
 
-
 /* ------ Table Actions / Buttons ------  */
 
 .table-actions {
   display: flex;
   gap: 6px;
+  justify-content: left;
+  align-items: center;
 }
 
 .btn-table-edit {
@@ -93,7 +95,6 @@ table {
   opacity: 0.85;
 }
 
-   
 /* ------ Empty / Loading / Error States ------  */
 
 .table-empty,
@@ -113,7 +114,6 @@ table {
   text-align: center;
 }
 
-   
 /* ------  Sticky Header Variant (todo - ask team) ------  */
 
 .table-sticky thead th {
