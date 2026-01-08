@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import useStore from "../../zustand/store";
-import "./HousingForm.css";
+import "./Housing.css";
 
 const initialState = {
   id: null,

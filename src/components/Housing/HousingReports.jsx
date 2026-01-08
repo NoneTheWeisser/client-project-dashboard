@@ -23,18 +23,17 @@ export default function HousingReports() {
   const [building, setBuilding] = useState("");
   const [search, setSearch] = useState("");
 
+  // Tab state
   const [activeTab, setActiveTab] = useState("table");
 
-  // Fetch data once on mount
   useEffect(() => {
     fetchMonthlyHousing();
     fetchSummaryHousing();
   }, [fetchMonthlyHousing, fetchSummaryHousing]);
 
-  // Filtered records based on toolbar selections
+  // Filter records
   const filteredRecords = reportData.filter((r) => {
     const date = r.month_start ? new Date(r.month_start) : null;
-
     if (year && date && date.getFullYear() !== Number(year)) return false;
     if (building && r.building_name !== building) return false;
     if (search) {
@@ -79,36 +78,22 @@ export default function HousingReports() {
         setBuilding={setBuilding}
         search={search}
         setSearch={setSearch}
+        rightButtons={[
+          { label: "Monthly Table", onClick: () => setActiveTab("table") },
+          { label: "Summary", onClick: () => setActiveTab("summary") },
+        ]}
       />
 
-      {/* Tabs */}
+      {/* Content */}
       <div style={{ marginTop: "1rem" }}>
-        <div style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
-          <button
-            className={activeTab === "table" ? "primary" : "secondary"}
-            onClick={() => setActiveTab("table")}
-          >
-            Table
-          </button>
-          <button
-            className={activeTab === "summary" ? "primary" : "secondary"}
-            onClick={() => setActiveTab("summary")}
-          >
-            Summary
-          </button>
-        </div>
-
         {loadingHousingReports ? (
           <p>Loading report…</p>
         ) : filteredRecords.length === 0 && activeTab === "table" ? (
           <p>No records match the current filters.</p>
+        ) : activeTab === "table" ? (
+          <HousingMonthlyTable records={filteredRecords} />
         ) : (
-          <>
-            {activeTab === "table" && (
-              <HousingMonthlyTable records={filteredRecords} />
-            )}
-            {activeTab === "summary" && <HousingMonthlySummary />}
-          </>
+          <HousingMonthlySummary />
         )}
       </div>
     </div>

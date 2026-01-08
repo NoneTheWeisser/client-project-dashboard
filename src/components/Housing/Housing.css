@@ -11,7 +11,7 @@
   gap: 24px;
 }
 
-/* ---------- Header ---------- */
+/* ---------- Form Header ---------- */
 .form-header h3 {
   margin: 0;
   font-size: 1.5rem;
@@ -108,4 +108,51 @@ button.secondary {
 
 button.secondary:hover {
   background-color: #616161;
+}
+
+/* ---------- Toolbar (Unified for Home & Reports) ---------- */
+.housing-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end; /* align filters and buttons to bottom */
+  width: 100%;
+  border-radius: 8px;
+  /* padding: 12px 16px; */
+  /* box-shadow: 0 2px 6px rgba(0,0,0,0.1); */
+  flex-wrap: wrap; /* wrap if screen is too narrow */
+  gap: 12px;
+}
+
+/* Left side: filters + search */
+.toolbar-left {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  flex: 1; /* take remaining space */
+  min-width: 200px;
+  align-items: flex-end; /* align filters to bottom */
+}
+
+/* Right side: buttons / tabs */
+.toolbar-right {
+  display: flex;
+  gap: 12px;
+  flex-shrink: 0;
+  align-items: flex-end; /* align to bottom */
+}
+
+/* Individual filter groups */
+.toolbar-left .filter-group {
+  display: flex;
+  flex-direction: column;
+  min-width: 120px;
+}
+
+.toolbar-left input[type="text"] {
+  min-width: 150px;
+}
+
+/* Adjust buttons inside toolbar */
+.toolbar-right button {
+  min-width: 100px;
 }

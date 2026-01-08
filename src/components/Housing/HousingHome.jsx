@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import HousingTable from "./HousingTable";
 import DepartmentHeader from "../DesignComponents/DepartmentHeader";
-import TableToolBar from "../DesignComponents/TableToolBar/TableToolBar";
+import HousingToolBar from "./HousingToolBar";
 import useStore from "../../zustand/store";
+import { NavLink } from "react-router-dom";
+import "./Housing.css";
 
 export default function HousingHome() {
   const navigate = useNavigate();
@@ -42,33 +44,27 @@ export default function HousingHome() {
           </>
         }
       />
-
-      <div style={{ marginBottom: "16px" }}>
-        <button
-          className="primary"
-          onClick={() => navigate("/housing/form")}
-        >
-          Add New Record
-        </button>
+      <div className="housing-toolbar">
+        {/* Filters + Search on the left */}
+        <HousingToolBar
+          filters={{
+            year: {
+              label: "Year",
+              options: yearOptions,
+              value: year,
+              onChange: setYear,
+            },
+            building: {
+              label: "Building",
+              options: buildingOptions,
+              value: building,
+              onChange: setBuilding,
+            },
+          }}
+          search={{ value: search, onChange: setSearch }}
+          onAdd={() => navigate("/housing/form")}
+        />
       </div>
-
-      <TableToolBar
-        filters={{
-          year: {
-            label: "Year",
-            options: yearOptions,
-            value: year,
-            onChange: setYear,
-          },
-          building: {
-            label: "Building",
-            options: buildingOptions,
-            value: building,
-            onChange: setBuilding,
-          },
-        }}
-        search={{ value: search, onChange: setSearch }}
-      />
 
       <HousingTable
         onEdit={(record) => navigate("/housing/form", { state: { record } })}
@@ -79,9 +75,3 @@ export default function HousingHome() {
     </div>
   );
 }
-
-
-      {/* <HousingForm
-        editingRecord={editingRecord}
-        setEditingRecord={setEditingRecord}
-      /> */}
