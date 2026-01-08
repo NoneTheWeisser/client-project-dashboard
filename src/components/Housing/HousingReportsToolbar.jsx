@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
+import "./Housing.css";
 
 export default function HousingReportsToolbar({
   reportData,
@@ -8,8 +9,9 @@ export default function HousingReportsToolbar({
   setBuilding,
   search,
   setSearch,
+  rightButtons = [],
 }) {
-  // Compute options dynamically from reportData
+  // Compute options dynamically
   const yearOptions = Array.from(
     new Set(
       reportData
@@ -23,41 +25,56 @@ export default function HousingReportsToolbar({
   ).sort();
 
   return (
-    <div className="table-toolbar">
-      {/* Year Filter */}
-      <div className="filter-group">
-        <label>Year:</label>
-        <select value={year} onChange={(e) => setYear(e.target.value)}>
-          <option value="">All</option>
-          {yearOptions.map((y) => (
-            <option key={y} value={y}>
-              {y}
-            </option>
-          ))}
-        </select>
+    <div className="housing-toolbar">
+      {/* Left: Filters + Search */}
+      <div className="toolbar-left">
+        {/* Year Filter */}
+        <div className="filter-group">
+          <label>Year:</label>
+          <select value={year} onChange={(e) => setYear(e.target.value)}>
+            <option value="">All</option>
+            {yearOptions.map((y) => (
+              <option key={y} value={y}>
+                {y}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Building Filter */}
+        <div className="filter-group">
+          <label>Building:</label>
+          <select
+            value={building}
+            onChange={(e) => setBuilding(e.target.value)}
+          >
+            <option value="">All</option>
+            {buildingOptions.map((b) => (
+              <option key={b} value={b}>
+                {b}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Search */}
+        <div className="filter-group">
+          <input
+            type="text"
+            placeholder="Search..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
       </div>
 
-      {/* Building Filter */}
-      <div className="filter-group">
-        <label>Building:</label>
-        <select value={building} onChange={(e) => setBuilding(e.target.value)}>
-          <option value="">All</option>
-          {buildingOptions.map((b) => (
-            <option key={b} value={b}>
-              {b}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {/* Search */}
-      <div className="filter-group">
-        <input
-          type="text"
-          placeholder="Search..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+      {/* Right: Buttons */}
+      <div className="toolbar-right">
+        {rightButtons.map((btn) => (
+          <button key={btn.label} className="secondary" onClick={btn.onClick}>
+            {btn.label}
+          </button>
+        ))}
       </div>
     </div>
   );

@@ -1,3 +1,4 @@
+// todo - Still trying to get this to work globally... might be easier to do a toolbar for each feature
 import React from "react";
 import './TableToolBar.css';
 

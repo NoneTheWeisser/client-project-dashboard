@@ -16,6 +16,7 @@ import ComplianceReporting from "../ComplianceWeekly/ComplianceReporting";
 import KitchenPage from "../kitchen/kitchenPage";
 import HousingHome from "../Housing/HousingHome";
 import HousingReports from "../Housing/HousingReports";
+import HousingForm from "../Housing/HousingForm";
 import ShelterWeeklyList from "../shelter/ShelterWeeklyList";
 import ShelterWeeklyForm from "../shelter/ShelterWeeklyForm";
 import ShelterReporting from "../shelter/ShelterReporting";
@@ -94,7 +95,9 @@ function App() {
             <Route path="reports" element={<HousingReports />} />
           </Route> */}
           <Route path="/housing" element={<HousingHome />} />
+          <Route path="/housing/form" element={<HousingForm />} />
           <Route path="/housing/reports" element={<HousingReports />} />
+
           <Route path="/media" element={<MediaPage />} />
           <Route path="/media/reports" element={<MediaReports />} />
           <Route
@@ -149,13 +152,16 @@ function App() {
 
           <Route path="/pantry" element={<PantryPage />} />
           <Route path="/reporting" element={<ReportsDashboard />} />
-          <Route path="/hr" element={<DepartmentLayout title="Human Resources" />}>
-  <Route index element={<HRHome />} />
-  <Route path="weekly" element={<HRWeeklyList />} />
-  <Route path="weekly/new" element={<HRWeeklyForm />} />
-  <Route path="weekly/edit/:id" element={<HRWeeklyForm />} />
-  <Route path="reports" element={<HRReports />} />
-</Route>
+          <Route
+            path="/hr"
+            element={<DepartmentLayout title="Human Resources" />}
+          >
+            <Route index element={<HRHome />} />
+            <Route path="weekly" element={<HRWeeklyList />} />
+            <Route path="weekly/new" element={<HRWeeklyForm />} />
+            <Route path="weekly/edit/:id" element={<HRWeeklyForm />} />
+            <Route path="reports" element={<HRReports />} />
+          </Route>
         </Routes>
       </main>
       <footer>

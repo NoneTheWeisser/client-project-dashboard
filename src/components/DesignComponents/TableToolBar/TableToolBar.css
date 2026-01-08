@@ -1,4 +1,4 @@
-.table-toolbar {
+/* .table-toolbar {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -109,4 +109,4 @@
 .toolbar-field select:focus {
   outline: none;
   border-color: var(--brand-primary);
-}
+} */

@@ -1,21 +1,20 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
-import HousingForm from "./HousingForm";
+import { useNavigate } from "react-router-dom";
 import HousingTable from "./HousingTable";
 import DepartmentHeader from "../DesignComponents/DepartmentHeader";
-import TableToolBar from "../DesignComponents/TableToolBar/TableToolBar";
+import HousingToolBar from "./HousingToolBar";
 import useStore from "../../zustand/store";
+import { NavLink } from "react-router-dom";
+import "./Housing.css";
 
 export default function HousingHome() {
-  const [editingRecord, setEditingRecord] = useState(null);
-
+  const navigate = useNavigate();
   const [year, setYear] = useState("");
   const [building, setBuilding] = useState("");
   const [search, setSearch] = useState("");
 
   const housingRecords = useStore((state) => state.housingRecords);
 
-  // Extract unique years and buildings for the dropdowns
   const yearOptions = Array.from(
     new Set(housingRecords.map((r) => new Date(r.month_date).getFullYear()))
   ).sort((a, b) => b - a);
@@ -45,41 +44,34 @@ export default function HousingHome() {
           </>
         }
       />
-
-      <TableToolBar
-        filters={{
-          year: {
-            label: "Year",
-            options: yearOptions,
-            value: year,
-            onChange: setYear,
-          },
-          building: {
-            label: "Building",
-            options: buildingOptions,
-            value: building,
-            onChange: setBuilding,
-          },
-        }}
-        search={{ value: search, onChange: setSearch }}
-      />
-
-      <HousingForm
-        editingRecord={editingRecord}
-        setEditingRecord={setEditingRecord}
-      />
+      <div className="housing-toolbar">
+        {/* Filters + Search on the left */}
+        <HousingToolBar
+          filters={{
+            year: {
+              label: "Year",
+              options: yearOptions,
+              value: year,
+              onChange: setYear,
+            },
+            building: {
+              label: "Building",
+              options: buildingOptions,
+              value: building,
+              onChange: setBuilding,
+            },
+          }}
+          search={{ value: search, onChange: setSearch }}
+          onAdd={() => navigate("/housing/form")}
+        />
+      </div>
 
       <HousingTable
-        onEdit={setEditingRecord}
+        onEdit={(record) => navigate("/housing/form", { state: { record } })}
         year={year}
         building={building}
         search={search}
       />
-
-      <section className="hub-section">
-        <h3>Quick Overview</h3>
-        <p>Summary metrics / graphs / cards coming soon.</p>
-      </section>
     </div>
   );
 }
