@@ -10,12 +10,11 @@ export default function MonthlyMediaReport() {
   const [year, setYear] = useState("");
   const [search, setSearch] = useState("");
 
-  // Derive available years from data
+  // get available years from data
   const years = Array.from(
     new Set(monthlyReport.map((r) => r.month_date.slice(0, 4)))
   ).sort((a, b) => b - a);
 
-  // Filter records
   const filteredRecords = monthlyReport
     .filter((r) => !platform || r.platform === platform)
     .filter((r) => !year || r.month_date.startsWith(year))
@@ -31,12 +30,12 @@ export default function MonthlyMediaReport() {
 
   return (
     <div className="monthly-report-page">
-      <h3>Monthly Media Report</h3>
 
       <div
         className="table-container table-contained"
         style={{ maxWidth: "1000px" }}
-      >
+        >
+        <h3>Monthly Media Report</h3>
         <TableToolbar
           filters={{
             year: {
