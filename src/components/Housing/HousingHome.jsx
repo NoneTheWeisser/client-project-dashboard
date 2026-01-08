@@ -1,21 +1,18 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
-import HousingForm from "./HousingForm";
+import { NavLink, useNavigate } from "react-router-dom";
 import HousingTable from "./HousingTable";
 import DepartmentHeader from "../DesignComponents/DepartmentHeader";
 import TableToolBar from "../DesignComponents/TableToolBar/TableToolBar";
 import useStore from "../../zustand/store";
 
 export default function HousingHome() {
-  const [editingRecord, setEditingRecord] = useState(null);
-
+  const navigate = useNavigate();
   const [year, setYear] = useState("");
   const [building, setBuilding] = useState("");
   const [search, setSearch] = useState("");
 
   const housingRecords = useStore((state) => state.housingRecords);
 
-  // Extract unique years and buildings for the dropdowns
   const yearOptions = Array.from(
     new Set(housingRecords.map((r) => new Date(r.month_date).getFullYear()))
   ).sort((a, b) => b - a);
@@ -46,6 +43,15 @@ export default function HousingHome() {
         }
       />
 
+      <div style={{ marginBottom: "16px" }}>
+        <button
+          className="primary"
+          onClick={() => navigate("/housing/form")}
+        >
+          Add New Record
+        </button>
+      </div>
+
       <TableToolBar
         filters={{
           year: {
@@ -64,22 +70,18 @@ export default function HousingHome() {
         search={{ value: search, onChange: setSearch }}
       />
 
-      <HousingForm
-        editingRecord={editingRecord}
-        setEditingRecord={setEditingRecord}
-      />
-
       <HousingTable
-        onEdit={setEditingRecord}
+        onEdit={(record) => navigate("/housing/form", { state: { record } })}
         year={year}
         building={building}
         search={search}
       />
-
-      <section className="hub-section">
-        <h3>Quick Overview</h3>
-        <p>Summary metrics / graphs / cards coming soon.</p>
-      </section>
     </div>
   );
 }
+
+
+      {/* <HousingForm
+        editingRecord={editingRecord}
+        setEditingRecord={setEditingRecord}
+      /> */}

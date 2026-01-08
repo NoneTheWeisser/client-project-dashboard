@@ -1,29 +1,42 @@
-.housing-form {
-  display: grid;
-  gap: 16px;
-width: 100%;
-  margin: 0 auto;
-  padding: 20px;
-  background: #f9f9f9;
+/* ---------- Form Container ---------- */
+.housing-form-container {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 24px;
+  background-color: #fff;
   border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
+/* ---------- Header ---------- */
 .form-header h3 {
   margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
   color: var(--brand-primary);
 }
 
-.form-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+/* ---------- Top Row (Building + Month) ---------- */
+.top-row {
+  display: flex;
   gap: 16px;
 }
 
-.form-row.notes-row {
-  grid-column: 1 / -1;
+.top-row label {
+  flex: 1;
 }
 
+/* ---------- Numeric Grid 3x3 ---------- */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+/* ---------- Labels ---------- */
 label {
   display: flex;
   flex-direction: column;
@@ -31,44 +44,68 @@ label {
   font-size: 0.9rem;
 }
 
-input, select, textarea {
+/* ---------- Inputs & Selects ---------- */
+input,
+select,
+textarea {
   margin-top: 4px;
   padding: 8px 10px;
   font-size: 0.9rem;
   border: 1px solid #ccc;
   border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 textarea {
   resize: vertical;
+  min-height: 80px;
 }
 
-.form-actions {
+/* ---------- Notes + Buttons Row ---------- */
+.notes-actions-row {
   display: flex;
-  gap: 12px;
-  justify-content: flex-start;
-  margin-top: 12px;
+  gap: 16px;
+  align-items: flex-end; /* Align buttons to bottom of notes field */
 }
 
-button {
-  padding: 10px 20px;
-  font-weight: 600;
-  border-radius: 4px;
+.notes-label {
+  flex: 3;
+}
+
+.form-buttons {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ---------- Buttons ---------- */
+button.primary {
+  background-color: var(--brand-primary);
+  color: #fff;
   border: none;
+  border-radius: 4px;
+  padding: 10px 16px;
+  font-weight: 600;
   cursor: pointer;
-  background: var(--brand-primary);
-  color: white;
   transition: background 0.2s;
 }
 
-button:hover {
-  background: var(--brand-primary-dark);
+button.primary:hover {
+  background-color: #00796b; /* darker shade on hover */
 }
 
-.cancel-btn {
-  background: #757575;
+button.secondary {
+  background-color: #757575;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background 0.2s;
 }
 
-.cancel-btn:hover {
-  background: #616161;
+button.secondary:hover {
+  background-color: #616161;
 }
