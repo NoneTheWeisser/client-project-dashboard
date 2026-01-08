@@ -9,6 +9,7 @@ import shelterWeeklySlice from "./slices/shelter.slice.js";
 import shelterReportsSlice from "./slices/shelterReports.slice.js";
 import financeWeeklySlice from "./slices/finance.slice.js";
 import financeReportsSlice from "./slices/financeReports.slice.js";
+import hrSlice from "./slices/hr.slice.js";
 
 import eventsSlice from "./slices/events.slice.js";
 import kitchenSlice from "./slices/kitchen.slice.js";
@@ -44,6 +45,7 @@ const useStore = create(
     ...volunteerEngagementsSlice(...args),
     ...volunteerReportsSlice(...args),
     ...mediaSlice(...args),
+    ...hrSlice(...args),
   }))
 );
 

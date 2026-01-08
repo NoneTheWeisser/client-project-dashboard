@@ -12,7 +12,7 @@ export default function HRHome() {
             <div className="card-body">
               <h5 className="card-title">Weekly HR Management</h5>
               <p className="card-text">
-                Track positions, hiring, turnover, and evaluations for each week.
+                Track positions
               </p>
               <Link to="/hr/weekly" className="btn btn-primary">
                 View Weekly Records
@@ -26,7 +26,7 @@ export default function HRHome() {
             <div className="card-body">
               <h5 className="card-title">HR Reports</h5>
               <p className="card-text">
-                View comprehensive reports and analytics on staffing trends.
+                View reports HR Reports.
               </p>
               <Link to="/hr/reports" className="btn btn-success">
                 View Reports
