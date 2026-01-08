@@ -91,10 +91,8 @@ function App() {
           </Route> */}
           <Route path="/housing" element={<HousingHome />} />
           <Route path="/housing/reports" element={<HousingReports />} />
-          <Route path="/media" element={<DepartmentLayout title="Media" />}>
-            <Route index element={<MediaPage />} />
-            <Route path="reports" element={<MediaReports />} />
-          </Route>
+          <Route path="/media" element={<MediaPage />} />
+          <Route path="/media/reports" element={<MediaReports />} />
           <Route
             path="/development"
             element={<DepartmentLayout title="Development Dashboard" />}
