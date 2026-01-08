@@ -4,7 +4,7 @@ import useStore from "../../zustand/store";
 import HousingMonthlySummary from "./HousingMonthlySummary.jsx";
 import HousingMonthlyTable from "./HousingMonthlyTable.jsx";
 import DepartmentHeader from "../DesignComponents/DepartmentHeader";
-import TableToolbar from "../DesignComponents/TableToolBar/TableToolBar";
+import HousingReportsToolbar from "./HousingReportsToolbar";
 
 export default function HousingReports() {
   const fetchMonthlyHousing = useStore(
@@ -13,7 +13,7 @@ export default function HousingReports() {
   const fetchSummaryHousing = useStore(
     (state) => state.fetchHousingMonthlySummary
   );
-  const housingRecords = useStore((state) => state.housingRecords);
+  const reportData = useStore((state) => state.housingMonthlyReport);
   const loadingHousingReports = useStore(
     (state) => state.loadingHousingReports
   );
@@ -23,45 +23,29 @@ export default function HousingReports() {
   const [building, setBuilding] = useState("");
   const [search, setSearch] = useState("");
 
-  // Tabs
   const [activeTab, setActiveTab] = useState("table");
 
-  // Fetch data on mount
+  // Fetch data once on mount
   useEffect(() => {
     fetchMonthlyHousing();
     fetchSummaryHousing();
   }, [fetchMonthlyHousing, fetchSummaryHousing]);
 
-  // Extract unique years and buildings for toolbar dropdowns
-  const yearOptions = Array.from(
-    new Set(
-      housingRecords
-        .map((r) => r.month_date && new Date(r.month_date).getFullYear())
-        .filter(Boolean)
-    )
-  ).sort((a, b) => b - a);
+  // Filtered records based on toolbar selections
+  const filteredRecords = reportData.filter((r) => {
+    const date = r.month_start ? new Date(r.month_start) : null;
 
-  const buildingOptions = Array.from(
-    new Set(housingRecords.map((r) => r.building_name))
-  ).sort();
-
-  // Filtered records based on toolbar
-  const filteredRecords =
-    housingRecords && housingRecords.length > 0
-      ? housingRecords.filter((r) => {
-          const date = r.month_date ? new Date(r.month_date) : null;
-          if (year && date && date.getFullYear() !== Number(year)) return false;
-          if (building && r.building_name !== building) return false;
-          if (search) {
-            const term = search.toLowerCase();
-            const combined = `${r.building_name ?? ""} ${
-              r.notes ?? ""
-            }`.toLowerCase();
-            if (!combined.includes(term)) return false;
-          }
-          return true;
-        })
-      : [];
+    if (year && date && date.getFullYear() !== Number(year)) return false;
+    if (building && r.building_name !== building) return false;
+    if (search) {
+      const term = search.toLowerCase();
+      const combined = `${r.building_name ?? ""} ${
+        r.notes ?? ""
+      }`.toLowerCase();
+      if (!combined.includes(term)) return false;
+    }
+    return true;
+  });
 
   return (
     <div className="hub-container">
@@ -86,24 +70,18 @@ export default function HousingReports() {
         }
       />
 
-      <TableToolbar
-        filters={{
-          year: {
-            label: "Year",
-            options: yearOptions,
-            value: year,
-            onChange: setYear,
-          },
-          building: {
-            label: "Building",
-            options: buildingOptions,
-            value: building,
-            onChange: setBuilding,
-          },
-        }}
-        search={{ value: search, onChange: setSearch }}
+      {/* Toolbar */}
+      <HousingReportsToolbar
+        reportData={reportData}
+        year={year}
+        setYear={setYear}
+        building={building}
+        setBuilding={setBuilding}
+        search={search}
+        setSearch={setSearch}
       />
 
+      {/* Tabs */}
       <div style={{ marginTop: "1rem" }}>
         <div style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
           <button
@@ -122,7 +100,7 @@ export default function HousingReports() {
 
         {loadingHousingReports ? (
           <p>Loading report…</p>
-        ) : filteredRecords.length === 0 ? (
+        ) : filteredRecords.length === 0 && activeTab === "table" ? (
           <p>No records match the current filters.</p>
         ) : (
           <>
