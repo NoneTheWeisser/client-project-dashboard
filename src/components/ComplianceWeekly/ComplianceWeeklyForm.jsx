@@ -1,21 +1,21 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import useStore from '../../zustand/store'; 
+import useStore from '../../zustand/store';
+import '../ComplianceWeekly/ComplianceWeekly.css';
 
 function ComplianceWeeklyForm() {
   const navigate = useNavigate();
   const { id } = useParams();
   const isEditMode = !!id;
   
-  // Get state and actions from store
+  const currentRecord = useStore((state) => state.compliance.currentRecord);
   const loading = useStore((state) => state.compliance.loading);
   const error = useStore((state) => state.compliance.error);
+  const fetchRecordById = useStore((state) => state.fetchComplianceRecordById);
   const createRecord = useStore((state) => state.createComplianceRecord);
   const updateRecord = useStore((state) => state.updateComplianceRecord);
-  const fetchRecordById = useStore((state) => state.fetchComplianceRecordById);
-  const currentRecord = useStore((state) => state.compliance.currentRecord);
+  const clearCurrentRecord = useStore((state) => state.clearComplianceCurrentRecord);
   
-  // Form state
   const [formData, setFormData] = useState({
     date: '',
     hh_without_children: 0,
@@ -34,98 +34,92 @@ function ComplianceWeeklyForm() {
     one_condition: 0,
     two_conditions: 0,
     three_plus_conditions: 0,
-    total_exits: 0,
+    total_exits: 0
   });
+
+  const [validationError, setValidationError] = useState('');
   
-  const [validationError, setValidationError] = useState(null);
-  
-  // Load record for editing
   useEffect(() => {
     if (isEditMode && id) {
       fetchRecordById(id);
     }
-  }, [isEditMode, id, fetchRecordById]);
+    
+    return () => {
+      clearCurrentRecord();
+    };
+  }, [id, isEditMode, fetchRecordById, clearCurrentRecord]);
   
-  // Populate form when editing
   useEffect(() => {
-    if (isEditMode && currentRecord) {
+    if (currentRecord && isEditMode) {
       setFormData({
-        date: currentRecord.date,
-        hh_without_children: currentRecord.hh_without_children,
-        hh_with_children: currentRecord.hh_with_children,
-        adults: currentRecord.adults,
-        children: currentRecord.children,
-        seniors_55_plus: currentRecord.seniors_55_plus,
-        female: currentRecord.female,
-        male: currentRecord.male,
-        other_gender: currentRecord.other_gender,
-        white: currentRecord.white,
-        black_african_american: currentRecord.black_african_american,
-        native_american: currentRecord.native_american,
-        other_race: currentRecord.other_race,
-        multi_racial: currentRecord.multi_racial,
-        one_condition: currentRecord.one_condition,
-        two_conditions: currentRecord.two_conditions,
-        three_plus_conditions: currentRecord.three_plus_conditions,
-        total_exits: currentRecord.total_exits,
+        date: currentRecord.date ? currentRecord.date.split('T')[0] : '',
+        hh_without_children: currentRecord.hh_without_children || 0,
+        hh_with_children: currentRecord.hh_with_children || 0,
+        adults: currentRecord.adults || 0,
+        children: currentRecord.children || 0,
+        seniors_55_plus: currentRecord.seniors_55_plus || 0,
+        female: currentRecord.female || 0,
+        male: currentRecord.male || 0,
+        other_gender: currentRecord.other_gender || 0,
+        white: currentRecord.white || 0,
+        black_african_american: currentRecord.black_african_american || 0,
+        native_american: currentRecord.native_american || 0,
+        other_race: currentRecord.other_race || 0,
+        multi_racial: currentRecord.multi_racial || 0,
+        one_condition: currentRecord.one_condition || 0,
+        two_conditions: currentRecord.two_conditions || 0,
+        three_plus_conditions: currentRecord.three_plus_conditions || 0,
+        total_exits: currentRecord.total_exits || 0
       });
     }
-  }, [isEditMode, currentRecord]);
+  }, [currentRecord, isEditMode]);
   
-  // Calculate totals
-  const totalHouseholds = formData.hh_without_children + formData.hh_with_children;
-  const totalIndividuals = formData.adults + formData.children + formData.seniors_55_plus;
-  const totalGender = formData.female + formData.male + formData.other_gender;
-  const totalRace = formData.white + formData.black_african_american + formData.native_american + formData.other_race + formData.multi_racial;
-  const totalConditions = formData.one_condition + formData.two_conditions + formData.three_plus_conditions;
+  // Calculate totals for validation
+  const calculateTotals = () => {
+    const totalAge = formData.adults + formData.children + formData.seniors_55_plus;
+    const totalGender = formData.female + formData.male + formData.other_gender;
+    const totalRace = formData.white + formData.black_african_american + formData.native_american + 
+                      formData.other_race + formData.multi_racial;
+    
+    return { totalAge, totalGender, totalRace };
+  };
+
+  const totals = calculateTotals();
   
-  // Validate demographics
-  const isValid = totalGender === totalRace && totalGender === totalIndividuals;
-  
-  // ✅ NEW: Handle input changes with number validation
   const handleChange = (e) => {
     const { name, value } = e.target;
     
-    // For date field, keep as string
     if (name === 'date') {
-      setFormData({
-        ...formData,
-        [name]: value,
-      });
-      setValidationError(null);
-      return;
+      setFormData(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    } else {
+      const numericValue = value.replace(/\D/g, '');
+      setFormData(prev => ({
+        ...prev,
+        [name]: numericValue === '' ? 0 : parseInt(numericValue, 10)
+      }));
     }
     
-    // For number fields, validate and convert
-    // Allow empty string (user is typing) or valid numbers
-    if (value === '') {
-      setFormData({
-        ...formData,
-        [name]: 0,
-      });
-      setValidationError(null);
-      return;
-    }
-    
-    // Only allow digits
-    const numericValue = value.replace(/[^0-9]/g, '');
-    const numberValue = parseInt(numericValue, 10) || 0;
-    
-    setFormData({
-      ...formData,
-      [name]: numberValue,
-    });
-    setValidationError(null);
+    // Clear validation error when user makes changes
+    setValidationError('');
   };
   
-  // Handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (!isValid) {
-      setValidationError(
-        `Demographics don't match! Gender (${totalGender}) must equal Race (${totalRace}) and Individuals (${totalIndividuals})`
-      );
+    // Validate totals match
+    const { totalAge, totalGender, totalRace } = calculateTotals();
+    
+    if (totalAge !== totalGender || totalAge !== totalRace || totalGender !== totalRace) {
+      const errorMsg = `Demographics validation failed:\n` +
+                      `Age Total: ${totalAge}\n` +
+                      `Gender Total: ${totalGender}\n` +
+                      `Race Total: ${totalRace}\n\n` +
+                      `All three totals must match!`;
+      setValidationError(errorMsg);
+      alert(errorMsg);
       return;
     }
     
@@ -138,53 +132,96 @@ function ComplianceWeeklyForm() {
         alert('Record created successfully!');
       }
       navigate('/compliance');
-    } catch (error) {
-      console.error('Submit error:', error);
+    } catch (err) {
+      alert(`Failed to ${isEditMode ? 'update' : 'create'} record: ${err.message}`);
     }
   };
   
-  const handleCancel = () => {
-    if (window.confirm('Discard changes?')) {
-      navigate('/compliance');
-    }
-  };
-  
-  // ✅ NEW: Style to remove spinner arrows
-  const numberInputStyle = {
-    MozAppearance: 'textfield',
-    WebkitAppearance: 'none',
-    appearance: 'textfield',
-  };
+  if (loading && isEditMode) return <div className="loading-state">Loading...</div>;
+  if (error && isEditMode) return <div className="error-state">Error: {error}</div>;
   
   return (
-    <div>
+    <div className="weekly-form-container">
       <h2>{isEditMode ? 'Edit' : 'New'} Compliance Weekly Report</h2>
       
-      <button onClick={handleCancel}>← Back to List</button>
-      
-      {error && <div style={{ color: 'red' }}>❌ {error}</div>}
-      {validationError && <div style={{ color: 'red' }}>⚠️ {validationError}</div>}
-      
-      {/* ✅ NEW: Add global style to hide spinners */}
-      <style>
-        {`
-          input[type="number"]::-webkit-inner-spin-button,
-          input[type="number"]::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-          }
-          input[type="number"] {
-            -moz-appearance: textfield;
-            appearance: textfield;
-          }
-        `}
-      </style>
+      <button className="back-button" onClick={() => navigate('/compliance')}>
+        ← Back to List
+      </button>
+
+      {/* Validation Summary Box */}
+      <div style={{
+        padding: '15px',
+        marginBottom: '20px',
+        border: '2px solid #007bff',
+        borderRadius: '4px',
+        backgroundColor: '#e7f3ff'
+      }}>
+        <h3 style={{ margin: '0 0 10px 0', fontSize: '16px', color: '#333' }}>
+          Demographics Totals (Must Match)
+        </h3>
+        <div style={{ display: 'flex', gap: '20px', fontSize: '14px' }}>
+          <div>
+            <strong>Age Total:</strong> 
+            <span style={{ 
+              marginLeft: '8px',
+              color: totals.totalAge === totals.totalGender && totals.totalAge === totals.totalRace ? 'green' : 'red',
+              fontWeight: 'bold'
+            }}>
+              {totals.totalAge}
+            </span>
+          </div>
+          <div>
+            <strong>Gender Total:</strong> 
+            <span style={{ 
+              marginLeft: '8px',
+              color: totals.totalGender === totals.totalAge && totals.totalGender === totals.totalRace ? 'green' : 'red',
+              fontWeight: 'bold'
+            }}>
+              {totals.totalGender}
+            </span>
+          </div>
+          <div>
+            <strong>Race Total:</strong> 
+            <span style={{ 
+              marginLeft: '8px',
+              color: totals.totalRace === totals.totalAge && totals.totalRace === totals.totalGender ? 'green' : 'red',
+              fontWeight: 'bold'
+            }}>
+              {totals.totalRace}
+            </span>
+          </div>
+        </div>
+        {totals.totalAge !== totals.totalGender || totals.totalAge !== totals.totalRace ? (
+          <p style={{ margin: '10px 0 0 0', color: 'red', fontSize: '13px' }}>
+            ⚠️ Totals do not match! Please adjust your numbers before submitting.
+          </p>
+        ) : totals.totalAge > 0 ? (
+          <p style={{ margin: '10px 0 0 0', color: 'green', fontSize: '13px' }}>
+            ✅ All totals match!
+          </p>
+        ) : null}
+      </div>
+
+      {validationError && (
+        <div style={{
+          padding: '15px',
+          marginBottom: '20px',
+          border: '2px solid #dc3545',
+          borderRadius: '4px',
+          backgroundColor: '#f8d7da',
+          color: '#721c24',
+          whiteSpace: 'pre-line'
+        }}>
+          <strong>Validation Error:</strong><br />
+          {validationError}
+        </div>
+      )}
       
       <form onSubmit={handleSubmit}>
         
         <fieldset>
           <legend>Report Date</legend>
-          <div>
+          <div className="form-group">
             <label>Week Date: *</label>
             <input
               type="date"
@@ -193,295 +230,259 @@ function ComplianceWeeklyForm() {
               onChange={handleChange}
               required
             />
-            <br />
-            <small>Select any day in the week (will be converted to Monday)</small>
+            <p className="form-helper-text">Select any day in the week (will be converted to Monday)</p>
           </div>
         </fieldset>
         
         <fieldset>
           <legend>Households</legend>
-          <div>
-            <label>Without Children:</label>
+          <div className="form-group">
+            <label>Households without Children:</label>
             <input
               type="text"
               inputMode="numeric"
-              pattern="[0-9]*"
               name="hh_without_children"
               value={formData.hh_without_children}
               onChange={handleChange}
-              style={numberInputStyle}
             />
           </div>
           
-          <div>
-            <label>With Children:</label>
+          <div className="form-group">
+            <label>Households with Children:</label>
             <input
               type="text"
               inputMode="numeric"
-              pattern="[0-9]*"
               name="hh_with_children"
               value={formData.hh_with_children}
               onChange={handleChange}
-              style={numberInputStyle}
             />
-          </div>
-          
-          <div>
-            <strong>Total Households: {totalHouseholds}</strong>
           </div>
         </fieldset>
         
         <fieldset>
           <legend>Age Demographics</legend>
-          <div>
+          <div style={{ 
+            padding: '10px', 
+            marginBottom: '15px', 
+            backgroundColor: '#f8f9fa', 
+            borderRadius: '4px',
+            fontSize: '14px',
+            fontWeight: 'bold'
+          }}>
+            Total: {totals.totalAge}
+          </div>
+          
+          <div className="form-group">
             <label>Adults:</label>
             <input
               type="text"
               inputMode="numeric"
-              pattern="[0-9]*"
               name="adults"
               value={formData.adults}
               onChange={handleChange}
-              style={numberInputStyle}
             />
           </div>
           
-          <div>
+          <div className="form-group">
             <label>Children:</label>
             <input
               type="text"
               inputMode="numeric"
-              pattern="[0-9]*"
               name="children"
               value={formData.children}
               onChange={handleChange}
-              style={numberInputStyle}
             />
           </div>
           
-          <div>
+          <div className="form-group">
             <label>Seniors (55+):</label>
             <input
               type="text"
               inputMode="numeric"
-              pattern="[0-9]*"
               name="seniors_55_plus"
               value={formData.seniors_55_plus}
               onChange={handleChange}
-              style={numberInputStyle}
             />
-          </div>
-          
-          <div>
-            <strong>Total Individuals: {totalIndividuals}</strong>
           </div>
         </fieldset>
         
         <fieldset>
           <legend>Gender Demographics</legend>
-          <div>
+          <div style={{ 
+            padding: '10px', 
+            marginBottom: '15px', 
+            backgroundColor: '#f8f9fa', 
+            borderRadius: '4px',
+            fontSize: '14px',
+            fontWeight: 'bold'
+          }}>
+            Total: {totals.totalGender}
+          </div>
+          
+          <div className="form-group">
             <label>Female:</label>
             <input
               type="text"
               inputMode="numeric"
-              pattern="[0-9]*"
               name="female"
               value={formData.female}
               onChange={handleChange}
-              style={numberInputStyle}
             />
           </div>
           
-          <div>
+          <div className="form-group">
             <label>Male:</label>
             <input
               type="text"
               inputMode="numeric"
-              pattern="[0-9]*"
               name="male"
               value={formData.male}
               onChange={handleChange}
-              style={numberInputStyle}
             />
           </div>
           
-          <div>
-            <label>Other:</label>
+          <div className="form-group">
+            <label>Other Gender:</label>
             <input
               type="text"
               inputMode="numeric"
-              pattern="[0-9]*"
               name="other_gender"
               value={formData.other_gender}
               onChange={handleChange}
-              style={numberInputStyle}
             />
-          </div>
-          
-          <div>
-            <strong style={{ color: totalGender !== totalIndividuals ? 'red' : 'green' }}>
-              Total Gender: {totalGender} {totalGender !== totalIndividuals && '⚠️'}
-            </strong>
           </div>
         </fieldset>
         
         <fieldset>
           <legend>Race Demographics</legend>
-          <div>
+          <div style={{ 
+            padding: '10px', 
+            marginBottom: '15px', 
+            backgroundColor: '#f8f9fa', 
+            borderRadius: '4px',
+            fontSize: '14px',
+            fontWeight: 'bold'
+          }}>
+            Total: {totals.totalRace}
+          </div>
+          
+          <div className="form-group">
             <label>White:</label>
             <input
               type="text"
               inputMode="numeric"
-              pattern="[0-9]*"
               name="white"
               value={formData.white}
               onChange={handleChange}
-              style={numberInputStyle}
             />
           </div>
           
-          <div>
+          <div className="form-group">
             <label>Black/African American:</label>
             <input
               type="text"
               inputMode="numeric"
-              pattern="[0-9]*"
               name="black_african_american"
               value={formData.black_african_american}
               onChange={handleChange}
-              style={numberInputStyle}
             />
           </div>
           
-          <div>
+          <div className="form-group">
             <label>Native American:</label>
             <input
               type="text"
               inputMode="numeric"
-              pattern="[0-9]*"
               name="native_american"
               value={formData.native_american}
               onChange={handleChange}
-              style={numberInputStyle}
             />
           </div>
           
-          <div>
+          <div className="form-group">
             <label>Other Race:</label>
             <input
               type="text"
               inputMode="numeric"
-              pattern="[0-9]*"
               name="other_race"
               value={formData.other_race}
               onChange={handleChange}
-              style={numberInputStyle}
             />
           </div>
           
-          <div>
-            <label>Multi-racial:</label>
+          <div className="form-group">
+            <label>Multi-Racial:</label>
             <input
               type="text"
               inputMode="numeric"
-              pattern="[0-9]*"
               name="multi_racial"
               value={formData.multi_racial}
               onChange={handleChange}
-              style={numberInputStyle}
             />
-          </div>
-          
-          <div>
-            <strong style={{ color: totalRace !== totalIndividuals ? 'red' : 'green' }}>
-              Total Race: {totalRace} {totalRace !== totalIndividuals && '⚠️'}
-            </strong>
           </div>
         </fieldset>
         
         <fieldset>
-          <legend>Conditions</legend>
-          <div>
+          <legend>Health Conditions</legend>
+          <div className="form-group">
             <label>One Condition:</label>
             <input
               type="text"
               inputMode="numeric"
-              pattern="[0-9]*"
               name="one_condition"
               value={formData.one_condition}
               onChange={handleChange}
-              style={numberInputStyle}
             />
           </div>
           
-          <div>
+          <div className="form-group">
             <label>Two Conditions:</label>
             <input
               type="text"
               inputMode="numeric"
-              pattern="[0-9]*"
               name="two_conditions"
               value={formData.two_conditions}
               onChange={handleChange}
-              style={numberInputStyle}
             />
           </div>
           
-          <div>
+          <div className="form-group">
             <label>Three+ Conditions:</label>
             <input
               type="text"
               inputMode="numeric"
-              pattern="[0-9]*"
               name="three_plus_conditions"
               value={formData.three_plus_conditions}
               onChange={handleChange}
-              style={numberInputStyle}
             />
-          </div>
-          
-          <div>
-            <strong>Total Conditions: {totalConditions}</strong>
           </div>
         </fieldset>
         
         <fieldset>
-          <legend>Exits</legend>
-          <div>
+          <legend>Other Metrics</legend>
+          <div className="form-group">
             <label>Total Exits:</label>
             <input
               type="text"
               inputMode="numeric"
-              pattern="[0-9]*"
               name="total_exits"
               value={formData.total_exits}
               onChange={handleChange}
-              style={numberInputStyle}
             />
           </div>
         </fieldset>
         
-        <fieldset style={{ background: isValid ? '#e8f5e9' : '#ffebee' }}>
-          <legend>Validation Check</legend>
-          <div>
-            <p>Total Individuals (Age): <strong>{totalIndividuals}</strong></p>
-            <p>Total Gender: <strong>{totalGender}</strong></p>
-            <p>Total Race: <strong>{totalRace}</strong></p>
-            {isValid ? (
-              <p style={{ color: 'green' }}>✅ All demographics match!</p>
-            ) : (
-              <p style={{ color: 'red' }}>⚠️ Demographics must match to submit</p>
-            )}
-          </div>
-        </fieldset>
-        
-        <div>
-          <button type="button" onClick={handleCancel} disabled={loading}>
-            Cancel
+        <div className="form-actions">
+          <button type="submit" className="btn btn-primary">
+            {isEditMode ? 'Update' : 'Create'} Report
           </button>
           
-          <button type="submit" disabled={loading || !isValid}>
-            {loading ? 'Saving...' : (isEditMode ? 'Update Report' : 'Create Report')}
+          <button 
+            type="button" 
+            onClick={() => navigate('/compliance')}
+            className="btn btn-secondary"
+          >
+            Cancel
           </button>
         </div>
       </form>

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import useStore from '../../zustand/store';
+import '../Shelter/Shelter.css';
 
 function ShelterWeeklyForm() {
   const navigate = useNavigate();
@@ -30,7 +31,7 @@ function ShelterWeeklyForm() {
   });
   
   useEffect(() => {
-    if (isEditMode) {
+    if (isEditMode && id) {
       fetchRecordById(id);
     }
     
@@ -60,16 +61,16 @@ function ShelterWeeklyForm() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     
-    if (name !== 'date' && name !== 'notes') {
-      const numericValue = value.replace(/[^0-9]/g, '');
-      setFormData(prev => ({
-        ...prev,
-        [name]: numericValue === '' ? 0 : parseInt(numericValue)
-      }));
-    } else {
+    if (name === 'date' || name === 'notes') {
       setFormData(prev => ({
         ...prev,
         [name]: value
+      }));
+    } else {
+      const numericValue = value.replace(/\D/g, '');
+      setFormData(prev => ({
+        ...prev,
+        [name]: numericValue === '' ? 0 : parseInt(numericValue, 10)
       }));
     }
   };
@@ -95,173 +96,193 @@ function ShelterWeeklyForm() {
   if (error && isEditMode) return <div style={{ color: 'red' }}>Error: {error}</div>;
   
   return (
-    <div>
+    <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
       <h2>{isEditMode ? 'Edit' : 'New'} Shelter Weekly Report</h2>
       
       <form onSubmit={handleSubmit}>
         
-        <fieldset>
-          <legend>Week Information</legend>
-          <div>
-            <label>Week Of (Monday):</label>
+        {/* Week Information */}
+        <fieldset style={{ marginBottom: '20px', padding: '15px', border: '1px solid #ddd', borderRadius: '4px' }}>
+          <legend style={{ fontWeight: 'bold', fontSize: '16px' }}>Week Information</legend>
+          
+          <div style={{ marginBottom: '15px' }}>
+            <label style={{ display: 'block', marginBottom: '5px' }}>
+              Week Of (Monday):
+            </label>
             <input
               type="date"
               name="date"
               value={formData.date}
               onChange={handleChange}
               required
+              style={{ width: '100%', padding: '8px', border: '1px solid #ddd', borderRadius: '4px' }}
             />
           </div>
         </fieldset>
         
-        <fieldset>
-          <legend>Guest Categories</legend>
+        {/* Guest Categories */}
+        <fieldset style={{ marginBottom: '20px', padding: '15px', border: '1px solid #ddd', borderRadius: '4px' }}>
+          <legend style={{ fontWeight: 'bold', fontSize: '16px' }}>Guest Categories</legend>
           
-          <div>
-            <label>Single Men:</label>
+          <div style={{ marginBottom: '10px' }}>
+            <label style={{ display: 'block', marginBottom: '5px' }}>Single Men:</label>
             <input
               type="text"
               inputMode="numeric"
-              pattern="[0-9]*"
               name="single_men"
               value={formData.single_men}
               onChange={handleChange}
-              style={{ WebkitAppearance: 'none', MozAppearance: 'textfield' }}
+              style={{ width: '100%', padding: '8px', border: '1px solid #ddd', borderRadius: '4px' }}
             />
           </div>
           
-          <div>
-            <label>Housing Men:</label>
+          <div style={{ marginBottom: '10px' }}>
+            <label style={{ display: 'block', marginBottom: '5px' }}>Housing Men:</label>
             <input
               type="text"
               inputMode="numeric"
-              pattern="[0-9]*"
               name="housing_men"
               value={formData.housing_men}
               onChange={handleChange}
-              style={{ WebkitAppearance: 'none', MozAppearance: 'textfield' }}
+              style={{ width: '100%', padding: '8px', border: '1px solid #ddd', borderRadius: '4px' }}
             />
           </div>
           
-          <div>
-            <label>Single Women:</label>
+          <div style={{ marginBottom: '10px' }}>
+            <label style={{ display: 'block', marginBottom: '5px' }}>Single Women:</label>
             <input
               type="text"
               inputMode="numeric"
-              pattern="[0-9]*"
               name="single_women"
               value={formData.single_women}
               onChange={handleChange}
-              style={{ WebkitAppearance: 'none', MozAppearance: 'textfield' }}
+              style={{ width: '100%', padding: '8px', border: '1px solid #ddd', borderRadius: '4px' }}
             />
           </div>
           
-          <div>
-            <label>Housing Women:</label>
+          <div style={{ marginBottom: '10px' }}>
+            <label style={{ display: 'block', marginBottom: '5px' }}>Housing Women:</label>
             <input
               type="text"
               inputMode="numeric"
-              pattern="[0-9]*"
               name="housing_women"
               value={formData.housing_women}
               onChange={handleChange}
-              style={{ WebkitAppearance: 'none', MozAppearance: 'textfield' }}
+              style={{ width: '100%', padding: '8px', border: '1px solid #ddd', borderRadius: '4px' }}
             />
           </div>
           
-          <div>
-            <label>Families:</label>
+          <div style={{ marginBottom: '10px' }}>
+            <label style={{ display: 'block', marginBottom: '5px' }}>Families:</label>
             <input
               type="text"
               inputMode="numeric"
-              pattern="[0-9]*"
               name="families"
               value={formData.families}
               onChange={handleChange}
-              style={{ WebkitAppearance: 'none', MozAppearance: 'textfield' }}
+              style={{ width: '100%', padding: '8px', border: '1px solid #ddd', borderRadius: '4px' }}
             />
           </div>
           
-          <div>
-            <label>Hybrid/VA Holdover:</label>
+          <div style={{ marginBottom: '10px' }}>
+            <label style={{ display: 'block', marginBottom: '5px' }}>Hybrid/VA Holdover:</label>
             <input
               type="text"
               inputMode="numeric"
-              pattern="[0-9]*"
               name="hybrid_va_holdover"
               value={formData.hybrid_va_holdover}
               onChange={handleChange}
-              style={{ WebkitAppearance: 'none', MozAppearance: 'textfield' }}
+              style={{ width: '100%', padding: '8px', border: '1px solid #ddd', borderRadius: '4px' }}
             />
           </div>
         </fieldset>
         
-        <fieldset>
-          <legend>Operations & Outreach</legend>
+        {/* Operations & Outreach */}
+        <fieldset style={{ marginBottom: '20px', padding: '15px', border: '1px solid #ddd', borderRadius: '4px' }}>
+          <legend style={{ fontWeight: 'bold', fontSize: '16px' }}>Operations & Outreach</legend>
           
-          <div>
-            <label>Incident Reports:</label>
+          <div style={{ marginBottom: '10px' }}>
+            <label style={{ display: 'block', marginBottom: '5px' }}>Incident Reports:</label>
             <input
               type="text"
               inputMode="numeric"
-              pattern="[0-9]*"
               name="incident_reports"
               value={formData.incident_reports}
               onChange={handleChange}
-              style={{ WebkitAppearance: 'none', MozAppearance: 'textfield' }}
+              style={{ width: '100%', padding: '8px', border: '1px solid #ddd', borderRadius: '4px' }}
             />
           </div>
           
-          <div>
-            <label>Community Members Served:</label>
+          <div style={{ marginBottom: '10px' }}>
+            <label style={{ display: 'block', marginBottom: '5px' }}>Community Members Served:</label>
             <input
               type="text"
               inputMode="numeric"
-              pattern="[0-9]*"
               name="community_members_served"
               value={formData.community_members_served}
               onChange={handleChange}
-              style={{ WebkitAppearance: 'none', MozAppearance: 'textfield' }}
+              style={{ width: '100%', padding: '8px', border: '1px solid #ddd', borderRadius: '4px' }}
             />
           </div>
           
-          <div>
-            <label>Nights Found Sleeping Outside:</label>
+          <div style={{ marginBottom: '10px' }}>
+            <label style={{ display: 'block', marginBottom: '5px' }}>Nights Found Sleeping Outside:</label>
             <input
               type="text"
               inputMode="numeric"
-              pattern="[0-9]*"
               name="nights_found_sleeping_outside"
               value={formData.nights_found_sleeping_outside}
               onChange={handleChange}
-              style={{ WebkitAppearance: 'none', MozAppearance: 'textfield' }}
+              style={{ width: '100%', padding: '8px', border: '1px solid #ddd', borderRadius: '4px' }}
             />
           </div>
         </fieldset>
         
-        <fieldset>
-          <legend>Notes</legend>
+        {/* Notes */}
+        <fieldset style={{ marginBottom: '20px', padding: '15px', border: '1px solid #ddd', borderRadius: '4px' }}>
+          <legend style={{ fontWeight: 'bold', fontSize: '16px' }}>Notes</legend>
+          
           <div>
-            <label>Additional Notes:</label>
+            <label style={{ display: 'block', marginBottom: '5px' }}>Additional Notes:</label>
             <textarea
               name="notes"
               value={formData.notes}
               onChange={handleChange}
               rows="4"
-              style={{ width: '100%' }}
+              style={{ width: '100%', padding: '8px', border: '1px solid #ddd', borderRadius: '4px', fontFamily: 'inherit' }}
             />
           </div>
         </fieldset>
         
-        <div style={{ marginTop: '20px', display: 'flex', gap: '10px' }}>
-          <button type="submit" style={{ padding: '10px 20px', background: '#4caf50', color: 'white', border: 'none', cursor: 'pointer' }}>
+        {/* Buttons */}
+        <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
+          <button 
+            type="submit" 
+            style={{ 
+              padding: '10px 20px', 
+              background: '#28a745', 
+              color: 'white', 
+              border: 'none', 
+              borderRadius: '4px', 
+              cursor: 'pointer',
+              fontSize: '14px'
+            }}
+          >
             {isEditMode ? 'Update' : 'Create'} Report
           </button>
           
           <button 
             type="button" 
             onClick={() => navigate('/shelter')}
-            style={{ padding: '10px 20px', background: '#999', color: 'white', border: 'none', cursor: 'pointer' }}
+            style={{ 
+              padding: '10px 20px', 
+              background: '#6c757d', 
+              color: 'white', 
+              border: 'none', 
+              borderRadius: '4px', 
+              cursor: 'pointer',
+              fontSize: '14px'
+            }}
           >
             Cancel
           </button>

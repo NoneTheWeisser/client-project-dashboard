@@ -1,21 +1,26 @@
-
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useStore from '../../zustand/store';
+import "../ComplianceWeekly/ComplianceWeekly.css";
 
 function ComplianceWeeklyList() {
   const navigate = useNavigate();
+  const [year, setYear] = useState(2025);
   
   const records = useStore((state) => state.compliance.records);
   const loading = useStore((state) => state.compliance.loading);
   const error = useStore((state) => state.compliance.error);
   const fetchRecords = useStore((state) => state.fetchComplianceRecords);
   const deleteRecord = useStore((state) => state.deleteComplianceRecord);
-  const submitRecord = useStore((state) => state.submitComplianceRecord);
   
   useEffect(() => {
-    fetchRecords(2025);
-  }, [fetchRecords]);
+    fetchRecords(year);
+  }, [fetchRecords, year]);
+  
+  const formatDate = (dateString) => {
+    if (!dateString) return '—';
+    return dateString.split('T')[0];
+  };
   
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this record?')) {
@@ -23,103 +28,90 @@ function ComplianceWeeklyList() {
     }
   };
   
-  const handleSubmit = async (id) => {
-    if (window.confirm('Submit this report?')) {
-      await submitRecord(id);
-    }
-  };
-  
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div style={{ color: 'red' }}>Error: {error}</div>;
+  if (loading) return <div className="loading-state">Loading...</div>;
+  if (error) return <div className="error-state">Error: {error}</div>;
   
   return (
-    <div>
-      <h2>Compliance Weekly Reports - 2025</h2>
+    <div className="weekly-reports-container">
+      <div className="weekly-reports-header">
+        <h2 className="weekly-reports-title">Compliance Weekly Reports</h2>
+      </div>
       
-      {/* ✅ ADD THIS SECTION */}
-      <div style={{ 
-        marginBottom: '20px', 
-        display: 'flex', 
-        gap: '10px',
-        padding: '10px',
-        background: '#f5f5f5',
-        borderRadius: '4px'
-      }}>
+      <div className="year-selector-container">
+        <label>View Year:</label>
+        <select value={year} onChange={(e) => setYear(parseInt(e.target.value))}>
+          <option value="2023">2023</option>
+          <option value="2024">2024</option>
+          <option value="2025">2025</option>
+          <option value="2026">2026</option>
+          <option value="2027">2027</option>
+        </select>
+      </div>
+      
+      <div className="weekly-reports-actions">
         <button 
+          className="btn btn-sm btn-primary"
           onClick={() => navigate('/compliance/weekly/new')}
-          style={{
-            padding: '10px 20px',
-            background: '#4caf50',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            fontSize: '16px'
-          }}
         >
-          ➕ New Report
+          ➕ Enter Compliance Weekly Data
         </button>
         
         <button 
+          className="btn btn-sm btn-info"
           onClick={() => navigate('/compliance/reports')}
-          style={{
-            padding: '10px 20px',
-            background: '#2196f3',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            fontSize: '16px'
-          }}
         >
-          📊 View Reports & Analytics
+          📊 Compliance Reports
         </button>
       </div>
-      {/* ✅ END NEW SECTION */}
       
-      <table border="1">
-        <thead>
-          <tr>
-            <th>Week Of</th>
-            <th>Households</th>
-            <th>Individuals</th>
-            <th>Exits</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {records.map((record) => (
-            <tr key={record.id}>
-              <td>{new Date(record.date).toLocaleDateString()}</td>
-              <td>{record.total_households}</td>
-              <td>{record.total_individuals}</td>
-              <td>{record.total_exits}</td>
-              <td>
-                {record.submitted_at ? (
-                  <span>✅ Submitted</span>
-                ) : (
-                  <span>📝 Draft</span>
-                )}
-              </td>
-              <td>
-                <button onClick={() => console.log('View', record.id)}>View</button>
-                
-                {!record.submitted_at && (
-                  <>
-                    <button onClick={() => navigate(`/compliance/weekly/edit/${record.id}`)}>
-                      Edit
-                    </button>
-                    <button onClick={() => handleSubmit(record.id)}>Submit</button>
-                  </>
-                )}
-                
-                <button onClick={() => handleDelete(record.id)}>Delete</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {records.length === 0 ? (
+        <div className="empty-state">
+          <div className="empty-state-icon">📋</div>
+          <p>No records found for {year}.</p>
+          <p>Click "New Report" to create one.</p>
+        </div>
+      ) : (
+        <div className="table-container">
+          <table className="table-app table-hover table-striped">
+            <thead>
+              <tr>
+                <th>Week Of</th>
+                <th>Households</th>
+                <th>Individuals</th>
+                <th>Exits</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {records.map((r) => (
+                <tr key={r.id}>
+                  <td>{formatDate(r.date)}</td>
+                  <td>{r.total_households}</td>
+                  <td>{r.total_individuals}</td>
+                  <td>{r.total_exits}</td>
+                  <td>
+                    <div className="table-actions">
+                      <button
+                        className="btn btn-sm btn-table-edit"
+                        onClick={() => navigate(`/compliance/weekly/edit/${r.id}`)}
+                      >
+                        Edit
+                      </button>
+                      
+                      <button
+                        className="btn btn-sm btn-table-delete"
+                        onClick={() => handleDelete(r.id)}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 }
