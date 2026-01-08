@@ -1,31 +1,24 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useStore from '../../zustand/store';
 
 function FinanceWeeklyList() {
   const navigate = useNavigate();
+  const [year, setYear] = useState(2025);
   
   const records = useStore((state) => state.finance.records);
   const loading = useStore((state) => state.finance.loading);
   const error = useStore((state) => state.finance.error);
   const fetchRecords = useStore((state) => state.fetchFinanceRecords);
   const deleteRecord = useStore((state) => state.deleteFinanceRecord);
-  const submitRecord = useStore((state) => state.submitFinanceRecord);
   
   useEffect(() => {
-    fetchRecords(2025);
-  }, [fetchRecords]);
+    fetchRecords(year);
+  }, [fetchRecords, year]);
   
-  const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this record?')) {
-      await deleteRecord(id);
-    }
-  };
-  
-  const handleSubmit = async (id) => {
-    if (window.confirm('Submit this report?')) {
-      await submitRecord(id);
-    }
+  const formatDate = (dateString) => {
+    if (!dateString) return '—';
+    return dateString.split('T')[0];
   };
   
   const formatCurrency = (amount) => {
@@ -36,105 +29,104 @@ function FinanceWeeklyList() {
     }).format(amount || 0);
   };
   
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div style={{ color: 'red' }}>Error: {error}</div>;
+  const handleDelete = async (id) => {
+    if (window.confirm('Are you sure you want to delete this record?')) {
+      await deleteRecord(id);
+    }
+  };
+  
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p style={{ color: 'red' }}>Error: {error}</p>;
   
   return (
     <div>
-      <h2>Finance Weekly Reports - 2025</h2>
+      <h2>Finance Weekly Reports</h2>
       
-      <div style={{ 
-        marginBottom: '20px', 
-        display: 'flex', 
-        gap: '10px',
-        padding: '10px',
-        background: '#f5f5f5',
-        borderRadius: '4px'
-      }}>
-        <button 
-          onClick={() => navigate('/finance/weekly/new')}
-          style={{
-            padding: '10px 20px',
-            background: '#4caf50',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            fontSize: '16px'
-          }}
+      {/* Year Selector */}
+      <div style={{ marginBottom: '20px' }}>
+        <label>View Year: </label>
+        <select 
+          value={year} 
+          onChange={(e) => setYear(parseInt(e.target.value))}
+          style={{ marginLeft: '10px', padding: '5px' }}
         >
-          ➕ New Report
+          <option value="2023">2023</option>
+          <option value="2024">2024</option>
+          <option value="2025">2025</option>
+          <option value="2026">2026</option>
+          <option value="2027">2027</option>
+        </select>
+      </div>
+      
+      {/* Navigation Buttons */}
+      <div style={{ marginBottom: '20px', display: 'flex', gap: '10px' }}>
+        <button 
+          className="btn btn-sm btn-primary"
+          onClick={() => navigate('/finance/weekly/new')}
+        >
+          ➕ Enter Finance Weekly Data
         </button>
         
         <button 
+          className="btn btn-sm btn-info"
           onClick={() => navigate('/finance/reports')}
-          style={{
-            padding: '10px 20px',
-            background: '#2196f3',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            fontSize: '16px'
-          }}
         >
-          📊 View Reports
+          📊 Finance Reports
         </button>
       </div>
       
-      <table border="1">
-        <thead>
-          <tr>
-            <th>Week Of</th>
-            <th>Total Assets</th>
-            <th>Operating Balance</th>
-            <th>Revenue</th>
-            <th>Bills Paid</th>
-            <th>Payroll</th>
-            <th>Net Change</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {records.map((record) => (
-            <tr key={record.id}>
-              <td>{new Date(record.date).toLocaleDateString()}</td>
-              <td>{formatCurrency(record.total_assets)}</td>
-              <td>{formatCurrency(record.operating_account_balance)}</td>
-              <td style={{ color: 'green' }}>{formatCurrency(record.revenue_received)}</td>
-              <td style={{ color: 'red' }}>{formatCurrency(record.bills_paid)}</td>
-              <td style={{ color: 'red' }}>{formatCurrency(record.payroll_paid)}</td>
-              <td style={{ color: record.net_change >= 0 ? 'green' : 'red' }}>
-                {formatCurrency(record.net_change)}
-              </td>
-              <td>
-                {record.submitted_at ? (
-                  <span>✅ Submitted</span>
-                ) : (
-                  <span>📝 Draft</span>
-                )}
-              </td>
-              <td>
-                <button onClick={() => navigate(`/finance/weekly/edit/${record.id}`)}>
-                  View/Edit
-                </button>
-                
-                {!record.submitted_at && (
-                  <button onClick={() => handleSubmit(record.id)}>Submit</button>
-                )}
-                
-                <button onClick={() => handleDelete(record.id)}>Delete</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      
-      {records.length === 0 && (
-        <p style={{ textAlign: 'center', marginTop: '20px' }}>
-          No records found. Click "New Report" to create one.
-        </p>
+      {/* Table */}
+      {records.length === 0 ? (
+        <p>No records found for {year}. Click "New Report" to create one.</p>
+      ) : (
+        <div className="table-container" style={{ maxWidth: '1400px', margin: '0 auto' }}>
+          <table className="table-app table-hover table-striped">
+            <thead>
+              <tr>
+                <th>Week Of</th>
+                <th>Total Assets</th>
+                <th>Operating Balance</th>
+                <th>Revenue</th>
+                <th>Bills Paid</th>
+                <th>Payroll</th>
+                <th>Net Change</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {records.map((r) => (
+                <tr key={r.id}>
+                  <td>{formatDate(r.date)}</td>
+                  <td>{formatCurrency(r.total_assets)}</td>
+                  <td>{formatCurrency(r.operating_account_balance)}</td>
+                  <td style={{ color: 'green' }}>{formatCurrency(r.revenue_received)}</td>
+                  <td style={{ color: 'red' }}>{formatCurrency(r.bills_paid)}</td>
+                  <td style={{ color: 'red' }}>{formatCurrency(r.payroll_paid)}</td>
+                  <td style={{ color: r.net_change >= 0 ? 'green' : 'red' }}>
+                    {formatCurrency(r.net_change)}
+                  </td>
+                  <td>
+                    <div className="table-actions">
+                      <button
+                        className="btn btn-sm btn-table-edit"
+                        onClick={() => navigate(`/finance/weekly/edit/${r.id}`)}
+                      >
+                        Edit
+                      </button>
+                      
+                      <button
+                        className="btn btn-sm btn-table-delete"
+                        onClick={() => handleDelete(r.id)}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );

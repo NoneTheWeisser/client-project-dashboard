@@ -1,6 +1,8 @@
+
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import useStore from '../../zustand/store';
+import '../Finance/Finance.css';
 
 function FinanceWeeklyForm() {
   const navigate = useNavigate();
@@ -17,17 +19,17 @@ function FinanceWeeklyForm() {
   
   const [formData, setFormData] = useState({
     date: '',
-    total_assets: 0,
-    operating_account_balance: 0,
-    bills_paid: 0,
-    payroll_paid: 0,
-    revenue_received: 0,
+    total_assets: '',
+    operating_account_balance: '',
+    bills_paid: '',
+    payroll_paid: '',
+    revenue_received: '',
     major_expenses: '',
     notes: ''
   });
   
   useEffect(() => {
-    if (isEditMode) {
+    if (isEditMode && id) {
       fetchRecordById(id);
     }
     
@@ -40,11 +42,11 @@ function FinanceWeeklyForm() {
     if (currentRecord && isEditMode) {
       setFormData({
         date: currentRecord.date ? currentRecord.date.split('T')[0] : '',
-        total_assets: currentRecord.total_assets || 0,
-        operating_account_balance: currentRecord.operating_account_balance || 0,
-        bills_paid: currentRecord.bills_paid || 0,
-        payroll_paid: currentRecord.payroll_paid || 0,
-        revenue_received: currentRecord.revenue_received || 0,
+        total_assets: currentRecord.total_assets?.toString() || '',
+        operating_account_balance: currentRecord.operating_account_balance?.toString() || '',
+        bills_paid: currentRecord.bills_paid?.toString() || '',
+        payroll_paid: currentRecord.payroll_paid?.toString() || '',
+        revenue_received: currentRecord.revenue_received?.toString() || '',
         major_expenses: currentRecord.major_expenses || '',
         notes: currentRecord.notes || ''
       });
@@ -54,31 +56,32 @@ function FinanceWeeklyForm() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     
-    // For number inputs (currency), allow decimals
-    if (name !== 'date' && name !== 'major_expenses' && name !== 'notes') {
-      // Allow numbers and decimal point
-      const numericValue = value.replace(/[^0-9.]/g, '');
-      setFormData(prev => ({
-        ...prev,
-        [name]: numericValue === '' ? 0 : parseFloat(numericValue) || 0
-      }));
-    } else {
-      setFormData(prev => ({
-        ...prev,
-        [name]: value
-      }));
-    }
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
   };
   
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+    const submitData = {
+      date: formData.date,
+      total_assets: parseFloat(formData.total_assets) || 0,
+      operating_account_balance: parseFloat(formData.operating_account_balance) || 0,
+      bills_paid: parseFloat(formData.bills_paid) || 0,
+      payroll_paid: parseFloat(formData.payroll_paid) || 0,
+      revenue_received: parseFloat(formData.revenue_received) || 0,
+      major_expenses: formData.major_expenses,
+      notes: formData.notes
+    };
+    
     try {
       if (isEditMode) {
-        await updateRecord(id, formData);
+        await updateRecord(id, submitData);
         alert('Record updated successfully!');
       } else {
-        await createRecord(formData);
+        await createRecord(submitData);
         alert('Record created successfully!');
       }
       navigate('/finance');
@@ -87,19 +90,23 @@ function FinanceWeeklyForm() {
     }
   };
   
-  if (loading && isEditMode) return <div>Loading...</div>;
-  if (error && isEditMode) return <div style={{ color: 'red' }}>Error: {error}</div>;
+  if (loading && isEditMode) return <div className="loading-state">Loading...</div>;
+  if (error && isEditMode) return <div className="error-state">Error: {error}</div>;
   
   return (
-    <div>
+    <div className="weekly-form-container">
       <h2>{isEditMode ? 'Edit' : 'New'} Finance Weekly Report</h2>
+      
+      <button className="back-button" onClick={() => navigate('/finance')}>
+        ← Back to List
+      </button>
       
       <form onSubmit={handleSubmit}>
         
         <fieldset>
-          <legend>Week Information</legend>
-          <div>
-            <label>Week Of (Monday):</label>
+          <legend>Report Date</legend>
+          <div className="form-group">
+            <label>Week Date: *</label>
             <input
               type="date"
               name="date"
@@ -107,17 +114,17 @@ function FinanceWeeklyForm() {
               onChange={handleChange}
               required
             />
+            <p className="form-helper-text">Select any day in the week (will be converted to Monday)</p>
           </div>
         </fieldset>
         
         <fieldset>
           <legend>Financial Position</legend>
-          
-          <div>
+          <div className="form-group">
             <label>Total Assets ($):</label>
             <input
-              type="text"
-              inputMode="decimal"
+              type="number"
+              step="0.01"
               name="total_assets"
               value={formData.total_assets}
               onChange={handleChange}
@@ -125,11 +132,11 @@ function FinanceWeeklyForm() {
             />
           </div>
           
-          <div>
+          <div className="form-group">
             <label>Operating Account Balance ($):</label>
             <input
-              type="text"
-              inputMode="decimal"
+              type="number"
+              step="0.01"
               name="operating_account_balance"
               value={formData.operating_account_balance}
               onChange={handleChange}
@@ -140,12 +147,11 @@ function FinanceWeeklyForm() {
         
         <fieldset>
           <legend>Weekly Activity</legend>
-          
-          <div>
+          <div className="form-group">
             <label>Revenue Received ($):</label>
             <input
-              type="text"
-              inputMode="decimal"
+              type="number"
+              step="0.01"
               name="revenue_received"
               value={formData.revenue_received}
               onChange={handleChange}
@@ -153,11 +159,11 @@ function FinanceWeeklyForm() {
             />
           </div>
           
-          <div>
+          <div className="form-group">
             <label>Bills Paid ($):</label>
             <input
-              type="text"
-              inputMode="decimal"
+              type="number"
+              step="0.01"
               name="bills_paid"
               value={formData.bills_paid}
               onChange={handleChange}
@@ -165,11 +171,11 @@ function FinanceWeeklyForm() {
             />
           </div>
           
-          <div>
+          <div className="form-group">
             <label>Payroll Paid ($):</label>
             <input
-              type="text"
-              inputMode="decimal"
+              type="number"
+              step="0.01"
               name="payroll_paid"
               value={formData.payroll_paid}
               onChange={handleChange}
@@ -180,40 +186,37 @@ function FinanceWeeklyForm() {
         
         <fieldset>
           <legend>Additional Information</legend>
-          
-          <div>
+          <div className="form-group">
             <label>Major Expenses:</label>
             <textarea
               name="major_expenses"
               value={formData.major_expenses}
               onChange={handleChange}
               rows="3"
-              style={{ width: '100%' }}
               placeholder="e.g., New HVAC system - $5000"
             />
           </div>
           
-          <div>
+          <div className="form-group">
             <label>Notes:</label>
             <textarea
               name="notes"
               value={formData.notes}
               onChange={handleChange}
               rows="4"
-              style={{ width: '100%' }}
             />
           </div>
         </fieldset>
         
-        <div style={{ marginTop: '20px', display: 'flex', gap: '10px' }}>
-          <button type="submit" style={{ padding: '10px 20px', background: '#4caf50', color: 'white', border: 'none', cursor: 'pointer' }}>
+        <div className="form-actions">
+          <button type="submit" className="btn btn-primary">
             {isEditMode ? 'Update' : 'Create'} Report
           </button>
           
           <button 
             type="button" 
             onClick={() => navigate('/finance')}
-            style={{ padding: '10px 20px', background: '#999', color: 'white', border: 'none', cursor: 'pointer' }}
+            className="btn btn-secondary"
           >
             Cancel
           </button>
