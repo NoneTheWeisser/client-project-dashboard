@@ -28,6 +28,10 @@ import FinanceWeeklyList from "../Finance/FinanceWeeklyList";
 import FinanceWeeklyForm from "../Finance/FinanceWeeklyForm";
 import FinanceReporting from "../Finance/FinanceReporting";
 import VolunteerPage from "../CommunityOutreach/Volunteer/VolunteerPage";
+import HRHome from "../HR/HRHome";
+import HRWeeklyList from "../HR/HRWeeklyList";
+import HRWeeklyForm from "../HR/HRWeeklyForm";
+import HRReports from "../HR/HRReports";
 import OutreachHome from "../CommunityOutreach/OutreachHome";
 import VolunteerEngagementPage from "../CommunityOutreach/Volunteer/VolunteerEngagementPage";
 import VolunteerReportsPage from "../CommunityOutreach/Reports/VolunteerReportsPage";
@@ -116,7 +120,6 @@ function App() {
           <Route path="/media" element={<h2>Media</h2>} />
           <Route path="/kitchen" element={<KitchenPage />} />
 
-          <Route path="/hr" element={<h2>HR</h2>} />
           <Route path="/outreach" element={<h2>Volunteers</h2>} />
           <Route path="/compliance" element={<ComplianceWeeklyList />} />
           <Route
@@ -146,6 +149,13 @@ function App() {
 
           <Route path="/pantry" element={<PantryPage />} />
           <Route path="/reporting" element={<ReportsDashboard />} />
+          <Route path="/hr" element={<DepartmentLayout title="Human Resources" />}>
+  <Route index element={<HRHome />} />
+  <Route path="weekly" element={<HRWeeklyList />} />
+  <Route path="weekly/new" element={<HRWeeklyForm />} />
+  <Route path="weekly/edit/:id" element={<HRWeeklyForm />} />
+  <Route path="reports" element={<HRReports />} />
+</Route>
         </Routes>
       </main>
       <footer>
