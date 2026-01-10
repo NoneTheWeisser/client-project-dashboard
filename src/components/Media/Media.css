@@ -1,29 +1,238 @@
-.modal-backdrop {
+/* ------ Media Table Wrapper ------ */
+.media-table-container {
+  max-width: 1400px; 
+  margin: 0 auto;
+}
+
+/* ------ Media Toolbar ------ */
+.media-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 12px;
+  padding: 0;    
+  width: 100%;   
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+.toolbar-left {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  flex: 1;
+}
+
+
+.toolbar-right {
+  display: flex;
+  align-items: flex-end;
+  margin-left: 16px; 
+}
+
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.btn-add {
+  padding: 6px 12px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  border-radius: 4px;
+  border: none;
+  background-color: var(--brand-accent);
+  color: #fff;
+  transition: opacity 0.3s;
+}
+
+.btn-add:hover {
+  opacity: 0.85;
+}
+
+
+/* ------  Media Form ------ */
+.media-form {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 24px;
+  background-color: rgba(3, 166, 150, 0.05);
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Inline sections for Month + Platform */
+.form-section-inline {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.form-section-inline label {
+  flex: 1 1 200px;
+}
+
+/* Dynamic Field Headings */
+.media-form h4 {
+  margin-top: 16px;
+  margin-bottom: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* Form Inputs */
+.media-form label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.875rem;
+}
+
+.media-form input,
+.media-form select,
+.media-form textarea {
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 0.875rem;
+  margin-top: 4px;
+}
+
+.media-form textarea {
+  min-height: 60px;
+  resize: vertical;
+}
+
+/* Form Buttons */
+.form-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.media-form .btn {
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  padding: 6px 12px;
+  transition: opacity 0.3s;
+}
+
+.media-form .btn-primary {
+  background-color: var(--brand-accent);
+  color: #fff;
+}
+
+.media-form .btn-primary:hover {
+  opacity: 0.85;
+}
+
+.media-form .btn-secondary {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.media-form .btn-secondary:hover {
+  opacity: 0.85;
+}
+
+/* ------ Modal Styling ------ */
+.modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
 }
 
-.modal-container {
-  background: white;
-  width: 100%;
-  max-width: 900px;
+.modal-content {
+  position: relative;
+  background-color: #fff;
   border-radius: 8px;
+  padding: 24px;
+  max-width: 900px;
+  width: 100%;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
 
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 20px;
-  border-bottom: 1px solid var(--border-soft);
+.modal-close-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  color: #333;
+  line-height: 1;
+  transition: opacity 0.2s;
 }
 
-.modal-body {
+.modal-close-btn:hover {
+  opacity: 0.7;
+}
+
+/* Optional modal body padding */
+.media-modal-body {
   padding: 20px;
+}
+
+/* ------ Media Table Styling ------ */
+.media-table {
+  font-size: 0.875rem;
+  width: 100%; /* fill container width */
+}
+
+.media-table th,
+.media-table td {
+  padding: 12px 8px;
+  vertical-align: middle;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.media-table thead {
+  background-color: var(--brand-primary);
+  color: #fff;
+}
+
+.media-table .col-platform {
+  min-width: 120px;
+}
+
+.media-table .col-month {
+  min-width: 100px;
+}
+
+.media-table .col-number {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.media-table .col-notes {
+  max-width: 200px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.media-table tbody tr:hover {
+  background-color: var(--brand-primary-soft);
+}
+
+/* Table Actions */
+.media-table .table-actions {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-start;
+  align-items: center;
 }

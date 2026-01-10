@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import useStore from "../../zustand/store";
+import "./media.css";
 
 const emptyForm = {
   month_date: "",
@@ -21,26 +22,22 @@ const emptyForm = {
 
 const platforms = ["Website", "Facebook", "Instagram", "TikTok", "Newsletter"];
 
-export default function MediaForm({ editRecord, setEditRecord }) {
+export default function MediaForm({ editRecord, setEditRecord, onClose }) {
   const addMediaRecord = useStore((state) => state.addMediaRecord);
   const updateMediaRecord = useStore((state) => state.updateMediaRecord);
   const loadingMedia = useStore((state) => state.loadingMedia);
 
   const [formData, setFormData] = useState(emptyForm);
 
-  // --- Safe useEffect for Add and Edit ---
   useEffect(() => {
     if (editRecord && editRecord.month_date) {
-      // Edit mode with a valid record
       setFormData({
         ...editRecord,
         month_date: editRecord.month_date.slice(0, 7),
       });
     } else if (editRecord) {
-      // Add mode (editRecord exists but has no month_date)
       setFormData(emptyForm);
     } else {
-      // Nothing selected, reset form
       setFormData(emptyForm);
     }
   }, [editRecord]);
@@ -97,14 +94,13 @@ export default function MediaForm({ editRecord, setEditRecord }) {
   };
 
   const handleCancel = () => {
+    onClose();
     setEditRecord(null);
     setFormData(emptyForm);
   };
 
   return (
     <form onSubmit={handleSubmit} className="media-form">
-      {/* Title removed — modal handles it now */}
-
       <div className="form-section-inline">
         <label>
           Month:
@@ -123,7 +119,7 @@ export default function MediaForm({ editRecord, setEditRecord }) {
             name="platform"
             value={formData.platform || ""}
             onChange={handleChange}
-            disabled={!!(editRecord && editRecord.month_date)} // disable platform in edit mode
+            disabled={!!(editRecord && editRecord.month_date)} 
             required
           >
             <option value="">Select Platform</option>
