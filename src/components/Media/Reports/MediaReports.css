@@ -1,0 +1,82 @@
+/* Toolbar container */
+.media-reports-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end; /* aligns right buttons to bottom of filters */
+  margin-bottom: 12px;
+  gap: 1rem;
+}
+
+/* Left side filters + search */
+.toolbar-left {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Right side buttons */
+.toolbar-right {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Style buttons */
+.toolbar-right button.secondary {
+  background-color: #e0e0e0;
+  color: #333;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: opacity 0.3s;
+}
+
+.toolbar-right button.secondary:hover {
+  opacity: 0.85;
+}
+
+
+.reports-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end; 
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.toolbar-left {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.toolbar-right {
+  display: flex;
+  gap: 8px;
+}
+
+.toolbar-right .btn-report {
+  background-color: var(--brand-accent);
+  color: #fff;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: opacity 0.2s;
+}
+
+.toolbar-right .btn-report:hover {
+  opacity: 0.85;
+}

@@ -33,17 +33,18 @@ import OutreachHome from "../CommunityOutreach/OutreachHome";
 import VolunteerEngagementPage from "../CommunityOutreach/Volunteer/VolunteerEngagementPage";
 import VolunteerReportsPage from "../CommunityOutreach/Reports/VolunteerReportsPage";
 import MediaPage from "../Media/MediaPage";
+import MediaReports from "../Media/Reports/MediaReports";
 import ReportsDashboard from "../ReportingHub/ReportsDashboard";
 
-import HRHome from "../HR/HRHome"
+import HRHome from "../HR/HRHome";
 import HRWeeklyList from "../HR/HRWeeklyList";
 import HRWeeklyForm from "../HR/HRWeeklyForm";
 import HRReports from "../HR/HRReports";
 
- import PantryHome from '../pantry/PantryHome';
-import PantryWeeklyList from '../pantry/PantryWeeklyList';
-import PantryWeeklyForm from '../pantry/PantryWeeklyForm';
-import PantryReports from '../pantry/PantryReports';
+import PantryHome from "../pantry/PantryHome";
+import PantryWeeklyList from "../pantry/PantryWeeklyList";
+import PantryWeeklyForm from "../pantry/PantryWeeklyForm";
+import PantryReports from "../pantry/PantryReports";
 
 function App() {
   const user = useStore((state) => state.user);
@@ -95,14 +96,11 @@ function App() {
             }
           />
           <Route exact path="/about" element={<AboutPage />} />
-          <Route path="/housing" element={<DepartmentLayout title="Housing" />}>
-            <Route index element={<HousingHome />} />
-            <Route path="reports" element={<HousingReports />} />
-          </Route>
-          <Route path="/media" element={<DepartmentLayout title="Media" />}>
-            <Route index element={<MediaPage />} />
-            {/* <Route path="reports" element={<HousingReports />} /> */}
-          </Route>
+          <Route path="/housing" element={<HousingHome />} />
+          <Route path="/housing/reports" element={<HousingReports />} />
+
+          <Route path="/media" element={<MediaPage />} />
+          <Route path="/media/reports" element={<MediaReports />} />
           <Route
             path="/development"
             element={<DepartmentLayout title="Development Dashboard" />}
@@ -122,8 +120,6 @@ function App() {
             <Route path="engagements" element={<VolunteerEngagementPage />} />
             <Route path="reports" element={<VolunteerReportsPage />} />
           </Route>
-
-          <Route path="/media" element={<h2>Media</h2>} />
           <Route path="/kitchen" element={<KitchenPage />} />
 
           <Route path="/outreach" element={<h2>Volunteers</h2>} />
@@ -153,23 +149,28 @@ function App() {
           />
           <Route path="/finance/reports" element={<FinanceReporting />} />
 
-
           <Route path="/reporting" element={<ReportsDashboard />} />
-          <Route path="/hr" element={<DepartmentLayout title="Human Resources" />}>
-  <Route index element={<HRHome />} />
-  <Route path="weekly" element={<HRWeeklyList />} />
-  <Route path="weekly/new" element={<HRWeeklyForm />} />
-  <Route path="weekly/edit/:id" element={<HRWeeklyForm />} />
-  <Route path="reports" element={<HRReports />} />
-</Route>
+          <Route
+            path="/hr"
+            element={<DepartmentLayout title="Human Resources" />}
+          >
+            <Route index element={<HRHome />} />
+            <Route path="weekly" element={<HRWeeklyList />} />
+            <Route path="weekly/new" element={<HRWeeklyForm />} />
+            <Route path="weekly/edit/:id" element={<HRWeeklyForm />} />
+            <Route path="reports" element={<HRReports />} />
+          </Route>
 
-<Route path="/pantry" element={<DepartmentLayout title="Pantry Distribution" />}>
-  <Route index element={<PantryHome />} />
-  <Route path="weekly" element={<PantryWeeklyList />} />
-  <Route path="weekly/new" element={<PantryWeeklyForm />} />
-  <Route path="weekly/edit/:id" element={<PantryWeeklyForm />} />
-  <Route path="reports" element={<PantryReports />} />
-</Route>
+          <Route
+            path="/pantry"
+            element={<DepartmentLayout title="Pantry Distribution" />}
+          >
+            <Route index element={<PantryHome />} />
+            <Route path="weekly" element={<PantryWeeklyList />} />
+            <Route path="weekly/new" element={<PantryWeeklyForm />} />
+            <Route path="weekly/edit/:id" element={<PantryWeeklyForm />} />
+            <Route path="reports" element={<PantryReports />} />
+          </Route>
         </Routes>
       </main>
       <footer>

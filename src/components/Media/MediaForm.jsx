@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import useStore from "../../zustand/store";
+import "./media.css";
 
 const emptyForm = {
   month_date: "",
@@ -21,7 +22,7 @@ const emptyForm = {
 
 const platforms = ["Website", "Facebook", "Instagram", "TikTok", "Newsletter"];
 
-export default function MediaForm({ editRecord, setEditRecord }) {
+export default function MediaForm({ editRecord, setEditRecord, onClose }) {
   const addMediaRecord = useStore((state) => state.addMediaRecord);
   const updateMediaRecord = useStore((state) => state.updateMediaRecord);
   const loadingMedia = useStore((state) => state.loadingMedia);
@@ -29,11 +30,13 @@ export default function MediaForm({ editRecord, setEditRecord }) {
   const [formData, setFormData] = useState(emptyForm);
 
   useEffect(() => {
-    if (editRecord) {
+    if (editRecord && editRecord.month_date) {
       setFormData({
         ...editRecord,
         month_date: editRecord.month_date.slice(0, 7),
       });
+    } else if (editRecord) {
+      setFormData(emptyForm);
     } else {
       setFormData(emptyForm);
     }
@@ -76,7 +79,7 @@ export default function MediaForm({ editRecord, setEditRecord }) {
       notes: formData.notes || "",
     };
 
-    if (editRecord) {
+    if (editRecord && editRecord.month_date) {
       await updateMediaRecord(
         editRecord.platform,
         editRecord.month_date,
@@ -91,13 +94,13 @@ export default function MediaForm({ editRecord, setEditRecord }) {
   };
 
   const handleCancel = () => {
+    onClose();
     setEditRecord(null);
     setFormData(emptyForm);
   };
 
   return (
     <form onSubmit={handleSubmit} className="media-form">
-      <h3>{editRecord ? "Edit Media Record" : "Add Media Record"}</h3>
       <div className="form-section-inline">
         <label>
           Month:
@@ -116,7 +119,7 @@ export default function MediaForm({ editRecord, setEditRecord }) {
             name="platform"
             value={formData.platform || ""}
             onChange={handleChange}
-            disabled={!!editRecord}
+            disabled={!!(editRecord && editRecord.month_date)} 
             required
           >
             <option value="">Select Platform</option>
@@ -262,6 +265,7 @@ export default function MediaForm({ editRecord, setEditRecord }) {
           </label>
         </>
       )}
+
       <label>
         Notes:
         <textarea
@@ -270,15 +274,23 @@ export default function MediaForm({ editRecord, setEditRecord }) {
           onChange={handleChange}
         />
       </label>
+
       <div className="form-buttons">
-        <button type="submit" disabled={loadingMedia}>
-          {editRecord ? "Update" : "Add"}
+        <button
+          type="submit"
+          className="btn btn-primary"
+          disabled={loadingMedia}
+        >
+          {editRecord && editRecord.month_date ? "Save Changes" : "Add Record"}
         </button>
-        {editRecord && (
-          <button type="button" onClick={handleCancel}>
-            Cancel
-          </button>
-        )}
+
+        <button
+          type="button"
+          className="btn btn-secondary"
+          onClick={handleCancel}
+        >
+          Cancel
+        </button>
       </div>
     </form>
   );
