@@ -39,7 +39,6 @@ export default function MediaPage() {
 
   return (
     <div className="hub-container">
-      {/* Header */}
       <DepartmentHeader
         title="Media Records"
         actions={
