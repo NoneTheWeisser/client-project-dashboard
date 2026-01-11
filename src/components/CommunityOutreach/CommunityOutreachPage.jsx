@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import useStore from "../../zustand/store";
 import DepartmentHeader from "../DesignComponents/DepartmentHeader";
 import OutreachToolbar from "./OutreachToolbar";
+import { NavLink } from "react-router-dom";
 
 import VolunteerList from "./Volunteer/VolunteerList";
 import VolunteerForm from "./Volunteer/VolunteerForm";
@@ -77,12 +78,18 @@ export default function CommunityOutreachPage() {
         title="Community Outreach"
         actions={
           <>
-            <a href="#/outreach" className="header-action">
+            <NavLink
+              to="/outreach"
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
               Data Entry
-            </a>
-            <a href="#/outreach/reports" className="header-action">
+            </NavLink>
+            <NavLink
+              to="/outreach/reports"
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
               Reports
-            </a>
+            </NavLink>
           </>
         }
       />
@@ -106,7 +113,7 @@ export default function CommunityOutreachPage() {
         </button>
         {volunteerOpen && (
           <div className="accordion-content">
-            <VolunteerList onEdit={handleEditVolunteer} filters={filters}/>
+            <VolunteerList onEdit={handleEditVolunteer} filters={filters} />
           </div>
         )}
       </div>
@@ -137,7 +144,10 @@ export default function CommunityOutreachPage() {
         </button>
         {engagementOpen && (
           <div className="accordion-content">
-            <VolunteerEngagementList onEdit={handleEditEngagement} filters={filters}/>
+            <VolunteerEngagementList
+              onEdit={handleEditEngagement}
+              filters={filters}
+            />
           </div>
         )}
       </div>

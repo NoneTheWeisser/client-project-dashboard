@@ -1,7 +1,7 @@
 /* ---------- Hub Container ---------- */
 
 .hub-container {
-  max-width: 1200px;
+  max-width: 1300px;
   margin: 0 auto;
   padding: 20px 16px;
   display: flex;
@@ -187,3 +187,29 @@
     margin: 20px auto;
   }
 }
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .outreach-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+
+  .toolbar-left,
+  .toolbar-right {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .filter-group {
+    width: 100%;
+  }
+
+  .toolbar-right button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+

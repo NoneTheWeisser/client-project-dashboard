@@ -40,6 +40,21 @@ export default function OutreachToolbar({
     <div className="outreach-toolbar">
       {/* Left side filters */}
       <div className="toolbar-left">
+        {/* Year Filter */}
+        <div className="filter-group">
+          <label>Year:</label>
+          <select
+            value={selectedYear}
+            onChange={(e) => setSelectedYear(e.target.value)}
+          >
+            <option value="">All</option>
+            {yearOptions.map((y) => (
+              <option key={y} value={y}>
+                {y}
+              </option>
+            ))}
+          </select>
+        </div>
         {/* Volunteer Filter */}
         <div className="filter-group">
           <label>Volunteer:</label>
@@ -72,23 +87,8 @@ export default function OutreachToolbar({
           </select>
         </div>
 
-        {/* Year Filter */}
-        <div className="filter-group">
-          <label>Year:</label>
-          <select
-            value={selectedYear}
-            onChange={(e) => setSelectedYear(e.target.value)}
-          >
-            <option value="">All</option>
-            {yearOptions.map((y) => (
-              <option key={y} value={y}>
-                {y}
-              </option>
-            ))}
-          </select>
-        </div>
-
         {/* Search */}
+        {/* todo - figure out how you want to handle bigger toolbars */}
         <div className="filter-group">
           <label>Search:</label>
           <input
@@ -102,11 +102,11 @@ export default function OutreachToolbar({
 
       {/* Right side: Action buttons */}
       <div className="toolbar-right">
-        <button className="primary" onClick={onAddVolunteer}>
-          <FaPlus style={{ marginRight: "4px" }} /> Add Volunteer
+        <button className="secondary" onClick={onAddVolunteer}>
+           Add Volunteer
         </button>
-        <button className="primary" onClick={onAddEngagement}>
-          <FaPlus style={{ marginRight: "4px" }} /> Add Engagement
+        <button className="secondary" onClick={onAddEngagement}>
+           Add Engagement
         </button>
       </div>
     </div>
