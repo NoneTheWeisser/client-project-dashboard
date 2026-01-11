@@ -33,9 +33,10 @@ import FinanceWeeklyForm from "../Finance/FinanceWeeklyForm";
 import FinanceReporting from "../Finance/FinanceReporting";
 
 import VolunteerPage from "../CommunityOutreach/Volunteer/VolunteerPage";
-import OutreachHome from "../CommunityOutreach/OutreachHome";
 import VolunteerEngagementPage from "../CommunityOutreach/Volunteer/VolunteerEngagementPage";
 import VolunteerReportsPage from "../CommunityOutreach/Reports/VolunteerReportsPage";
+import CommunityOutreachPage from "../CommunityOutreach/CommunityOutreachPage";
+
 
 import MediaPage from "../Media/MediaPage";
 import MediaReports from "../Media/Reports/MediaReports";
@@ -100,9 +101,9 @@ function App() {
           <Route path="/development/reports" element={<DevelopmentReports />} />
 
           {/* Outreach */}
-          <Route path="/outreach" element={<OutreachHome />} />
-          <Route path="/outreach/volunteers" element={<VolunteerPage />} />
-          <Route path="/outreach/engagements" element={<VolunteerEngagementPage />}/>
+          <Route path="/outreach" element={<CommunityOutreachPage />} />
+          {/* <Route path="/outreach/volunteers" element={<VolunteerPage />} />
+          <Route path="/outreach/engagements" element={<VolunteerEngagementPage />}/> */}
           <Route path="/outreach/reports" element={<VolunteerReportsPage />}/>
 
           {/* Kitchen */}
