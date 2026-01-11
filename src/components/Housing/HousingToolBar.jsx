@@ -13,7 +13,7 @@ export default function HousingToolBar({
 }) {
   const housingRecords = useStore((state) => state.housingRecords);
 
-  // Derive filter options from data
+  // derive filter options dynamically
   const yearOptions = Array.from(
     new Set(
       housingRecords
@@ -28,10 +28,10 @@ export default function HousingToolBar({
 
   return (
     <div className="housing-toolbar">
-      {/* LEFT: filters + search */}
       <div className="toolbar-left">
+        {/* Year filter */}
         <div className="filter-group">
-          <label>Year</label>
+          <label>Year:</label>
           <select value={year} onChange={(e) => setYear(e.target.value)}>
             <option value="">All</option>
             {yearOptions.map((y) => (
@@ -42,24 +42,27 @@ export default function HousingToolBar({
           </select>
         </div>
 
+        {/* Building filter */}
         <div className="filter-group">
-          <label>Building</label>
+          <label>Building:</label>
           <select
             value={building}
             onChange={(e) => setBuilding(e.target.value)}
           >
             <option value="">All</option>
-            {buildingOptions.map((name) => (
-              <option key={name} value={name}>
-                {name}
+            {buildingOptions.map((b) => (
+              <option key={b} value={b}>
+                {b}
               </option>
             ))}
           </select>
         </div>
 
-        <div className="filter-group search-group">
+        {/* Search */}
+        <div className="filter-group">
+          <label>Search:</label>
           <input
-            type="search"
+            type="text"
             placeholder="Search notes or building…"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -67,11 +70,10 @@ export default function HousingToolBar({
         </div>
       </div>
 
-      {/* RIGHT: action */}
+      {/* Right side: Add button */}
       <div className="toolbar-right">
-        <button className="btn-primary" onClick={onAdd}>
-          <FaPlus />
-          Add Record
+        <button className="secondary" onClick={onAdd}>
+          Add New Record
         </button>
       </div>
     </div>

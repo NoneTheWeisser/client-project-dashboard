@@ -1,36 +1,68 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import HousingTable from "./HousingTable";
 import DepartmentHeader from "../DesignComponents/DepartmentHeader";
 import HousingToolBar from "./HousingToolBar";
-import HousingTable from "./HousingTable";
 import HousingForm from "./HousingForm";
+import useStore from "../../zustand/store";
+import { NavLink } from "react-router-dom";
+import "./Housing.css";
 
 export default function HousingHome() {
-  const [showForm, setShowForm] = useState(false);
-  const [editRecord, setEditRecord] = useState(null);
+  const housingRecords = useStore((state) => state.housingRecords);
+  const fetchHousingRecords = useStore((state) => state.fetchHousingRecords);
 
+  // Filter/search state
   const [year, setYear] = useState("");
   const [building, setBuilding] = useState("");
   const [search, setSearch] = useState("");
 
-  const handleEdit = (record) => {
-    setEditRecord(record);
-    setShowForm(true);
-  };
+  // Modal state
+  const [showForm, setShowForm] = useState(false);
+  const [editingRecord, setEditingRecord] = useState(null);
 
-  const handleCloseForm = () => {
-    setEditRecord(null);
-    setShowForm(false);
-  };
+  // Fetch records once
+  useEffect(() => {
+    fetchHousingRecords();
+  }, [fetchHousingRecords]);
+
+  // Filtered records (passed to table)
+  const filteredRecords = housingRecords.filter((r) => {
+    const date = r.month_date ? new Date(r.month_date) : null;
+    if (year && date && date.getFullYear() !== Number(year)) return false;
+    if (building && r.building_name !== building) return false;
+    if (search) {
+      const term = search.toLowerCase();
+      const combined = `${r.building_name ?? ""} ${
+        r.notes ?? ""
+      }`.toLowerCase();
+      if (!combined.includes(term)) return false;
+    }
+    return true;
+  });
 
   return (
     <div className="hub-container">
       <DepartmentHeader
-        title="Housing"
-        description="Monthly housing metrics and occupancy tracking"
-        primaryActionLabel="Add Record"
-        onPrimaryAction={() => setShowForm(true)}
+        title="North Campus Housing"
+        actions={
+          <>
+            <NavLink
+              to="/housing"
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              Data Entry
+            </NavLink>
+            <NavLink
+              to="/housing/reports"
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              Reports
+            </NavLink>
+          </>
+        }
       />
 
+      {/* Toolbar */}
       <HousingToolBar
         year={year}
         setYear={setYear}
@@ -38,20 +70,31 @@ export default function HousingHome() {
         setBuilding={setBuilding}
         search={search}
         setSearch={setSearch}
+        onAdd={() => {
+          setEditingRecord(null);
+          setShowForm(true);
+        }}
       />
 
+      {/* Table */}
       <HousingTable
-        year={year}
-        building={building}
-        search={search}
-        onEdit={handleEdit}
+        records={filteredRecords}
+        onEdit={(row) => {
+          setEditingRecord(row);
+          setShowForm(true);
+        }}
       />
 
+      {/* Modal Form */}
       {showForm && (
-        <HousingForm
-          record={editRecord}
-          onClose={handleCloseForm}
-        />
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <HousingForm
+              record={editingRecord}
+              onClose={() => setShowForm(false)}
+            />
+          </div>
+        </div>
       )}
     </div>
   );
