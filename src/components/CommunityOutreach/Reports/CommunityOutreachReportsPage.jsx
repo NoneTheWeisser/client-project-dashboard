@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import useStore from "../../../zustand/store";
 import DepartmentHeader from "../../DesignComponents/DepartmentHeader";
@@ -15,7 +15,6 @@ export default function CommunityOutreachReportsPage() {
   const [search, setSearch] = useState("");
   const [activeReport, setActiveReport] = useState("weekly");
 
-  // grab all data from the store
   const weeklyReports = useStore((state) => state.volunteerWeeklyReports);
   const monthlyReports = useStore((state) => state.volunteerMonthlyReports);
   const byLocationReports = useStore(
@@ -25,30 +24,12 @@ export default function CommunityOutreachReportsPage() {
     (state) => state.volunteerMonthlyByLocationReports
   );
 
-  // Combine all reports to derive unique options
   const allReports = [
     ...weeklyReports,
     ...monthlyReports,
     ...byLocationReports,
     ...monthlyByLocationReports,
   ];
-
-  // Derive unique years from all report dates
-  const yearOptions = Array.from(
-    new Set(
-      allReports
-        .map((r) => {
-          const date = r.week_start || r.month_start || r.event_date;
-          return date ? new Date(date).getFullYear() : null;
-        })
-        .filter(Boolean)
-    )
-  ).sort((a, b) => b - a); // descending order
-
-  // Derive unique locations
-  const locationOptions = Array.from(
-    new Set(allReports.map((r) => r.location).filter(Boolean))
-  ).sort();
 
   const YEAR_OPTIONS = Array.from(
     new Set(
@@ -88,19 +69,10 @@ export default function CommunityOutreachReportsPage() {
         title="Community Outreach"
         actions={
           <>
-            <NavLink
-              to="/outreach"
-              end
-              className={({ isActive }) => (isActive ? "active" : "")}
-            >
+            <NavLink to="/outreach" end>
               Data Entry
             </NavLink>
-            <NavLink
-              to="/outreach/reports"
-              className={({ isActive }) => (isActive ? "active" : "")}
-            >
-              Reports
-            </NavLink>
+            <NavLink to="/outreach/reports">Reports</NavLink>
           </>
         }
       />
@@ -114,10 +86,8 @@ export default function CommunityOutreachReportsPage() {
         setSearch={setSearch}
         activeReport={activeReport}
         setActiveReport={setActiveReport}
-        weeklyReports={weeklyReports}
-        monthlyReports={monthlyReports}
-        byLocationReports={byLocationReports}
-        monthlyByLocationReports={monthlyByLocationReports}
+        YEAR_OPTIONS={YEAR_OPTIONS}
+        LOCATION_OPTIONS={LOCATION_OPTIONS}
       />
 
       <div className="report-container">{renderReport()}</div>
