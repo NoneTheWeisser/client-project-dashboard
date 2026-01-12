@@ -10,35 +10,15 @@ export default function ReportsToolbar({
   setSearch,
   activeReport,
   setActiveReport,
-  weeklyReports = [],
-  monthlyReports = [],
-  byLocationReports = [],
-  monthlyByLocationReports = [],
+  YEAR_OPTIONS = [],
+  LOCATION_OPTIONS = [],
 }) {
-  // Combine all reports to extract unique years & locations
-  const allReports = [
-    ...weeklyReports,
-    ...monthlyReports,
-    ...byLocationReports,
-    ...monthlyByLocationReports,
+  const reportOptions = [
+    { value: "weekly", label: "Weekly" },
+    { value: "monthly", label: "Monthly" },
+    { value: "by-location", label: "By Location" },
+    { value: "monthly-by-location", label: "Monthly by Location" },
   ];
-
-  // Get unique years
-  const YEAR_OPTIONS = Array.from(
-    new Set(
-      allReports
-        .map((r) => {
-          const date = r.week_start || r.month_start || r.event_date;
-          return date ? new Date(date).getFullYear() : null;
-        })
-        .filter(Boolean)
-    )
-  ).sort((a, b) => b - a); // newest first
-
-  // Get unique locations
-  const LOCATION_OPTIONS = Array.from(
-    new Set(allReports.map((r) => r.location).filter(Boolean))
-  ).sort();
 
   return (
     <div className="outreach-toolbar">
@@ -83,35 +63,22 @@ export default function ReportsToolbar({
           />
         </div>
       </div>
-
       <div className="toolbar-right">
-        <button
-          className={activeReport === "weekly" ? "primary" : "secondary"}
-          onClick={() => setActiveReport("weekly")}
+        <label>Report:</label>
+        <select
+          value={activeReport}
+          onChange={(e) => setActiveReport(e.target.value)}
         >
-          Weekly
-        </button>
-        <button
-          className={activeReport === "monthly" ? "primary" : "secondary"}
-          onClick={() => setActiveReport("monthly")}
-        >
-          Monthly
-        </button>
-        <button
-          className={activeReport === "by-location" ? "primary" : "secondary"}
-          onClick={() => setActiveReport("by-location")}
-        >
-          By Location
-        </button>
-        <button
-          className={
-            activeReport === "monthly-by-location" ? "primary" : "secondary"
-          }
-          onClick={() => setActiveReport("monthly-by-location")}
-        >
-          Monthly by Location
-        </button>
+          {reportOptions.map((r) => (
+            <option key={r.value} value={r.value}>
+              {r.label}
+            </option>
+          ))}
+        </select>
       </div>
     </div>
   );
 }
+
+// todo - decided how to handle toolbar look
+// todo - add clear button to toolbar
