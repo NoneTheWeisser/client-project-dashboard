@@ -1,7 +1,11 @@
 import { useEffect } from "react";
 import useStore from "../../../zustand/store";
 
-export default function VolunteerMonthlyByLocationReport({ year, location, search }) {
+export default function VolunteerMonthlyByLocationReport({
+  year,
+  location,
+  search,
+}) {
   const fetchReports = useStore(
     (state) => state.fetchVolunteerMonthlyByLocationReports
   );
@@ -15,27 +19,27 @@ export default function VolunteerMonthlyByLocationReport({ year, location, searc
 
   if (loading) return <p>Loading monthly volunteer reports...</p>;
   if (error) return <p className="table-error">{error}</p>;
-
-  if (!reports || reports.length === 0)
+  if (!reports?.length)
     return <p className="table-empty">No monthly volunteer data available.</p>;
 
   const filteredReports = reports.filter((row) => {
     const matchesYear = year ? row.year === parseInt(year, 10) : true;
-    const matchesLocation = location && location !== "All" ? row.location === location : true;
+    const matchesLocation =
+      location && location !== "All" ? row.location === location : true;
     const matchesSearch = search
       ? row.location.toLowerCase().includes(search.toLowerCase())
       : true;
-
     return matchesYear && matchesLocation && matchesSearch;
   });
 
-  if (filteredReports.length === 0)
-    return <p className="table-empty">No volunteer data matches your filters.</p>;
+  if (!filteredReports.length)
+    return (
+      <p className="table-empty">No volunteer data matches your filters.</p>
+    );
 
   return (
     <div className="report-section">
       <h2>Monthly Volunteer Report by Location</h2>
-
       <div className="table-container table-contained">
         <table className="table-app">
           <thead>

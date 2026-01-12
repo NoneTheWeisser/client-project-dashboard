@@ -1,6 +1,5 @@
 import React from "react";
 import "../CommunityOutreach.css";
-import { FaFilter } from "react-icons/fa";
 
 export default function ReportsToolbar({
   year,
@@ -11,14 +10,11 @@ export default function ReportsToolbar({
   setSearch,
   activeReport,
   setActiveReport,
+  YEAR_OPTIONS = [],
+  LOCATION_OPTIONS = [],
 }) {
-  // Example static options for now; can be dynamic if you have data
-  const YEAR_OPTIONS = ["2026", "2025", "2024"];
-  const LOCATION_OPTIONS = ["All", "Bright Sky", "Community Picnic", "Dorothy Day", "Other"];
-
   return (
     <div className="outreach-toolbar">
-      {/* Left side: filters + search */}
       <div className="toolbar-left">
         {/* Year filter */}
         <div className="filter-group">
@@ -37,6 +33,7 @@ export default function ReportsToolbar({
         <div className="filter-group">
           <label>Location:</label>
           <select value={location} onChange={(e) => setLocation(e.target.value)}>
+            <option value="">All</option>
             {LOCATION_OPTIONS.map((loc) => (
               <option key={loc} value={loc}>
                 {loc}
@@ -57,7 +54,6 @@ export default function ReportsToolbar({
         </div>
       </div>
 
-      {/* Right side: report tabs */}
       <div className="toolbar-right">
         <button
           className={activeReport === "weekly" ? "primary" : "secondary"}

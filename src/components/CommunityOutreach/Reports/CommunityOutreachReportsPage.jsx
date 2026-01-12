@@ -1,58 +1,82 @@
 import React, { useState } from "react";
+import { NavLink } from "react-router-dom";
+import useStore from "../../../zustand/store";
 import DepartmentHeader from "../../DesignComponents/DepartmentHeader";
-import ReportsToolbar from "./ReportsToolbar";
+import ReportsToolbar from "./ReportsToolBar";
 
 import VolunteerWeeklyReport from "./VolunteerWeeklyReport";
 import VolunteerMonthlyReport from "./VolunteerMonthlyReport";
 import VolunteerByLocationReport from "./VolunteerByLocationReport";
 import VolunteerMonthlyByLocationReport from "./VolunteerMonthlyByLocationReport";
 
-import { NavLink } from "react-router-dom";
-import "./OutreachReports.css";
-
 export default function CommunityOutreachReportsPage() {
-  // Filter states
   const [year, setYear] = useState("");
   const [location, setLocation] = useState("");
   const [search, setSearch] = useState("");
-
   const [activeReport, setActiveReport] = useState("weekly");
-  // Active report tab
+
+  // grab all data from the store
+  const weeklyReports = useStore((state) => state.volunteerWeeklyReports);
+  const monthlyReports = useStore((state) => state.volunteerMonthlyReports);
+  const byLocationReports = useStore(
+    (state) => state.volunteerByLocationReports
+  );
+  const monthlyByLocationReports = useStore(
+    (state) => state.volunteerMonthlyByLocationReports
+  );
+
+  // Combine all reports to derive unique options
+  const allReports = [
+    ...weeklyReports,
+    ...monthlyReports,
+    ...byLocationReports,
+    ...monthlyByLocationReports,
+  ];
+
+  // Derive unique years from all report dates
+  const yearOptions = Array.from(
+    new Set(
+      allReports
+        .map((r) => {
+          const date = r.week_start || r.month_start || r.event_date;
+          return date ? new Date(date).getFullYear() : null;
+        })
+        .filter(Boolean)
+    )
+  ).sort((a, b) => b - a); // descending order
+
+  // Derive unique locations
+  const locationOptions = Array.from(
+    new Set(allReports.map((r) => r.location).filter(Boolean))
+  ).sort();
+
+  const YEAR_OPTIONS = Array.from(
+    new Set(
+      allReports
+        .map((r) => {
+          const date = r.week_start || r.month_start || r.event_date;
+          return date ? new Date(date).getFullYear() : null;
+        })
+        .filter(Boolean)
+    )
+  ).sort((a, b) => b - a);
+
+  const LOCATION_OPTIONS = Array.from(
+    new Set(allReports.map((r) => r.location).filter(Boolean))
+  ).sort();
 
   const renderReport = () => {
+    const reportProps = { year, location, search };
+
     switch (activeReport) {
       case "weekly":
-        return (
-          <VolunteerWeeklyReport
-            year={year}
-            location={location}
-            search={search}
-          />
-        );
+        return <VolunteerWeeklyReport {...reportProps} />;
       case "monthly":
-        return (
-          <VolunteerMonthlyReport
-            year={year}
-            location={location}
-            search={search}
-          />
-        );
+        return <VolunteerMonthlyReport {...reportProps} />;
       case "by-location":
-        return (
-          <VolunteerByLocationReport
-            year={year}
-            location={location}
-            search={search}
-          />
-        );
+        return <VolunteerByLocationReport {...reportProps} />;
       case "monthly-by-location":
-        return (
-          <VolunteerMonthlyByLocationReport
-            year={year}
-            location={location}
-            search={search}
-          />
-        );
+        return <VolunteerMonthlyByLocationReport {...reportProps} />;
       default:
         return null;
     }
@@ -60,7 +84,6 @@ export default function CommunityOutreachReportsPage() {
 
   return (
     <div className="hub-container">
-      {/* Department Header */}
       <DepartmentHeader
         title="Community Outreach"
         actions={
@@ -82,7 +105,6 @@ export default function CommunityOutreachReportsPage() {
         }
       />
 
-      {/* Toolbar */}
       <ReportsToolbar
         year={year}
         setYear={setYear}
@@ -92,9 +114,10 @@ export default function CommunityOutreachReportsPage() {
         setSearch={setSearch}
         activeReport={activeReport}
         setActiveReport={setActiveReport}
+        YEAR_OPTIONS={yearOptions}
+        LOCATION_OPTIONS={locationOptions}
       />
 
-      {/* Active Report */}
       <div className="report-container">{renderReport()}</div>
     </div>
   );
