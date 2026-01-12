@@ -1,5 +1,5 @@
 import React from "react";
-import "../CommunityOutreach.css";
+import "../../../styles/toolbar.css";
 
 export default function ReportsToolbar({
   year,
@@ -12,6 +12,7 @@ export default function ReportsToolbar({
   setActiveReport,
   YEAR_OPTIONS = [],
   LOCATION_OPTIONS = [],
+  onClear,
 }) {
   const reportOptions = [
     { value: "weekly", label: "Weekly" },
@@ -21,64 +22,47 @@ export default function ReportsToolbar({
   ];
 
   return (
-    <div className="outreach-toolbar">
+    <div className="toolbar-container">
+      {/* Left side filters */}
       <div className="toolbar-left">
-        {/* Year filter */}
+        <div className="filter-group">
+          <label>Report:</label>
+          <select value={activeReport} onChange={(e) => setActiveReport(e.target.value)}>
+            {reportOptions.map((r) => (
+              <option key={r.value} value={r.value}>{r.label}</option>
+            ))}
+          </select>
+        </div>
+
         <div className="filter-group">
           <label>Year:</label>
           <select value={year} onChange={(e) => setYear(e.target.value)}>
             <option value="">All</option>
-            {YEAR_OPTIONS.map((y) => (
-              <option key={y} value={y}>
-                {y}
-              </option>
-            ))}
+            {YEAR_OPTIONS.map((y) => <option key={y} value={y}>{y}</option>)}
           </select>
         </div>
 
-        {/* Location filter */}
         <div className="filter-group">
           <label>Location:</label>
-          <select
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-          >
+          <select value={location} onChange={(e) => setLocation(e.target.value)}>
             <option value="">All</option>
-            {LOCATION_OPTIONS.map((loc) => (
-              <option key={loc} value={loc}>
-                {loc}
-              </option>
-            ))}
+            {LOCATION_OPTIONS.map((loc) => <option key={loc} value={loc}>{loc}</option>)}
           </select>
         </div>
 
-        {/* Search */}
         <div className="filter-group">
           <label>Search:</label>
-          <input
-            type="text"
-            placeholder="Search..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
+          <input type="text" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} />
         </div>
       </div>
+
+      {/* Right side clear button */}
       <div className="toolbar-right">
-        <label>Report:</label>
-        <select
-          value={activeReport}
-          onChange={(e) => setActiveReport(e.target.value)}
-        >
-          {reportOptions.map((r) => (
-            <option key={r.value} value={r.value}>
-              {r.label}
-            </option>
-          ))}
-        </select>
+        <button className="clear-button" onClick={onClear}>Clear</button>
       </div>
     </div>
   );
 }
 
-// todo - decided how to handle toolbar look
-// todo - add clear button to toolbar
+
+// todo - conditional render or grey out dropdowns if they do not work with that report. 
