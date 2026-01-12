@@ -114,8 +114,10 @@ export default function CommunityOutreachReportsPage() {
         setSearch={setSearch}
         activeReport={activeReport}
         setActiveReport={setActiveReport}
-        YEAR_OPTIONS={yearOptions}
-        LOCATION_OPTIONS={locationOptions}
+        weeklyReports={weeklyReports}
+        monthlyReports={monthlyReports}
+        byLocationReports={byLocationReports}
+        monthlyByLocationReports={monthlyByLocationReports}
       />
 
       <div className="report-container">{renderReport()}</div>

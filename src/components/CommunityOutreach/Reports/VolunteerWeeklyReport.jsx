@@ -13,20 +13,22 @@ export default function VolunteerWeeklyReport({ year, location, search }) {
 
   if (loading) return <p>Loading weekly volunteer reports...</p>;
   if (error) return <p className="table-error">{error}</p>;
-  if (!reports?.length)
+  if (!reports || reports.length === 0)
     return <p className="table-empty">No weekly volunteer data available.</p>;
 
   const filteredReports = reports.filter((row) => {
-    const matchesYear = year ? row.year === parseInt(year, 10) : true;
+    const reportYear = new Date(row.week_start).getFullYear();
+    const matchesYear = year ? reportYear === parseInt(year, 10) : true;
     const matchesLocation =
       location && location !== "All" ? row.location === location : true;
     const matchesSearch = search
-      ? row.volunteer_name?.toLowerCase().includes(search.toLowerCase())
+      ? (row.volunteer_name || "").toLowerCase().includes(search.toLowerCase())
       : true;
+
     return matchesYear && matchesLocation && matchesSearch;
   });
 
-  if (!filteredReports.length)
+  if (filteredReports.length === 0)
     return (
       <p className="table-empty">
         No weekly volunteer data matches your filters.

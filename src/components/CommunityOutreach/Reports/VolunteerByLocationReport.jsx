@@ -13,16 +13,24 @@ export default function VolunteerByLocationReport({ year, location, search }) {
 
   if (loading) return <p>Loading volunteer reports by location...</p>;
   if (error) return <p className="table-error">{error}</p>;
-  if (!reports?.length) return <p className="table-empty">No volunteer data by location available.</p>;
+  if (!reports || reports.length === 0)
+    return <p className="table-empty">No volunteer data by location available.</p>;
 
   const filteredReports = reports.filter((row) => {
-    const matchesYear = year ? row.year === parseInt(year, 10) : true;
+    const reportYear = row.week_start || row.month_start
+      ? new Date(row.week_start || row.month_start).getFullYear()
+      : null;
+    const matchesYear = year ? reportYear === parseInt(year, 10) : true;
     const matchesLocation = location && location !== "All" ? row.location === location : true;
-    const matchesSearch = search ? row.location.toLowerCase().includes(search.toLowerCase()) : true;
+    const matchesSearch = search
+      ? (row.location || "").toLowerCase().includes(search.toLowerCase())
+      : true;
+
     return matchesYear && matchesLocation && matchesSearch;
   });
 
-  if (!filteredReports.length) return <p className="table-empty">No volunteer data matches your filters.</p>;
+  if (filteredReports.length === 0)
+    return <p className="table-empty">No volunteer data matches your filters.</p>;
 
   return (
     <div className="report-section">

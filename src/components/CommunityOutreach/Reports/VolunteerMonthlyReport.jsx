@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import useStore from "../../../zustand/store";
 
-export default function VolunteerWeeklyReport({ year, location, search }) {
-  const fetchReports = useStore((state) => state.fetchVolunteerWeeklyReports);
-  const reports = useStore((state) => state.volunteerWeeklyReports);
+export default function VolunteerMonthlyReport({ year, location, search }) {
+  const fetchReports = useStore((state) => state.fetchVolunteerMonthlyReports);
+  const reports = useStore((state) => state.volunteerMonthlyReports);
   const loading = useStore((state) => state.loadingVolunteerReports);
   const error = useStore((state) => state.errorVolunteerReports);
 
@@ -11,36 +11,33 @@ export default function VolunteerWeeklyReport({ year, location, search }) {
     fetchReports();
   }, [fetchReports]);
 
-  if (loading) return <p>Loading weekly volunteer reports...</p>;
+  if (loading) return <p>Loading monthly volunteer reports...</p>;
   if (error) return <p className="table-error">{error}</p>;
-  if (!reports?.length)
-    return <p className="table-empty">No weekly volunteer data available.</p>;
+  if (!reports || reports.length === 0)
+    return <p className="table-empty">No monthly volunteer data available.</p>;
 
   const filteredReports = reports.filter((row) => {
-    const matchesYear = year ? row.year === parseInt(year, 10) : true;
-    const matchesLocation =
-      location && location !== "All" ? row.location === location : true;
+    const reportYear = new Date(row.month_start).getFullYear();
+    const matchesYear = year ? reportYear === parseInt(year, 10) : true;
+    const matchesLocation = location && location !== "All" ? row.location === location : true;
     const matchesSearch = search
-      ? row.volunteer_name?.toLowerCase().includes(search.toLowerCase())
+      ? (row.volunteer_name || "").toLowerCase().includes(search.toLowerCase())
       : true;
+
     return matchesYear && matchesLocation && matchesSearch;
   });
 
-  if (!filteredReports.length)
-    return (
-      <p className="table-empty">
-        No weekly volunteer data matches your filters.
-      </p>
-    );
+  if (filteredReports.length === 0)
+    return <p className="table-empty">No monthly volunteer data matches your filters.</p>;
 
   return (
     <div className="report-section">
-      <h2>Weekly Community Outreach Report</h2>
+      <h2>Monthly Community Outreach Report</h2>
       <div className="table-container table-contained">
         <table className="table-app">
           <thead>
             <tr>
-              <th>Week</th>
+              <th>Month</th>
               <th>Total Volunteers</th>
               <th>Software Signups</th>
               <th>Unique Volunteers</th>
@@ -48,8 +45,8 @@ export default function VolunteerWeeklyReport({ year, location, search }) {
           </thead>
           <tbody>
             {filteredReports.map((row) => (
-              <tr key={row.week_start}>
-                <td>{row.week_range}</td>
+              <tr key={row.month_start}>
+                <td>{row.month_label}</td>
                 <td>{row.total_volunteers}</td>
                 <td>{row.total_signups}</td>
                 <td>{row.volunteer_count}</td>

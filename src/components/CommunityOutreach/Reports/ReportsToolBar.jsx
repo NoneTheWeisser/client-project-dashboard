@@ -10,9 +10,36 @@ export default function ReportsToolbar({
   setSearch,
   activeReport,
   setActiveReport,
-  YEAR_OPTIONS = [],
-  LOCATION_OPTIONS = [],
+  weeklyReports = [],
+  monthlyReports = [],
+  byLocationReports = [],
+  monthlyByLocationReports = [],
 }) {
+  // Combine all reports to extract unique years & locations
+  const allReports = [
+    ...weeklyReports,
+    ...monthlyReports,
+    ...byLocationReports,
+    ...monthlyByLocationReports,
+  ];
+
+  // Get unique years
+  const YEAR_OPTIONS = Array.from(
+    new Set(
+      allReports
+        .map((r) => {
+          const date = r.week_start || r.month_start || r.event_date;
+          return date ? new Date(date).getFullYear() : null;
+        })
+        .filter(Boolean)
+    )
+  ).sort((a, b) => b - a); // newest first
+
+  // Get unique locations
+  const LOCATION_OPTIONS = Array.from(
+    new Set(allReports.map((r) => r.location).filter(Boolean))
+  ).sort();
+
   return (
     <div className="outreach-toolbar">
       <div className="toolbar-left">
@@ -32,7 +59,10 @@ export default function ReportsToolbar({
         {/* Location filter */}
         <div className="filter-group">
           <label>Location:</label>
-          <select value={location} onChange={(e) => setLocation(e.target.value)}>
+          <select
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+          >
             <option value="">All</option>
             {LOCATION_OPTIONS.map((loc) => (
               <option key={loc} value={loc}>
@@ -74,7 +104,9 @@ export default function ReportsToolbar({
           By Location
         </button>
         <button
-          className={activeReport === "monthly-by-location" ? "primary" : "secondary"}
+          className={
+            activeReport === "monthly-by-location" ? "primary" : "secondary"
+          }
           onClick={() => setActiveReport("monthly-by-location")}
         >
           Monthly by Location
