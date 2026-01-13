@@ -21,7 +21,7 @@ import ComplianceReporting from "../ComplianceWeekly/ComplianceReporting";
 
 import KitchenPage from "../kitchen/kitchenPage";
 
-import HousingHome from "../Housing/HousingHome";
+import HousingPage from "../Housing/HousingPage";
 import HousingReports from "../Housing/HousingReports";
 
 import ShelterWeeklyList from "../shelter/ShelterWeeklyList";
@@ -86,7 +86,7 @@ function App() {
           <Route exact path="/about" element={<AboutPage />} />
 
           {/* Housing */}
-          <Route path="/housing" element={<HousingHome />} />
+          <Route path="/housing" element={<HousingPage />} />
           <Route path="/housing/reports" element={<HousingReports />} />
 
           {/* Media */}

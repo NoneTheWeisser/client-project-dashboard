@@ -3,23 +3,26 @@ import { NavLink } from "react-router-dom";
 import useStore from "../../zustand/store";
 import DepartmentHeader from "../DesignComponents/DepartmentHeader";
 import MediaToolBar from "./MediaToolBar";
-import MediaTable from "./MediaTable";
+import MediaList from "./MediaList";
 import MediaForm from "./MediaForm";
+
+import "../../styles/toolbar.css";
 import "./Media.css";
+import "../../styles/modal.css";
 
 export default function MediaPage() {
   const mediaRecords = useStore((state) => state.mediaRecords);
   const fetchMediaRecords = useStore((state) => state.fetchMediaRecords);
 
-  // Modal state
+  // --- Modal state ---
   const [showForm, setShowForm] = useState(false);
   const [editingRecord, setEditingRecord] = useState(null);
 
-  // Filters / search (placeholder for future use)
+  // --- Filters / search state ---
   const [platformFilter, setPlatformFilter] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
 
-  // Filtered records
+  // --- Filtered records ---
   const filteredRecords = mediaRecords
     .filter((r) => {
       if (platformFilter && r.platform !== platformFilter) return false;
@@ -32,13 +35,30 @@ export default function MediaPage() {
     })
     .sort((a, b) => new Date(b.month_date) - new Date(a.month_date));
 
-  // Fetch records on mount
+  // --- Fetch records on mount ---
   useEffect(() => {
     fetchMediaRecords();
   }, [fetchMediaRecords]);
 
+  /** --- Handlers --- **/
+  const handleAddMedia = () => {
+    setEditingRecord(null);
+    setShowForm(true);
+  };
+
+  const handleEditMedia = (record) => {
+    setEditingRecord(record);
+    setShowForm(true);
+  };
+
+  const handleClearFilters = () => {
+    setPlatformFilter("");
+    setSearchTerm("");
+  };
+
   return (
     <div className="hub-container">
+      {/* Department Header */}
       <DepartmentHeader
         title="Media Records"
         actions={
@@ -60,45 +80,38 @@ export default function MediaPage() {
         }
       />
 
-      {/* Toolbar */}
-      <div className="media-toolbar">
-        <MediaToolBar
-          filters={{
-            platform: {
-              label: "Platform",
-              options: [
-                "Website",
-                "Facebook",
-                "Instagram",
-                "TikTok",
-                "Newsletter",
-              ],
-              value: platformFilter,
-              onChange: setPlatformFilter,
-            },
-          }}
-          search={{ value: searchTerm, onChange: setSearchTerm }}
-          onAdd={() => {
-            setEditingRecord(null);
-            setShowForm(true);
-          }}
-        />
+      {/* Top Action Button */}
+      <div className="toolbar-actions-top">
+        <button onClick={handleAddMedia}>Add Media</button>
       </div>
 
-      {/* Table */}
-      <MediaTable
-        records={filteredRecords}
-        onEdit={(row) => {
-          setEditingRecord(row);
-          setShowForm(true);
+      {/* Filters Toolbar */}
+      <MediaToolBar
+        filters={{
+          platform: {
+            label: "Platform",
+            options: [
+              "Website",
+              "Facebook",
+              "Instagram",
+              "TikTok",
+              "Newsletter",
+            ],
+            value: platformFilter,
+            onChange: setPlatformFilter,
+          },
         }}
+        search={{ value: searchTerm, onChange: setSearchTerm }}
+        onClear={handleClearFilters}
       />
+
+      {/* Media Table */}
+      <MediaList records={filteredRecords} onEdit={handleEditMedia} />
 
       {/* Modal Form */}
       {showForm && (
         <div className="modal-overlay">
           <div className="modal-content">
-            {/* Close button in top-right */}
             <button
               className="modal-close-btn"
               onClick={() => setShowForm(false)}

@@ -7,7 +7,7 @@ import useStore from "../../zustand/store";
 import { NavLink } from "react-router-dom";
 import "./Housing.css";
 
-export default function HousingHome() {
+export default function HousingPage() {
   const housingRecords = useStore((state) => state.housingRecords);
   const fetchHousingRecords = useStore((state) => state.fetchHousingRecords);
 

@@ -3,17 +3,21 @@ import useStore from "../../zustand/store";
 import "../../styles/toolbar.css";
 
 export default function OutreachToolbar({ filters, onFilterChange, onClear }) {
+  // --- Zustand store ---
   const volunteers = useStore((state) => state.volunteers);
   const engagements = useStore((state) => state.engagements);
 
+  // --- Local state for controlled inputs ---
   const [selectedVolunteer, setSelectedVolunteer] = useState(
-    filters.volunteerId
+    filters.volunteerId || ""
   );
-  const [selectedLocation, setSelectedLocation] = useState(filters.location);
-  const [selectedYear, setSelectedYear] = useState(filters.year);
-  const [search, setSearch] = useState(filters.search);
+  const [selectedLocation, setSelectedLocation] = useState(
+    filters.location || ""
+  );
+  const [selectedYear, setSelectedYear] = useState(filters.year || "");
+  const [search, setSearch] = useState(filters.search || "");
 
-  // Generate dynamic options
+  // --- Generate dropdown options from store ---
   const volunteerOptions = volunteers.map((v) => ({ id: v.id, name: v.name }));
   const locationOptions = Array.from(
     new Set(engagements.map((e) => e.location))
@@ -22,7 +26,15 @@ export default function OutreachToolbar({ filters, onFilterChange, onClear }) {
     new Set(engagements.map((e) => new Date(e.event_date).getFullYear()))
   ).sort((a, b) => b - a);
 
-  // Update parent filters whenever selection changes
+  // --- Sync local state if parent filters change ---
+  useEffect(() => {
+    setSelectedVolunteer(filters.volunteerId || "");
+    setSelectedLocation(filters.location || "");
+    setSelectedYear(filters.year || "");
+    setSearch(filters.search || "");
+  }, [filters]);
+
+  // --- Notify parent when local state changes ---
   useEffect(() => {
     onFilterChange({
       volunteerId: selectedVolunteer,
@@ -35,6 +47,7 @@ export default function OutreachToolbar({ filters, onFilterChange, onClear }) {
   return (
     <div className="toolbar-container">
       <div className="toolbar-left">
+        {/* Year Filter */}
         <div className="filter-group">
           <label>Year:</label>
           <select
@@ -50,6 +63,7 @@ export default function OutreachToolbar({ filters, onFilterChange, onClear }) {
           </select>
         </div>
 
+        {/* Volunteer Filter */}
         <div className="filter-group">
           <label>Volunteer:</label>
           <select
@@ -65,6 +79,7 @@ export default function OutreachToolbar({ filters, onFilterChange, onClear }) {
           </select>
         </div>
 
+        {/* Location Filter */}
         <div className="filter-group">
           <label>Location:</label>
           <select
@@ -80,6 +95,7 @@ export default function OutreachToolbar({ filters, onFilterChange, onClear }) {
           </select>
         </div>
 
+        {/* Search Filter */}
         <div className="filter-group">
           <label>Search:</label>
           <input
@@ -91,6 +107,7 @@ export default function OutreachToolbar({ filters, onFilterChange, onClear }) {
         </div>
       </div>
 
+      {/* Clear Button */}
       <div className="toolbar-right">
         <button className="clear-button" onClick={onClear}>
           Clear

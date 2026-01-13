@@ -3,7 +3,7 @@ import useStore from "../../zustand/store";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { numberFormatter, formatPercent } from "../../styles/formatters";
 
-export default function MediaTable({ records, onEdit }) {
+export default function MediaList({ records, onEdit }) {
   const deleteMediaRecord = useStore((state) => state.deleteMediaRecord);
   const fetchMediaRecords = useStore((state) => state.fetchMediaRecords);
   const loadingMedia = useStore((state) => state.loadingMedia);
