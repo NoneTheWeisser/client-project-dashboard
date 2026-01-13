@@ -14,28 +14,7 @@
   gap: 24px;
 }
 
-/* Toolbar container for reports or outreach */
-.toolbar-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end; /* ensures Clear button aligns with bottom of filters */
-  background-color: rgba(0, 0, 0, 0.05); /* 5% black */
-  padding: 16px;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  gap: 16px;
-  margin-bottom: 16px;
-  flex-wrap: wrap;
-}
-
-.toolbar-left,
-.toolbar-right {
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-  align-items: flex-end;
-}
-
+/* Toolbar container for reports or outreach - see toolbar.css*/
 
 
 .filter-group {

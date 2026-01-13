@@ -9,7 +9,10 @@
   --brand-primary: #03a696;
   --brand-primary-hover: #028f7f;
   --brand-primary-soft: rgba(3, 166, 150, 0.12);
-  --brand-primary-dark: rgba(42, 87, 84,);
+  --brand-primary-dark: #2a5754;
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
 
   /* Secondary / accent */
   --brand-secondary: #1c71a6;

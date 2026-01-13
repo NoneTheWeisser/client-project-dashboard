@@ -1,10 +1,10 @@
 import React from "react";
-import "./Media.css";
+import "../../styles/toolbar.css"; // uses the general toolbar styles
 
-export default function MediaToolBar({ filters = {}, search = {}, onAdd }) {
+export default function MediaToolBar({ filters = {}, search = {}, onClear }) {
   return (
-    <div className="media-toolbar">
-      {/* Left side: filters + search */}
+    <div className="toolbar-container">
+      {/* Left side filters */}
       <div className="toolbar-left">
         {Object.entries(filters).map(([key, filter]) => (
           <div key={key} className="filter-group">
@@ -40,11 +40,11 @@ export default function MediaToolBar({ filters = {}, search = {}, onAdd }) {
         )}
       </div>
 
-      {/* Right side: Add button */}
+      {/* Right side: Clear button */}
       <div className="toolbar-right">
-        {onAdd && (
-          <button className="secondary" onClick={onAdd}>
-            Add Media
+        {onClear && (
+          <button className="clear-button" onClick={onClear}>
+            Clear
           </button>
         )}
       </div>

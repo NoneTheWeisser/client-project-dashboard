@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import useStore from "../../zustand/store";
 import DepartmentHeader from "../DesignComponents/DepartmentHeader";
 import MediaToolBar from "./MediaToolBar";
-import MediaTable from "./MediaTable";
+import MediaList from "./MediaList";
 import MediaForm from "./MediaForm";
 import "./Media.css";
 
@@ -15,14 +15,25 @@ export default function MediaPage() {
   const [showForm, setShowForm] = useState(false);
   const [editingRecord, setEditingRecord] = useState(null);
 
-  // Filters / search (placeholder for future use)
+  // Filters / search
   const [platformFilter, setPlatformFilter] = useState("");
+  const [yearFilter, setYearFilter] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+
+  // Derive dynamic filter options from store
+  const platformOptions = Array.from(
+    new Set(mediaRecords.map((r) => r.platform))
+  ).sort();
+  const yearOptions = Array.from(
+    new Set(mediaRecords.map((r) => new Date(r.month_date).getFullYear()))
+  ).sort((a, b) => b - a);
 
   // Filtered records
   const filteredRecords = mediaRecords
     .filter((r) => {
       if (platformFilter && r.platform !== platformFilter) return false;
+      if (yearFilter && new Date(r.month_date).getFullYear() !== +yearFilter)
+        return false;
       if (searchTerm) {
         const term = searchTerm.toLowerCase();
         const combined = `${r.platform ?? ""} ${r.notes ?? ""}`.toLowerCase();
@@ -37,56 +48,58 @@ export default function MediaPage() {
     fetchMediaRecords();
   }, [fetchMediaRecords]);
 
+  /** --- Handlers --- **/
+  const handleAddMedia = () => {
+    setEditingRecord(null);
+    setShowForm(true);
+  };
+
+  const handleClearFilters = () => {
+    setPlatformFilter("");
+    setYearFilter("");
+    setSearchTerm("");
+  };
+
   return (
     <div className="hub-container">
       <DepartmentHeader
         title="Media Records"
         actions={
           <>
-            <NavLink
-              to="/media"
-              end
-              className={({ isActive }) => (isActive ? "active" : "")}
-            >
+            <NavLink to="/media" end>
               Data Entry
             </NavLink>
-            <NavLink
-              to="/media/reports"
-              className={({ isActive }) => (isActive ? "active" : "")}
-            >
-              Reports
-            </NavLink>
+            <NavLink to="/media/reports">Reports</NavLink>
           </>
         }
       />
-
-      {/* Toolbar */}
+      <div className="toolbar-actions-top">
+        <button onClick={handleAddMedia}>Add Media</button>
+      </div>
       <div className="media-toolbar">
         <MediaToolBar
           filters={{
             platform: {
               label: "Platform",
-              options: [
-                "Website",
-                "Facebook",
-                "Instagram",
-                "TikTok",
-                "Newsletter",
-              ],
               value: platformFilter,
+              options: platformOptions,
               onChange: setPlatformFilter,
+            },
+            year: {
+              label: "Year",
+              value: yearFilter,
+              options: yearOptions,
+              onChange: setYearFilter,
+              type: "number",
             },
           }}
           search={{ value: searchTerm, onChange: setSearchTerm }}
-          onAdd={() => {
-            setEditingRecord(null);
-            setShowForm(true);
-          }}
+          onClear={handleClearFilters}
         />
       </div>
 
       {/* Table */}
-      <MediaTable
+      <MediaList
         records={filteredRecords}
         onEdit={(row) => {
           setEditingRecord(row);
@@ -98,14 +111,12 @@ export default function MediaPage() {
       {showForm && (
         <div className="modal-overlay">
           <div className="modal-content">
-            {/* Close button in top-right */}
             <button
               className="modal-close-btn"
               onClick={() => setShowForm(false)}
             >
               &times;
             </button>
-
             <MediaForm
               editRecord={editingRecord}
               setEditRecord={setEditingRecord}
@@ -117,3 +128,6 @@ export default function MediaPage() {
     </div>
   );
 }
+
+
+// todo - make toolbar smaller so add media button is more page is more balanced.  
