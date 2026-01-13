@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import useStore from "../../../zustand/store";
 import DepartmentHeader from "../../DesignComponents/DepartmentHeader";
 import DonationForm from "./DonationForm";
-import DonationTable from "./DonationTable";
+import DonationList from "./DonationList";
 
 import "../../../styles/modal.css";
 import "./Donors.css";
@@ -93,7 +93,7 @@ export default function DonationsPage() {
       {donations.length === 0 ? (
         <p>No donations found.</p>
       ) : (
-        <DonationTable
+        <DonationList
           donations={donations}
           onEdit={handleEdit}
           onDelete={handleDelete}

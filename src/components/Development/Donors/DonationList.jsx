@@ -1,6 +1,6 @@
 import { FaEdit, FaTrash } from "react-icons/fa";
 
-export default function DonationTable({ donations, onEdit, onDelete }) {
+export default function DonationList({ donations, onEdit, onDelete }) {
   const formatDate = (date) => new Date(date).toLocaleDateString("en-US");
 
   if (donations.length === 0) return <p>No donations found.</p>;
