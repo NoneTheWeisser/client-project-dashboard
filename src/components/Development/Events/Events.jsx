@@ -1,189 +1,92 @@
 import { useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
 import useStore from "../../../zustand/store";
-
-const EVENT_TYPES = [
-  "Fundraiser",
-  "Community Events",
-  "Large Volunteer Event",
-  "Other",
-];
+import DepartmentHeader from "../../DesignComponents/DepartmentHeader";
+import EventForm from "./EventForm";
+import EventList from "./EventList";
+import "../../../styles/modal.css";
+import "../Donors/Donors.css";
 
 export default function EventsPage() {
-  const fetchEvents = useStore((state) => state.fetchEvents);
-  const addEvent = useStore((state) => state.addEvent);
-  const editEvent = useStore((state) => state.editEvent);
-  const deleteEvent = useStore((state) => state.deleteEvent);
+  const fetchEvents = useStore((s) => s.fetchEvents);
+  const addEvent = useStore((s) => s.addEvent);
+  const editEvent = useStore((s) => s.editEvent);
+  const deleteEvent = useStore((s) => s.deleteEvent);
+  const events = useStore((s) => s.events);
+  const loading = useStore((s) => s.loading);
+  const error = useStore((s) => s.error);
 
-  const events = useStore((state) => state.events);
-  const loading = useStore((state) => state.loading);
-  const error = useStore((state) => state.error);
-
-  const [editId, setEditId] = useState(null);
-  const [name, setName] = useState("");
-  const [datetime, setDatetime] = useState("");
-  const [venue, setVenue] = useState("");
-  const [type, setType] = useState("");
-  const [notes, setNotes] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [editingEvent, setEditingEvent] = useState(null);
 
   useEffect(() => {
     fetchEvents();
   }, [fetchEvents]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!name || !datetime || !venue || !type) {
-      alert("Name, date/time, venue, and type are required");
-      return;
-    }
-
-    if (editId) {
-      await editEvent(editId, {
-        name,
-        datetime,
-        venue,
-        type,
-        notes,
-      });
-      setEditId(null);
-    } else {
-      await addEvent({
-        name,
-        datetime,
-        venue,
-        type,
-        notes,
-      });
-    }
-
-    // reset form
-    setName("");
-    setDatetime("");
-    setVenue("");
-    setType("");
-    setNotes("");
+  const handleAddClick = () => {
+    setEditingEvent(null);
+    setShowModal(true);
   };
 
   const handleEdit = (event) => {
-    setEditId(event.id);
-    setName(event.name);
-    setDatetime(event.datetime.slice(0, 16));
-    setVenue(event.venue);
-    setType(event.type);
-    setNotes(event.notes || "");
+    setEditingEvent(event);
+    setShowModal(true);
+  };
+
+  const handleSubmit = async (data) => {
+    if (editingEvent) {
+      await editEvent(editingEvent.id, data);
+    } else {
+      await addEvent(data);
+    }
+    setShowModal(false);
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this event?")) return;
-    await deleteEvent(id);
+    if (window.confirm("Are you sure you want to delete this event?")) {
+      await deleteEvent(id);
+    }
   };
 
   if (loading) return <p>Loading events...</p>;
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div>
-      <h2>Events</h2>
+    <div className="hub-container events">
+      <DepartmentHeader
+        title="Events"
+        actions={
+          <>
+            <NavLink to="/development" end className={({ isActive }) => isActive ? "active" : ""}>
+              Home
+            </NavLink>
+            <NavLink to="/development/reports" className={({ isActive }) => isActive ? "active" : ""}>
+              Reports
+            </NavLink>
+          </>
+        }
+      />
 
-      <h3>{editId ? "Edit Event" : "Add Event"}</h3>
+      <div className="toolbar-actions-top">
+        <button onClick={handleAddClick}>Add Event</button>
+      </div>
 
-      <form onSubmit={handleSubmit}>
-        <input
-          placeholder="Event name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
+      <EventList events={events} onEdit={handleEdit} onDelete={handleDelete} />
 
-        <input
-          type="datetime-local"
-          value={datetime}
-          onChange={(e) => setDatetime(e.target.value)}
-        />
+      {showModal && (
+        <div className="modal-overlay" onClick={() => setShowModal(false)}>
+          <div className="modal-container" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close-btn" onClick={() => setShowModal(false)}>
+              &times;
+            </button>
 
-        <input
-          placeholder="Venue"
-          value={venue}
-          onChange={(e) => setVenue(e.target.value)}
-        />
-
-        <select value={type} onChange={(e) => setType(e.target.value)}>
-          <option value="">Select event type</option>
-          {EVENT_TYPES.map((t) => (
-            <option key={t} value={t}>
-              {t}
-            </option>
-          ))}
-        </select>
-
-        <input
-          placeholder="Notes"
-          value={notes}
-          onChange={(e) => setNotes(e.target.value)}
-        />
-
-        <button type="submit">{editId ? "Update Event" : "Add Event"}</button>
-
-        {editId && (
-          <button
-            type="button"
-            onClick={() => {
-              setEditId(null);
-              setName("");
-              setDatetime("");
-              setVenue("");
-              setType("");
-              setNotes("");
-            }}
-          >
-            Cancel Edit
-          </button>
-        )}
-      </form>
-
-      <h3>All Events</h3>
-
-      {events.length === 0 ? (
-        <p>No events found.</p>
-      ) : (
-        <div className="table-container" style={{ maxWidth: "1400px" }}>
-          <table className="table-app table-hover table-striped">
-            {" "}
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Date / Time</th>
-                <th>Venue</th>
-                <th>Type</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {events.map((event) => (
-                <tr key={event.id}>
-                  <td>{event.name}</td>
-                  <td>{new Date(event.datetime).toLocaleString()}</td>
-                  <td>{event.venue}</td>
-                  <td>{event.type}</td>
-                  <td>
-                    <div className="table-actions">
-                      <button
-                        className="btn btn-sm btn-table-edit"
-                        onClick={() => handleEdit(donor)}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        className="btn btn-sm btn-table-delete"
-                        onClick={() => handleDelete(donor.id)}
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+            <h3>{editingEvent ? "Edit Event" : "Add Event"}</h3>
+            <EventForm
+              initialData={editingEvent}
+              onSubmit={handleSubmit}
+              onCancel={() => setShowModal(false)}
+            />
+          </div>
         </div>
       )}
     </div>

@@ -1,13 +1,12 @@
+import { FaEdit, FaTrash } from "react-icons/fa";
+
 export default function DonationTable({ donations, onEdit, onDelete }) {
   const formatDate = (date) => new Date(date).toLocaleDateString("en-US");
 
   if (donations.length === 0) return <p>No donations found.</p>;
 
   return (
-    <div
-      className="table-container"
-      style={{ maxWidth: "1400px", margin: "0 auto" }}
-    >
+    <div className="table-container">
       <table className="table-app table-hover table-striped">
         <thead>
           <tr>
@@ -33,17 +32,15 @@ export default function DonationTable({ donations, onEdit, onDelete }) {
                 <div className="table-actions">
                   <button
                     className="btn btn-sm btn-table-edit"
-                    onClick={() => onEdit(r)}
+                    onClick={() => onEdit(d)}
                   >
-                    Edit
+                    <FaEdit />
                   </button>
                   <button
                     className="btn btn-sm btn-table-delete"
-                    onClick={() =>
-                      handleDelete(r.housing_building_id, r.month_date)
-                    }
+                    onClick={() => onDelete(d.id)}
                   >
-                    Delete
+                    <FaTrash />
                   </button>
                 </div>
               </td>
