@@ -1,6 +1,4 @@
-import { FaPlus } from "react-icons/fa";
 import useStore from "../../zustand/store";
-import "./Housing.css";
 
 export default function HousingToolBar({
   year,
@@ -9,7 +7,7 @@ export default function HousingToolBar({
   setBuilding,
   search,
   setSearch,
-  onAdd,
+  onClear,
 }) {
   const housingRecords = useStore((state) => state.housingRecords);
 
@@ -27,9 +25,9 @@ export default function HousingToolBar({
   ).sort();
 
   return (
-    <div className="housing-toolbar">
+    <div className="toolbar-container">
+      {/* Left side: filters */}
       <div className="toolbar-left">
-        {/* Year filter */}
         <div className="filter-group">
           <label>Year:</label>
           <select value={year} onChange={(e) => setYear(e.target.value)}>
@@ -42,7 +40,6 @@ export default function HousingToolBar({
           </select>
         </div>
 
-        {/* Building filter */}
         <div className="filter-group">
           <label>Building:</label>
           <select
@@ -58,7 +55,6 @@ export default function HousingToolBar({
           </select>
         </div>
 
-        {/* Search */}
         <div className="filter-group">
           <label>Search:</label>
           <input
@@ -70,10 +66,10 @@ export default function HousingToolBar({
         </div>
       </div>
 
-      {/* Right side: Add button */}
+      {/* Right side: Clear button */}
       <div className="toolbar-right">
-        <button className="secondary" onClick={onAdd}>
-          Add New Record
+        <button className="clear-button" onClick={onClear}>
+          Clear
         </button>
       </div>
     </div>

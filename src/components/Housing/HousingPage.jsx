@@ -25,7 +25,14 @@ export default function HousingPage() {
     fetchHousingRecords();
   }, [fetchHousingRecords]);
 
-  // Filtered records (passed to table)
+  // Clear filters function
+  const handleClearFilters = () => {
+    setYear("");
+    setBuilding("");
+    setSearch("");
+  };
+
+  // Filtered records
   const filteredRecords = housingRecords.filter((r) => {
     const date = r.month_date ? new Date(r.month_date) : null;
     if (year && date && date.getFullYear() !== Number(year)) return false;
@@ -62,6 +69,18 @@ export default function HousingPage() {
         }
       />
 
+      {/* Add button above toolbar */}
+      <div className="toolbar-actions-top">
+        <button
+            onClick={() => {
+            setEditingRecord(null);
+            setShowForm(true);
+          }}
+        >
+          Add Housing Record
+        </button>
+      </div>
+
       {/* Toolbar */}
       <HousingToolBar
         year={year}
@@ -70,10 +89,7 @@ export default function HousingPage() {
         setBuilding={setBuilding}
         search={search}
         setSearch={setSearch}
-        onAdd={() => {
-          setEditingRecord(null);
-          setShowForm(true);
-        }}
+        onClear={handleClearFilters}
       />
 
       {/* Table */}

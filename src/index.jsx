@@ -8,6 +8,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 
 import "./styles/theme.css";
 import "./styles/tables.css";
+import "./styles/toolbar.css";
 import "./styles/department.css";
 import "./styles/form.css";
 import "./styles/modal.css";
