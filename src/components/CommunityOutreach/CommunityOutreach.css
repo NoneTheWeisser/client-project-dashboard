@@ -2,20 +2,14 @@
   background: #fff;
   border-radius: 8px;
   padding: 16px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
 }
-
-.hub-container {
+/* Department-specific override */
+.hub-container.community-outreach {
   max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
 }
 
 /* Toolbar container for reports or outreach - see toolbar.css*/
-
 
 .filter-group {
   display: flex;
@@ -36,7 +30,6 @@
   border: 1px solid #ccc;
   font-size: 0.875rem;
 }
-
 
 /* ---------- Tables ---------- */
 

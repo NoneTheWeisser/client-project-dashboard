@@ -23,15 +23,24 @@ export default function HousingReports() {
   const [building, setBuilding] = useState("");
   const [search, setSearch] = useState("");
 
-  // Tab state
-  const [activeTab, setActiveTab] = useState("table");
+  // Active report state: "table" or "summary"
+  const [activeReport, setActiveReport] = useState("table");
 
+  // Fetch data on mount
   useEffect(() => {
     fetchMonthlyHousing();
     fetchSummaryHousing();
   }, [fetchMonthlyHousing, fetchSummaryHousing]);
 
-  // Filter records
+  // Clear filters and reset report
+  const handleClear = () => {
+    setYear("");
+    setBuilding("");
+    setSearch("");
+    setActiveReport("table"); // default to table
+  };
+
+  // Filter records for Monthly Table
   const filteredRecords = reportData.filter((r) => {
     const date = r.month_start ? new Date(r.month_start) : null;
     if (year && date && date.getFullYear() !== Number(year)) return false;
@@ -48,21 +57,15 @@ export default function HousingReports() {
 
   return (
     <div className="hub-container">
+      {/* Page Header */}
       <DepartmentHeader
         title="North Campus Housing Reports"
         actions={
           <>
-            <NavLink
-              to="/housing"
-              end
-              className={({ isActive }) => (isActive ? "active" : "")}
-            >
+            <NavLink to="/housing" end className={({ isActive }) => (isActive ? "active" : "")}>
               Data Entry
             </NavLink>
-            <NavLink
-              to="/housing/reports"
-              className={({ isActive }) => (isActive ? "active" : "")}
-            >
+            <NavLink to="/housing/reports" className={({ isActive }) => (isActive ? "active" : "")}>
               Reports
             </NavLink>
           </>
@@ -78,18 +81,21 @@ export default function HousingReports() {
         setBuilding={setBuilding}
         search={search}
         setSearch={setSearch}
-        rightButtons={[
-          { label: "Monthly Table", onClick: () => setActiveTab("table") },
-          { label: "Summary", onClick: () => setActiveTab("summary") },
-        ]}
+        activeReport={activeReport}
+        setActiveReport={setActiveReport}
+        onClear={handleClear}
       />
+
+      {/* Report content */}
       <div style={{ marginTop: "1rem" }}>
         {loadingHousingReports ? (
           <p>Loading report…</p>
-        ) : filteredRecords.length === 0 && activeTab === "table" ? (
-          <p>No records match the current filters.</p>
-        ) : activeTab === "table" ? (
-          <HousingMonthlyTable records={filteredRecords} />
+        ) : activeReport === "table" ? (
+          filteredRecords.length === 0 ? (
+            <p>No records match the current filters.</p>
+          ) : (
+            <HousingMonthlyTable records={filteredRecords} />
+          )
         ) : (
           <HousingMonthlySummary />
         )}
