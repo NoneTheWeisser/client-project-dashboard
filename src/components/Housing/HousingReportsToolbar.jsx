@@ -2,14 +2,16 @@ import React from "react";
 import "./Housing.css";
 
 export default function HousingReportsToolbar({
-  reportData,
   year,
   setYear,
   building,
   setBuilding,
   search,
   setSearch,
-  rightButtons = [],
+  activeReport,
+  setActiveReport,
+  reportData = [],
+  onClear,
 }) {
   // Compute options dynamically
   const yearOptions = Array.from(
@@ -24,14 +26,38 @@ export default function HousingReportsToolbar({
     new Set(reportData.map((r) => r.building_name).filter(Boolean))
   ).sort();
 
+  const reportOptions = [
+    { value: "table", label: "Monthly Table" },
+    { value: "summary", label: "Summary" },
+  ];
+
   return (
-    <div className="housing-toolbar">
-      {/* Left: Filters + Search */}
+    <div className="toolbar-container">
+      {/* Left side filters */}
       <div className="toolbar-left">
-        {/* Year Filter */}
+        {/* Report dropdown */}
+        <div className="filter-group">
+          <label>Report:</label>
+          <select
+            value={activeReport}
+            onChange={(e) => setActiveReport(e.target.value)}
+          >
+            {reportOptions.map((r) => (
+              <option key={r.value} value={r.value}>
+                {r.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Year filter */}
         <div className="filter-group">
           <label>Year:</label>
-          <select value={year} onChange={(e) => setYear(e.target.value)}>
+          <select
+            value={year}
+            onChange={(e) => setYear(e.target.value)}
+            disabled={activeReport === "summary"} // optional: disable if not needed
+          >
             <option value="">All</option>
             {yearOptions.map((y) => (
               <option key={y} value={y}>
@@ -41,12 +67,13 @@ export default function HousingReportsToolbar({
           </select>
         </div>
 
-        {/* Building Filter */}
+        {/* Building filter */}
         <div className="filter-group">
           <label>Building:</label>
           <select
             value={building}
             onChange={(e) => setBuilding(e.target.value)}
+            disabled={activeReport === "summary"} // optional
           >
             <option value="">All</option>
             {buildingOptions.map((b) => (
@@ -59,22 +86,22 @@ export default function HousingReportsToolbar({
 
         {/* Search */}
         <div className="filter-group">
+          <label>Search:</label>
           <input
             type="text"
             placeholder="Search..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
+            disabled={activeReport === "summary"} // optional
           />
         </div>
       </div>
 
-      {/* Right: Buttons */}
+      {/* Right side: Clear button */}
       <div className="toolbar-right">
-        {rightButtons.map((btn) => (
-          <button key={btn.label} className="secondary" onClick={btn.onClick}>
-            {btn.label}
-          </button>
-        ))}
+        <button className="clear-button" onClick={onClear}>
+          Clear
+        </button>
       </div>
     </div>
   );
