@@ -1,12 +1,107 @@
-  /* Department-specific override */
+/* ---------------- Department-specific hub container widths ---------------- */
 .hub-container.donors {
   max-width: 900px;
 }
 
-.hub-container.donations {
+.hub-container.donations,
+.hub-container.events {
   max-width: 1200px;
 }
 
-.hub-container.events {
-  max-width: 1200px;
+
+/* ---------------- Development Forms - Scoped ---------------- */
+
+/* Donor Form - vertical */
+.hub-container.donors .form-container {
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 24px;
+  background-color: rgba(28, 113, 166, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Donation Form - grid with checkboxes */
+.hub-container.donations .form-container {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 24px;
+  background-color: rgba(28, 113, 166, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.hub-container.donations .donation-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px 24px;
+}
+
+.hub-container.donations .donation-form-grid .full-width {
+  grid-column: 1 / -1;
+}
+
+.hub-container.donations .checkbox-group {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+/* Event Form - vertical with optional 2x2 grid for future expansion */
+.hub-container.events .form-container {
+  max-width: 500px;
+  margin: 20px auto;
+  padding: 24px;
+  background-color: rgba(28, 113, 166, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.hub-container.events .grid-form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px 24px;
+}
+
+.hub-container.events .grid-form .full-width {
+  grid-column: 1 / -1;
+}
+
+/* ---------------- Responsive ---------------- */
+@media (max-width: 600px) {
+  .hub-container.donations .donation-form-grid,
+  .hub-container.events .grid-form {
+    grid-template-columns: 1fr;
+  }
+
+  .hub-container.donations .checkbox-group {
+    flex-direction: column;
+  }
+
+  .hub-container .form-actions {
+    flex-direction: column;
+  }
+
+  .hub-container .form-actions button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .hub-container .form-actions {
+    flex-direction: column;
+  }
+
+  .hub-container .form-actions button {
+    width: 100%;
+  }
 }
