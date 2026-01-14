@@ -1,29 +1,96 @@
+import { useState, useEffect } from "react";
 import useStore from "../../../zustand/store";
-import { useEffect, useState } from "react";
+import DepartmentHeader from "../../DesignComponents/DepartmentHeader";
+import OutreachToolbar from "../OutreachToolBar";
 import VolunteerForm from "./VolunteerForm";
 import VolunteerList from "./VolunteerList";
+import { FaPlus } from "react-icons/fa";
 
-export default function VolunteerPage() {
+export default function VolunteersPage() {
   const fetchVolunteers = useStore((state) => state.fetchVolunteers);
-  const loading = useStore((state) => state.loading);
+
+  const [showModal, setShowModal] = useState(false);
   const [editingVolunteer, setEditingVolunteer] = useState(null);
+  const [filters, setFilters] = useState({ search: "", year: "", location: "" });
 
   useEffect(() => {
     fetchVolunteers();
-  }, []);
+  }, [fetchVolunteers]);
 
-  if (loading) return <p>Loading...</p>;
+  const handleAdd = () => {
+    setEditingVolunteer(null);
+    setShowModal(true);
+  };
+  const handleEdit = (v) => {
+    setEditingVolunteer(v);
+    setShowModal(true);
+  };
+  const handleClose = () => setShowModal(false);
+  const handleClearFilters = () =>
+    setFilters({ search: "", year: "", location: "" });
 
   return (
-    <div>
-      <h2>Volunteers</h2>
+    <div className="hub-container outreach">
+      <DepartmentHeader title="Community Outreach - Volunteers" />
+      
+      <div className="toolbar-actions-top">
+        <button onClick={handleAdd}>
+          <FaPlus /> Add Volunteer
+        </button>
+      </div>
 
-      <VolunteerForm
-        volunteerToEdit={editingVolunteer}
-        onFinish={() => setEditingVolunteer(null)}
+      <OutreachToolbar
+        filters={filters}
+        onFilterChange={setFilters}
+        onClear={handleClearFilters}
       />
 
-      <VolunteerList onEdit={(v) => setEditingVolunteer(v)} />
+      <VolunteerList onEdit={handleEdit} filters={filters} />
+
+      {showModal && (
+        <div className="modal-overlay" onClick={handleClose}>
+          <div className="modal-container" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close-btn" onClick={handleClose}>
+              &times;
+            </button>
+            <VolunteerForm
+              volunteerToEdit={editingVolunteer}
+              onFinish={handleClose}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
+
+
+// import useStore from "../../../zustand/store";
+// import { useEffect, useState } from "react";
+// import VolunteerForm from "./VolunteerForm";
+// import VolunteerList from "./VolunteerList";
+
+// export default function VolunteerPage() {
+//   const fetchVolunteers = useStore((state) => state.fetchVolunteers);
+//   const loading = useStore((state) => state.loading);
+//   const [editingVolunteer, setEditingVolunteer] = useState(null);
+
+//   useEffect(() => {
+//     fetchVolunteers();
+//   }, []);
+
+//   if (loading) return <p>Loading...</p>;
+
+//   return (
+//     <div>
+//       <h2>Volunteers</h2>
+
+//       <VolunteerForm
+//         volunteerToEdit={editingVolunteer}
+//         onFinish={() => setEditingVolunteer(null)}
+//       />
+
+//       <VolunteerList onEdit={(v) => setEditingVolunteer(v)} />
+//     </div>
+//   );
+// }
