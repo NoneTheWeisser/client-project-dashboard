@@ -4,6 +4,7 @@ import DepartmentHeader from "../../DesignComponents/DepartmentHeader";
 import OutreachToolbar from "../OutreachToolBar";
 import VolunteerForm from "./VolunteerForm";
 import VolunteerList from "./VolunteerList";
+import { NavLink } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 
 export default function VolunteersPage() {
@@ -11,7 +12,11 @@ export default function VolunteersPage() {
 
   const [showModal, setShowModal] = useState(false);
   const [editingVolunteer, setEditingVolunteer] = useState(null);
-  const [filters, setFilters] = useState({ search: "", year: "", location: "" });
+  const [filters, setFilters] = useState({
+    search: "",
+    year: "",
+    location: "",
+  });
 
   useEffect(() => {
     fetchVolunteers();
@@ -31,8 +36,26 @@ export default function VolunteersPage() {
 
   return (
     <div className="hub-container outreach">
-      <DepartmentHeader title="Community Outreach - Volunteers" />
-      
+      <DepartmentHeader
+        title="Community Outreach"
+        actions={
+          <>
+            <NavLink
+              to="/outreach"
+              end
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              Home
+            </NavLink>
+            <NavLink
+              to="/outreach/reports"
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              Reports
+            </NavLink>
+          </>
+        }
+      />
       <div className="toolbar-actions-top">
         <button onClick={handleAdd}>
           <FaPlus /> Add Volunteer
@@ -63,7 +86,6 @@ export default function VolunteersPage() {
     </div>
   );
 }
-
 
 // import useStore from "../../../zustand/store";
 // import { useEffect, useState } from "react";

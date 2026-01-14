@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import useStore from "../../../zustand/store";
 import DepartmentHeader from "../../DesignComponents/DepartmentHeader";
 import OutreachToolbar from "../OutreachToolBar";
+import { NavLink } from "react-router-dom";
 import VolunteerEngagementList from "./VolunteerEngagementList";
 import VolunteerEngagementForm from "./VolunteerEngagementForm";
 import { FaPlus } from "react-icons/fa";
@@ -11,7 +12,11 @@ export default function VolunteerEngagementsPage() {
 
   const [showModal, setShowModal] = useState(false);
   const [editingEngagementId, setEditingEngagementId] = useState(null);
-  const [filters, setFilters] = useState({ volunteerId: "", year: "", location: "" });
+  const [filters, setFilters] = useState({
+    volunteerId: "",
+    year: "",
+    location: "",
+  });
 
   useEffect(() => {
     fetchEngagements();
@@ -31,12 +36,28 @@ export default function VolunteerEngagementsPage() {
 
   return (
     <div className="hub-container outreach">
-      <DepartmentHeader title="Community Outreach - Volunteer Engagements" />
-
+      <DepartmentHeader
+        title="Community Outreach"
+        actions={
+          <>
+            <NavLink
+              to="/outreach"
+              end
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              Home
+            </NavLink>
+            <NavLink
+              to="/outreach/reports"
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              Reports
+            </NavLink>
+          </>
+        }
+      />
       <div className="toolbar-actions-top">
-        <button onClick={handleAdd}>
-          Add Engagement
-        </button>
+        <button onClick={handleAdd}>Add Engagement</button>
       </div>
 
       <OutreachToolbar
@@ -63,7 +84,6 @@ export default function VolunteerEngagementsPage() {
     </div>
   );
 }
-
 
 // import { useEffect, useState } from "react";
 // import useStore from "../../../zustand/store";
