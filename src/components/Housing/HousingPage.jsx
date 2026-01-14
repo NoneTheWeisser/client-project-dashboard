@@ -54,7 +54,7 @@ export default function HousingPage() {
         actions={
           <>
             <NavLink
-              to="/housing"
+              to="/housing/data"
               className={({ isActive }) => (isActive ? "active" : "")}
             >
               Data Entry
@@ -68,29 +68,30 @@ export default function HousingPage() {
           </>
         }
       />
+      {/* todo - toolbar scale to make sense on page */}
+      <div className="toolbar-wrapper volunteer">
+        {/* Toolbar */}
+        <HousingToolBar
+          year={year}
+          setYear={setYear}
+          building={building}
+          setBuilding={setBuilding}
+          search={search}
+          setSearch={setSearch}
+          onClear={handleClearFilters}
+        />
 
-      {/* Add button above toolbar */}
-      <div className="toolbar-actions-top">
-        <button
+        <div className="toolbar-action-button">
+          <button
             onClick={() => {
-            setEditingRecord(null);
-            setShowForm(true);
-          }}
-        >
-          Add Housing Record
-        </button>
+              setEditingRecord(null);
+              setShowForm(true);
+            }}
+          >
+            Add Housing Record
+          </button>
+        </div>
       </div>
-
-      {/* Toolbar */}
-      <HousingToolBar
-        year={year}
-        setYear={setYear}
-        building={building}
-        setBuilding={setBuilding}
-        search={search}
-        setSearch={setSearch}
-        onClear={handleClearFilters}
-      />
 
       {/* Table */}
       <HousingTable

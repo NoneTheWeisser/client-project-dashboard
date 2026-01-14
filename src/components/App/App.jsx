@@ -15,7 +15,7 @@ import DevelopmentHome from "../Development/DevelopmentHome";
 import DevelopmentReports from "../Development/DevelopmentReports";
 import DonationsPage from "../Development/Donors/DonationsPage";
 
-import ComplianceHome from '../ComplianceWeekly/ComplianceHome';
+import ComplianceHome from "../ComplianceWeekly/ComplianceHome";
 import ComplianceWeeklyList from "../ComplianceWeekly/ComplianceWeeklyList";
 import ComplianceWeeklyForm from "../ComplianceWeekly/ComplianceWeeklyForm";
 import ComplianceReporting from "../ComplianceWeekly/ComplianceReporting";
@@ -25,15 +25,16 @@ import KitchenWeeklyList from "../kitchen/KitchenWeeklyList";
 import KitchenWeeklyForm from "../kitchen/KitchenWeeklyForm";
 import KitchenReports from "../kitchen/KitchenReports";
 
-import HousingPage from "../Housing/HousingPage";
+import HousingHome from "../Housing/HousingHome";
 import HousingReports from "../Housing/HousingReports";
+import HousingPage from "../Housing/HousingPage";
 
-import ShelterHome from '../shelter/ShelterHome';
+import ShelterHome from "../shelter/ShelterHome";
 import ShelterWeeklyList from "../shelter/ShelterWeeklyList";
 import ShelterWeeklyForm from "../shelter/ShelterWeeklyForm";
 import ShelterReporting from "../shelter/ShelterReporting";
 
-import FinanceHome from "../Finance/FinanceHome"; 
+import FinanceHome from "../Finance/FinanceHome";
 import FinanceWeeklyList from "../Finance/FinanceWeeklyList";
 import FinanceWeeklyForm from "../Finance/FinanceWeeklyForm";
 import FinanceReporting from "../Finance/FinanceReporting";
@@ -45,6 +46,7 @@ import CommunityOutreachHome from "../CommunityOutreach/CommunityOutreachHome";
 
 import MediaPage from "../Media/MediaPage";
 import MediaReports from "../Media/Reports/MediaReports";
+import MediaHome from "../Media/MediaHome";
 
 import HRHome from "../HR/HRHome";
 import HRWeeklyList from "../HR/HRWeeklyList";
@@ -55,8 +57,6 @@ import PantryHome from "../pantry/PantryHome";
 import PantryWeeklyList from "../pantry/PantryWeeklyList";
 import PantryWeeklyForm from "../pantry/PantryWeeklyForm";
 import PantryReports from "../pantry/PantryReports";
-
-
 
 import ReportsDashboard from "../ReportingHub/ReportsDashboard";
 
@@ -93,11 +93,13 @@ function App() {
           <Route exact path="/about" element={<AboutPage />} />
 
           {/* Housing */}
-          <Route path="/housing" element={<HousingPage />} />
+          <Route path="/housing" element={<HousingHome />} />
+          <Route path="/housing/data" element={<HousingPage />} />
           <Route path="/housing/reports" element={<HousingReports />} />
 
           {/* Media */}
-          <Route path="/media" element={<MediaPage />} />
+          <Route path="/media" element={<MediaHome />} />
+          <Route path="/media/data" element={<MediaPage />} />
           <Route path="/media/reports" element={<MediaReports />} />
 
           {/* Development */}
@@ -110,32 +112,48 @@ function App() {
           {/* Outreach */}
           <Route path="/outreach" element={<CommunityOutreachHome />} />
           <Route path="/outreach/volunteers" element={<VolunteerPage />} />
-          <Route path="/outreach/engagements" element={<VolunteerEngagementPage />}/>
-          <Route path="/outreach/reports" element={<CommunityOutreachReportsPage />}/>
-
+          <Route
+            path="/outreach/engagements"
+            element={<VolunteerEngagementPage />}
+          />
+          <Route
+            path="/outreach/reports"
+            element={<CommunityOutreachReportsPage />}
+          />
 
           {/* Kitchen */}
-         
 
           {/* Compliance */}
           <Route path="/compliance" element={<ComplianceHome />} />
           <Route path="/compliance/weekly" element={<ComplianceWeeklyList />} />
-          <Route path="/compliance/weekly/new" element={<ComplianceWeeklyForm />}/>
-          <Route path="/compliance/weekly/edit/:id" element={<ComplianceWeeklyForm />}/>
+          <Route
+            path="/compliance/weekly/new"
+            element={<ComplianceWeeklyForm />}
+          />
+          <Route
+            path="/compliance/weekly/edit/:id"
+            element={<ComplianceWeeklyForm />}
+          />
           <Route path="/compliance/reports" element={<ComplianceReporting />} />
 
           {/* Shelter */}
           <Route path="/shelter" element={<ShelterHome />} />
           <Route path="/shelter/weekly" element={<ShelterWeeklyList />} />
           <Route path="/shelter/weekly/new" element={<ShelterWeeklyForm />} />
-          <Route path="/shelter/weekly/edit/:id" element={<ShelterWeeklyForm />}/>
+          <Route
+            path="/shelter/weekly/edit/:id"
+            element={<ShelterWeeklyForm />}
+          />
           <Route path="/shelter/reports" element={<ShelterReporting />} />
 
           {/* Finance */}
           <Route path="/finance" element={<FinanceHome />} />
           <Route path="/finance/weekly" element={<FinanceWeeklyList />} />
           <Route path="/finance/weekly/new" element={<FinanceWeeklyForm />} />
-          <Route path="/finance/weekly/edit/:id" element={<FinanceWeeklyForm />}/>
+          <Route
+            path="/finance/weekly/edit/:id"
+            element={<FinanceWeeklyForm />}
+          />
           <Route path="/finance/reports" element={<FinanceReporting />} />
 
           {/* Reporting Hub */}
@@ -148,18 +166,24 @@ function App() {
           <Route path="/hr/weekly/edit/:id" element={<HRWeeklyForm />} />
           <Route path="/hr/reports" element={<HRReports />} />
 
-           {/* Pantry */}
+          {/* Pantry */}
           <Route path="/pantry" element={<PantryHome />} />
           <Route path="/pantry/weekly" element={<PantryWeeklyList />} />
           <Route path="/pantry/weekly/new" element={<PantryWeeklyForm />} />
-          <Route path="/pantry/weekly/edit/:id" element={<PantryWeeklyForm />} />
+          <Route
+            path="/pantry/weekly/edit/:id"
+            element={<PantryWeeklyForm />}
+          />
           <Route path="/pantry/reports" element={<PantryReports />} />
 
           {/* Kitchen */}
           <Route path="/kitchen" element={<KitchenHome />} />
           <Route path="/kitchen/weekly" element={<KitchenWeeklyList />} />
           <Route path="/kitchen/weekly/new" element={<KitchenWeeklyForm />} />
-          <Route path="/kitchen/weekly/edit/:id" element={<KitchenWeeklyForm />} />
+          <Route
+            path="/kitchen/weekly/edit/:id"
+            element={<KitchenWeeklyForm />}
+          />
           <Route path="/kitchen/reports" element={<KitchenReports />} />
         </Routes>
       </main>
