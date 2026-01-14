@@ -150,3 +150,75 @@
   gap: 12px;
   max-width: 100%;
 }
+
+/* ------ Events Toolbar ------ */
+.toolbar-container.events {
+  display: flex;
+  flex-wrap: wrap;      /* wrap filters on small screens */
+  gap: 12px;
+  padding: 8px 16px;
+  background-color: #f9f9f9;
+  border-radius: 6px;
+  align-items: flex-start; /* align filters at the top */
+}
+
+.toolbar-left {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center; /* vertically center selects and search */
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  min-width: 120px; /* adjust for select/input width */
+}
+
+.filter-group input,
+.filter-group select {
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+/* Clear button inside toolbar */
+.clear-button {
+  padding: 6px 12px;
+  border-radius: 4px;
+  background-color: #e0e0e0;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  align-self: flex-end; /* aligns with filter selects */
+}
+
+.clear-button:hover {
+  background-color: #d0d0d0;
+}
+
+/* Wrapper for toolbar + Add button */
+.toolbar-wrapper {
+  display: flex;
+  align-items: center;       /* vertically center filters + button */
+  justify-content: space-between; /* filters left, button right */
+  flex-wrap: wrap;           /* wrap on smaller screens */
+  gap: 12px;                 /* spacing if wrapping */
+  margin-bottom: 12px;       /* space before table */
+}
+
+/* Add Event button */
+.toolbar-action-button button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  background-color: #1c71a6; /* primary color */
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  white-space: nowrap;       /* don’t break text */
+}
+
+.toolbar-action-button button:hover {
+  background-color: #155a86; /* darker on hover */
+}
+
