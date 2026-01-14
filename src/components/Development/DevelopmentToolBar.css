@@ -158,6 +158,7 @@
   gap: 12px;
   padding: 8px 16px;
   background-color: #f9f9f9;
+  /* max-width: 1200px; */
   border-radius: 6px;
   align-items: flex-start; /* align filters at the top */
 }
