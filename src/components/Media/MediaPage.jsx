@@ -73,29 +73,35 @@ export default function MediaPage() {
           </>
         }
       />
-      <div className="toolbar-actions-top">
-        <button onClick={handleAddMedia}>Add Media</button>
-      </div>
-      <div className="media-toolbar">
-        <MediaToolBar
-          filters={{
-            platform: {
-              label: "Platform",
-              value: platformFilter,
-              options: platformOptions,
-              onChange: setPlatformFilter,
-            },
-            year: {
-              label: "Year",
-              value: yearFilter,
-              options: yearOptions,
-              onChange: setYearFilter,
-              type: "number",
-            },
-          }}
-          search={{ value: searchTerm, onChange: setSearchTerm }}
-          onClear={handleClearFilters}
-        />
+
+      {/* todo - toolbar scale to make sense on page */}
+      {/* todo - check toolbar color */}
+      <div className="toolbar-wrapper volunteer">
+        {/* Toolbar */}
+        <div className="media-toolbar">
+          <MediaToolBar
+            filters={{
+              platform: {
+                label: "Platform",
+                value: platformFilter,
+                options: platformOptions,
+                onChange: setPlatformFilter,
+              },
+              year: {
+                label: "Year",
+                value: yearFilter,
+                options: yearOptions,
+                onChange: setYearFilter,
+                type: "number",
+              },
+            }}
+            search={{ value: searchTerm, onChange: setSearchTerm }}
+            onClear={handleClearFilters}
+          />
+        </div>
+        <div className="toolbar-action-button">
+          <button onClick={handleAddMedia}>Add Media</button>
+        </div>
       </div>
 
       {/* Table */}
