@@ -59,6 +59,7 @@ import PantryWeeklyForm from "../pantry/PantryWeeklyForm";
 import PantryReports from "../pantry/PantryReports";
 
 import ReportsDashboard from "../ReportingHub/ReportsDashboard";
+import Footer from "../Nav/Footer";
 
 function App() {
   const user = useStore((state) => state.user);
@@ -90,7 +91,7 @@ function App() {
             path="/registration"
             element={user.id ? <Navigate to="/" replace /> : <RegisterPage />}
           />
-          <Route exact path="/about" element={<AboutPage />} />
+          {/* <Route exact path="/about" element={<AboutPage />} /> */}
 
           {/* Housing */}
           <Route path="/housing" element={<HousingHome />} />
@@ -187,9 +188,7 @@ function App() {
           <Route path="/kitchen/reports" element={<KitchenReports />} />
         </Routes>
       </main>
-      <footer>
-        <p>Copyright © {new Date().getFullYear()}</p>
-      </footer>
+      <Footer />
     </>
   );
 }

@@ -1,17 +1,28 @@
+/* ================================
+   Header Container
+================================ */
 .header-container {
   width: 100%;
 }
 
+/* ================================
+   Main Nav Header
+================================ */
 .nav-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+
   padding: 0.75rem 1.25rem;
-  border-bottom: 1px solid #ddd;
+  min-height: 64px;
+
   background-color: #fff;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
 }
 
-/* LEFT: logo + title */
+/* ================================
+   LEFT: Logo + Title
+================================ */
 .nav-left {
   display: flex;
   align-items: center;
@@ -26,14 +37,20 @@
 .nav-title {
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
   margin: 0;
+  font-size: 0.95rem;
   font-weight: 500;
+  opacity: 0.85;
+  white-space: nowrap;
 }
 
-/* RIGHT: nav links */
+/* ================================
+   RIGHT: Nav Links
+================================ */
 .nav-right ul {
   display: flex;
   align-items: center;
   gap: 1.5rem;
+
   list-style: none;
   margin: 0;
   padding: 0;
@@ -50,15 +67,100 @@
   font: inherit;
 }
 
+/* Active state (only strong indicator) */
 .nav-right a.active {
-  text-decoration: underline;
-  text-decoration-color: var(--brand-primary);
-  text-decoration-thickness: 2px;
+  color: var(--brand-primary);
+  font-weight: 600;
 }
 
-.logout-btn:hover,
-.nav-right a:hover {
+/* Hover state (subtle) */
+.nav-right a:hover,
+.logout-btn:hover {
   color: var(--brand-primary);
-  text-decoration: underline;
-  text-decoration-thickness: 2px;
+  text-decoration: none;
+}
+
+/* ================================
+   Hamburger (hidden on desktop)
+================================ */
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.75rem;
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+}
+
+/* ================================
+   Mobile Layout
+================================ */
+@media (max-width: 768px) {
+  .nav-header {
+    position: relative;
+    justify-content: center;
+    padding: 0.75rem 1rem;
+    min-height: 56px;
+  }
+
+  /* Hide title on mobile */
+  .nav-title {
+    display: none;
+  }
+
+  /* Center logo */
+  .nav-left {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .nav-logo-img {
+    height: 32px;
+  }
+
+  /* Show hamburger */
+  .hamburger {
+    display: block;
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  /* Dropdown menu */
+  .nav-right {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 100%;
+
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  }
+
+  .nav-right.open {
+    display: block;
+  }
+
+  .nav-right ul {
+    flex-direction: column;
+    align-items: center;
+    padding: 0.75rem 0;
+    gap: 1rem;
+  }
+
+  .nav-right li {
+    width: 100%;
+    text-align: center;
+  }
+
+  .nav-right a,
+  .logout-btn {
+    display: inline-block;
+    padding: 0.5rem 0;
+  }
 }
