@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { NavLink, Link, useNavigate } from "react-router-dom";
 import useStore from "../../zustand/store";
 import "./Nav.css";
@@ -7,18 +8,23 @@ function Nav() {
   const logOut = useStore((store) => store.logOut);
   const navigate = useNavigate();
 
+  const [menuOpen, setMenuOpen] = useState(false);
+
   const handleLogout = async (e) => {
     e.preventDefault();
     await logOut();
+    setMenuOpen(false);
     navigate("/login");
   };
+
+  const closeMenu = () => setMenuOpen(false);
 
   return (
     <div className="header-container">
       <header className="nav-header">
-        {/* LEFT: Logo + Title */}
+        {/* LEFT / CENTER: Logo + Title */}
         <div className="nav-left">
-          <Link to="/" className="nav-logo">
+          <Link to="/" className="nav-logo" onClick={closeMenu}>
             <img
               src="/img/cu-heart.png"
               alt="Churches United Logo"
@@ -28,24 +34,40 @@ function Nav() {
           <h4 className="nav-title">Churches United Dashboard</h4>
         </div>
 
+        {/* HAMBURGER (mobile only via CSS) */}
+        <button
+          className="hamburger"
+          aria-label="Toggle navigation"
+          aria-expanded={menuOpen}
+          onClick={() => setMenuOpen((open) => !open)}
+        >
+          ☰
+        </button>
+
         {/* RIGHT: Navigation Links */}
-        <nav className="nav-right">
+        <nav className={`nav-right ${menuOpen ? "open" : ""}`}>
           <ul>
-            {!user.id && (
+            {!user?.id && (
               <>
                 <li>
-                  <NavLink to="/login">Login</NavLink>
+                  <NavLink to="/login" onClick={closeMenu}>
+                    Login
+                  </NavLink>
                 </li>
                 <li>
-                  <NavLink to="/registration">Register</NavLink>
+                  <NavLink to="/registration" onClick={closeMenu}>
+                    Register
+                  </NavLink>
                 </li>
               </>
             )}
 
-            {user.id && (
+            {user?.id && (
               <>
                 <li>
-                  <NavLink to="/">Home</NavLink>
+                  <NavLink to="/" onClick={closeMenu}>
+                    Home
+                  </NavLink>
                 </li>
                 <li>
                   <button onClick={handleLogout} className="logout-btn">
@@ -55,9 +77,11 @@ function Nav() {
               </>
             )}
 
-            {/* <li>
-              <NavLink to="/about">About</NavLink>
-            </li> */}
+            <li>
+              <NavLink to="/reporting" onClick={closeMenu}>
+                Reporting
+              </NavLink>
+            </li>
           </ul>
         </nav>
       </header>
