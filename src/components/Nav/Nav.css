@@ -1,10 +1,13 @@
+/* ================================
+   Header Container
+================================ */
 .header-container {
   width: 100%;
 }
 
-
-   /* Main Nav Header (Desktop) */
-
+/* ================================
+   Main Nav Header
+================================ */
 .nav-header {
   display: flex;
   justify-content: space-between;
@@ -13,11 +16,13 @@
   padding: 0.75rem 1.25rem;
   min-height: 64px;
 
-  border-bottom: 1px solid #ddd;
   background-color: #fff;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
 }
 
-/* LEFT: Logo + Title */
+/* ================================
+   LEFT: Logo + Title
+================================ */
 .nav-left {
   display: flex;
   align-items: center;
@@ -32,11 +37,15 @@
 .nav-title {
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
   margin: 0;
+  font-size: 0.95rem;
   font-weight: 500;
+  opacity: 0.85;
   white-space: nowrap;
 }
 
-/* RIGHT: Nav Links */
+/* ================================
+   RIGHT: Nav Links
+================================ */
 .nav-right ul {
   display: flex;
   align-items: center;
@@ -58,29 +67,35 @@
   font: inherit;
 }
 
+/* Active state (only strong indicator) */
 .nav-right a.active {
-  text-decoration: underline;
-  text-decoration-color: var(--brand-primary);
-  text-decoration-thickness: 2px;
+  color: var(--brand-primary);
+  font-weight: 600;
 }
 
+/* Hover state (subtle) */
 .nav-right a:hover,
 .logout-btn:hover {
   color: var(--brand-primary);
-  text-decoration: underline;
-  text-decoration-thickness: 2px;
+  text-decoration: none;
 }
 
-/* Hamburger (Hidden on Desktop) */
+/* ================================
+   Hamburger (hidden on desktop)
+================================ */
 .hamburger {
   display: none;
   background: none;
   border: none;
   font-size: 1.75rem;
   cursor: pointer;
+  padding: 4px;
+  line-height: 1;
 }
 
-/* Mobile Layout */
+/* ================================
+   Mobile Layout
+================================ */
 @media (max-width: 768px) {
   .nav-header {
     position: relative;
@@ -115,7 +130,7 @@
     transform: translateY(-50%);
   }
 
-  /* Mobile dropdown nav */
+  /* Dropdown menu */
   .nav-right {
     display: none;
     position: absolute;
@@ -124,7 +139,7 @@
     width: 100%;
 
     background: #fff;
-    border-top: 1px solid #ddd;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
   }
 
   .nav-right.open {
@@ -134,7 +149,18 @@
   .nav-right ul {
     flex-direction: column;
     align-items: center;
-    padding: 1rem 0;
+    padding: 0.75rem 0;
     gap: 1rem;
+  }
+
+  .nav-right li {
+    width: 100%;
+    text-align: center;
+  }
+
+  .nav-right a,
+  .logout-btn {
+    display: inline-block;
+    padding: 0.5rem 0;
   }
 }
