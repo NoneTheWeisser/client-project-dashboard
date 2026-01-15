@@ -1,4 +1,5 @@
 import React from "react";
+import "./DevelopmentToolBar.css";
 
 export default function DevelopmentReportsToolbar({
   category,
@@ -17,7 +18,7 @@ export default function DevelopmentReportsToolbar({
     category === "donations" && (report === "weekly" || report === "monthly");
 
   return (
-    <div className="toolbar-container development">
+    <div className="toolbar-container dev-report">
       <div className="toolbar-left">
         {/* Category */}
         <div className="filter-group">

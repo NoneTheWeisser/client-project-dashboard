@@ -1,3 +1,4 @@
+-- ---------------- Volunteers ----------------
 INSERT INTO volunteers (name, type)
 VALUES
 ('Alice Johnson', 'Individual'),
@@ -5,137 +6,15 @@ VALUES
 ('Carol Martinez', 'Individual'),
 ('Downtown Community Group', 'Group'),
 ('Eastside Volunteers', 'Group'),
-('Faith Helpers', 'Group');
+('Faith Helpers', 'Group'),
+('Grace Lee', 'Individual'),
+('Hannah Kim', 'Individual'),
+('Northside Volunteers', 'Group'),
+('Southside Helpers', 'Group'),
+('Ian Thompson', 'Individual');
 
-INSERT INTO volunteers (id, name, type) VALUES
-(11, 'Grace Lee', 'Individual'),
-(12, 'Hannah Kim', 'Individual'),
-(13, 'Northside Volunteers', 'Group'),
-(14, 'Southside Helpers', 'Group'),
-(15, 'Ian Thompson', 'Individual');
-
-
-INSERT INTO "volunteer_engagements" (volunteer_id, event_date, location, number_volunteers, software_signups)
-VALUES
--- Micah's Mission Basement
-(5, '2025-11-03', 'Micah''s Mission - Basement', 1, 0),
-(6, '2025-11-10', 'Micah''s Mission - Basement', 1, 1),
-(7, '2025-11-10', 'Micah''s Mission - Basement', 5, 0),
-
--- Micah's Mission Pantry
-(8, '2025-11-05', 'Micah''s Mission - Pantry', 1, 2),
-(9, '2025-11-12', 'Micah''s Mission - Pantry', 4, 1),
-
--- Kitchen
-(5, '2025-11-06', 'Kitchen', 1, 0),
-(6, '2025-11-13', 'Kitchen', 1, 1),
-(8, '2025-11-20', 'Kitchen', 1, 0),
-
--- Dorothy Day Food Pantry
-(7, '2025-11-07', 'Dorothy Day Food Pantry', 6, 2),
-(9, '2025-11-14', 'Dorothy Day Food Pantry', 3, 0),
-
--- Community Picnic
-(10, '2025-11-08', 'Community Picnic', 8, 3),
-(7, '2025-11-15', 'Community Picnic', 5, 1),
-
--- Silver Linings
-(6, '2025-11-09', 'Silver Linings', 1, 0),
-(9, '2025-11-16', 'Silver Linings', 4, 0),
-
--- Bright Sky
-(5, '2025-11-11', 'Bright Sky', 1, 0),
-(8, '2025-11-18', 'Bright Sky', 1, 1),
-
--- Other
-(10, '2025-11-19', 'Other', 2, 0);
-
-INSERT INTO "volunteer_engagements" (volunteer_id, event_date, location, number_volunteers, software_signups)
-VALUES
--- Micah's Mission Basement
-(5, '2025-12-01', 'Micah''s Mission - Basement', 2, 1),
-(6, '2025-12-08', 'Micah''s Mission - Basement', 1, 0),
-(11, '2025-12-15', 'Micah''s Mission - Basement', 3, 2),
-
--- Micah's Mission Pantry
-(8, '2025-12-02', 'Micah''s Mission - Pantry', 2, 1),
-(9, '2025-12-09', 'Micah''s Mission - Pantry', 3, 0),
-(12, '2025-12-16', 'Micah''s Mission - Pantry', 1, 0),
-
--- Kitchen
-(5, '2025-12-03', 'Kitchen', 1, 0),
-(13, '2025-12-10', 'Kitchen', 4, 1),
-(8, '2025-12-17', 'Kitchen', 2, 0),
-
--- Dorothy Day Food Pantry
-(7, '2025-12-04', 'Dorothy Day Food Pantry', 5, 1),
-(9, '2025-12-11', 'Dorothy Day Food Pantry', 3, 2),
-(14, '2025-12-18', 'Dorothy Day Food Pantry', 2, 0),
-
--- Community Picnic
-(10, '2025-12-05', 'Community Picnic', 6, 1),
-(7, '2025-12-12', 'Community Picnic', 4, 0),
-(15, '2025-12-19', 'Community Picnic', 3, 0),
-
--- Silver Linings
-(6, '2025-12-06', 'Silver Linings', 2, 1),
-(9, '2025-12-13', 'Silver Linings', 3, 0),
-(11, '2025-12-20', 'Silver Linings', 1, 1),
-
--- Bright Sky
-(5, '2025-12-07', 'Bright Sky', 1, 0),
-(8, '2025-12-14', 'Bright Sky', 2, 1),
-(12, '2025-12-21', 'Bright Sky', 1, 0),
-
--- Other
-(10, '2025-12-08', 'Other', 3, 1),
-(13, '2025-12-15', 'Other', 2, 0),
-(14, '2025-12-22', 'Other', 1, 0),
-
--- January 2026
-
--- Micah's Mission Basement
-(5, '2026-01-05', 'Micah''s Mission - Basement', 1, 0),
-(6, '2026-01-12', 'Micah''s Mission - Basement', 2, 1),
-(11, '2026-01-19', 'Micah''s Mission - Basement', 3, 0),
-
--- Kitchen
-(8, '2026-01-06', 'Kitchen', 1, 0),
-(13, '2026-01-13', 'Kitchen', 4, 1),
-(5, '2026-01-20', 'Kitchen', 2, 0),
-
--- Dorothy Day Food Pantry
-(7, '2026-01-07', 'Dorothy Day Food Pantry', 3, 0),
-(14, '2026-01-14', 'Dorothy Day Food Pantry', 5, 2),
-(9, '2026-01-21', 'Dorothy Day Food Pantry', 2, 1),
-
--- Community Picnic
-(10, '2026-01-08', 'Community Picnic', 4, 1),
-(15, '2026-01-15', 'Community Picnic', 3, 0),
-(7, '2026-01-22', 'Community Picnic', 6, 2);
-
-
-
-INSERT INTO "events" (name, datetime, venue, type, shelter_id, notes)
-VALUES
--- Upcoming Events
-('Holiday Fundraiser', '2025-12-15 18:00:00-06', 'Community Hall', 'Fundraiser', NULL, 'Annual holiday fundraising event'),
-('Winter Coat Drive', '2025-12-20 10:00:00-06', 'Micah''s Mission - Basement', 'Community Events', 1, 'Collecting coats for families in need'),
-('Soup Kitchen Prep', '2025-12-22 09:00:00-06', 'Kitchen', 'Large Volunteer Event', NULL, 'Preparing meals for the community'),
-('Neighborhood Clean-Up', '2025-12-28 08:30:00-06', 'Bright Sky', 'Community Events', NULL, NULL),
-
--- Past Events
-('Summer Picnic', '2025-06-10 12:00:00-06', 'Community Picnic', 'Community Events', NULL, 'Fun picnic with games and food'),
-('Back-to-School Drive', '2025-08-20 14:00:00-06', 'Dorothy Day Food Pantry', 'Fundraiser', 2, 'Supplies for students'),
-('Volunteer Appreciation Night', '2025-09-15 18:30:00-06', 'Silver Linings', 'Other', NULL, 'Celebrating our volunteers'),
-
--- Misc
-('Emergency Shelter Setup', '2025-11-05 16:00:00-06', 'Micah''s Mission - Pantry', 'Large Volunteer Event', 1, 'Preparing emergency kits'),
-('Community Art Fair', '2025-10-12 10:00:00-06', 'Community Hall', 'Community Events', NULL, 'Local artists showcase'),
-('Charity Auction', '2025-11-22 19:00:00-06', 'Community Hall', 'Fundraiser', NULL, 'Auction to support programs');
-
-
-INSERT INTO "donors" (name, type)
+-- ---------------- Donors ----------------
+INSERT INTO donors (name, type)
 VALUES
 ('Bob Johnson', 'person'),
 ('Faith Helpers', 'group'),
@@ -143,123 +22,137 @@ VALUES
 ('Anonymous Donor', 'person'),
 ('Silver Linings Foundation', 'group');
 
-INSERT INTO "donations" (
-  "donor_id",
-  "date",
-  "amount",
-  "notable",
-  "restricted",
-  "notes"
-)
-VALUES
-(1, '2025-01-05', 150.00, FALSE, FALSE, 'Monthly support donation'),
-(2, '2025-01-12', 500.00, TRUE,  FALSE, 'Group fundraiser contribution'),
-(3, '2025-02-03', 250.00, FALSE, TRUE,  'Restricted for food pantry'),
-(4, '2025-02-10', 75.00,  FALSE, FALSE, 'Anonymous cash donation'),
-(1, '2025-03-01', 200.00, TRUE,  FALSE, 'Winter support donation'),
-(5, '2025-03-15', 1000.00, TRUE,  TRUE,  'Annual grant restricted to shelter services');
-
-VALUES
--- December 2025
-(1, DATE '2025-12-01', 90.5, 12000.00, 5000.00, 2, 1, 1, 'All systems normal'),
-(2, DATE '2025-12-01', 85.0, 15000.00, 7000.00, 3, 2, 0, 'Preparing for winter'),
--- January 2026
-(1, DATE '2026-01-01', 88.0, 12500.00, 5000.00, 1, 2, 1, 'Monthly maintenance completed'),
-(2, DATE '2026-01-01', 80.0, 15500.00, 7000.00, 4, 1, 2, 'New lease agreements starting');
-
--- Insert Media data
-INSERT INTO media_stats (
-    month_date, platform, total_visits, unique_visits, pageviews, bounce_rate, social_views, audience_start, audience_end, total_sent, total_opens, open_rate, total_clicks, click_rate, notes
-) VALUES
--- Website
-('2025-01-01', 'Website', 2800, 2300, 4900, 62, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'January Website Metrics'),
-('2025-02-01', 'Website', 4200, 3600, 6200, 76, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'February Website Metrics'),
-('2025-03-01', 'Website', 4000, 3500, 5600, 79.79, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'March Website Metrics'),
-
--- Facebook
-('2025-01-01', 'Facebook', NULL, NULL, NULL, NULL, 24622, 6002, 6008, NULL, NULL, NULL, NULL, NULL, 'January Facebook Metrics'),
-('2025-02-01', 'Facebook', NULL, NULL, NULL, NULL, 42648, 6005, 6031, NULL, NULL, NULL, NULL, NULL, 'February Facebook Metrics'),
-('2025-03-01', 'Facebook', NULL, NULL, NULL, NULL, 31550, 6031, 6045, NULL, NULL, NULL, NULL, NULL, 'March Facebook Metrics'),
-
--- Instagram
-('2025-05-01', 'Instagram', NULL, NULL, NULL, NULL, 916, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'May Instagram Metrics'),
-('2025-06-01', 'Instagram', NULL, NULL, NULL, NULL, 212, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'June Instagram Metrics'),
-
--- TikTok
-('2025-11-01', 'TikTok', NULL, NULL, NULL, NULL, 523, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'November TikTok Metrics'),
-('2025-12-01', 'TikTok', NULL, NULL, NULL, NULL, 838, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'December TikTok Metrics'),
-
--- Newsletter
-('2025-10-24', 'Newsletter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2998, 786, 13.10, 118, 4, 'Oct 24 Newsletter'),
-('2025-10-31', 'Newsletter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2995, 537, 18.10, 79, 2.70, 'Oct 31 Newsletter'),
-('2025-11-07', 'Newsletter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2996, 544, 18.30, 82, 2.80, 'Nov 7 Newsletter');
-
-
-INSERT INTO "housing_building" (name)
+-- ---------------- Housing Buildings ----------------
+INSERT INTO housing_building (name)
 VALUES
 ('Bright Sky Apartments'),
 ('Silver Linings Apartments'),
 ('Micah''s Mission');
 
+-- ---------------- Volunteer Engagements ----------------
+INSERT INTO volunteer_engagements (volunteer_id, event_date, location, number_volunteers, software_signups)
+VALUES
+-- November 2025
+((SELECT id FROM volunteers WHERE name='Alice Johnson'), '2025-11-03', 'Micah''s Mission - Basement', 1, 0),
+((SELECT id FROM volunteers WHERE name='Bob Smith'), '2025-11-10', 'Micah''s Mission - Basement', 1, 1),
+((SELECT id FROM volunteers WHERE name='Carol Martinez'), '2025-11-10', 'Micah''s Mission - Basement', 5, 0),
+((SELECT id FROM volunteers WHERE name='Downtown Community Group'), '2025-11-05', 'Micah''s Mission - Pantry', 1, 2),
+((SELECT id FROM volunteers WHERE name='Eastside Volunteers'), '2025-11-12', 'Micah''s Mission - Pantry', 4, 1),
+((SELECT id FROM volunteers WHERE name='Alice Johnson'), '2025-11-06', 'Kitchen', 1, 0),
+((SELECT id FROM volunteers WHERE name='Bob Smith'), '2025-11-13', 'Kitchen', 1, 1),
+((SELECT id FROM volunteers WHERE name='Downtown Community Group'), '2025-11-20', 'Kitchen', 1, 0),
+((SELECT id FROM volunteers WHERE name='Carol Martinez'), '2025-11-07', 'Dorothy Day Food Pantry', 6, 2),
+((SELECT id FROM volunteers WHERE name='Eastside Volunteers'), '2025-11-14', 'Dorothy Day Food Pantry', 3, 0),
+((SELECT id FROM volunteers WHERE name='Faith Helpers'), '2025-11-08', 'Community Picnic', 8, 3),
+((SELECT id FROM volunteers WHERE name='Carol Martinez'), '2025-11-15', 'Community Picnic', 5, 1),
+((SELECT id FROM volunteers WHERE name='Bob Smith'), '2025-11-09', 'Silver Linings', 1, 0),
+((SELECT id FROM volunteers WHERE name='Eastside Volunteers'), '2025-11-16', 'Silver Linings', 4, 0),
+((SELECT id FROM volunteers WHERE name='Alice Johnson'), '2025-11-11', 'Bright Sky', 1, 0),
+((SELECT id FROM volunteers WHERE name='Downtown Community Group'), '2025-11-18', 'Bright Sky', 1, 1),
+((SELECT id FROM volunteers WHERE name='Faith Helpers'), '2025-11-19', 'Other', 2, 0),
 
+-- December 2025
+((SELECT id FROM volunteers WHERE name='Alice Johnson'), '2025-12-01', 'Micah''s Mission - Basement', 2, 1),
+((SELECT id FROM volunteers WHERE name='Bob Smith'), '2025-12-08', 'Micah''s Mission - Basement', 1, 0),
+((SELECT id FROM volunteers WHERE name='Grace Lee'), '2025-12-15', 'Micah''s Mission - Basement', 3, 2),
+((SELECT id FROM volunteers WHERE name='Downtown Community Group'), '2025-12-02', 'Micah''s Mission - Pantry', 2, 1),
+((SELECT id FROM volunteers WHERE name='Eastside Volunteers'), '2025-12-09', 'Micah''s Mission - Pantry', 3, 0),
+((SELECT id FROM volunteers WHERE name='Hannah Kim'), '2025-12-16', 'Micah''s Mission - Pantry', 1, 0),
+((SELECT id FROM volunteers WHERE name='Alice Johnson'), '2025-12-03', 'Kitchen', 1, 0),
+((SELECT id FROM volunteers WHERE name='Northside Volunteers'), '2025-12-10', 'Kitchen', 4, 1),
+((SELECT id FROM volunteers WHERE name='Downtown Community Group'), '2025-12-17', 'Kitchen', 2, 0),
+((SELECT id FROM volunteers WHERE name='Carol Martinez'), '2025-12-04', 'Dorothy Day Food Pantry', 5, 1),
+((SELECT id FROM volunteers WHERE name='Eastside Volunteers'), '2025-12-11', 'Dorothy Day Food Pantry', 3, 2),
+((SELECT id FROM volunteers WHERE name='Southside Helpers'), '2025-12-18', 'Dorothy Day Food Pantry', 2, 0),
+((SELECT id FROM volunteers WHERE name='Faith Helpers'), '2025-12-05', 'Community Picnic', 6, 1),
+((SELECT id FROM volunteers WHERE name='Carol Martinez'), '2025-12-12', 'Community Picnic', 4, 0),
+((SELECT id FROM volunteers WHERE name='Ian Thompson'), '2025-12-19', 'Community Picnic', 3, 0),
+((SELECT id FROM volunteers WHERE name='Bob Smith'), '2025-12-06', 'Silver Linings', 2, 1),
+((SELECT id FROM volunteers WHERE name='Eastside Volunteers'), '2025-12-13', 'Silver Linings', 3, 0),
+((SELECT id FROM volunteers WHERE name='Grace Lee'), '2025-12-20', 'Silver Linings', 1, 1),
+((SELECT id FROM volunteers WHERE name='Alice Johnson'), '2025-12-07', 'Bright Sky', 1, 0),
+((SELECT id FROM volunteers WHERE name='Downtown Community Group'), '2025-12-14', 'Bright Sky', 2, 1),
+((SELECT id FROM volunteers WHERE name='Hannah Kim'), '2025-12-21', 'Bright Sky', 1, 0),
+((SELECT id FROM volunteers WHERE name='Faith Helpers'), '2025-12-08', 'Other', 3, 1),
+((SELECT id FROM volunteers WHERE name='Northside Volunteers'), '2025-12-15', 'Other', 2, 0),
+((SELECT id FROM volunteers WHERE name='Southside Helpers'), '2025-12-22', 'Other', 1, 0),
+
+-- January 2026
+((SELECT id FROM volunteers WHERE name='Alice Johnson'), '2026-01-05', 'Micah''s Mission - Basement', 1, 0),
+((SELECT id FROM volunteers WHERE name='Bob Smith'), '2026-01-12', 'Micah''s Mission - Basement', 2, 1),
+((SELECT id FROM volunteers WHERE name='Grace Lee'), '2026-01-19', 'Micah''s Mission - Basement', 3, 0),
+((SELECT id FROM volunteers WHERE name='Downtown Community Group'), '2026-01-06', 'Kitchen', 1, 0),
+((SELECT id FROM volunteers WHERE name='Northside Volunteers'), '2026-01-13', 'Kitchen', 4, 1),
+((SELECT id FROM volunteers WHERE name='Alice Johnson'), '2026-01-20', 'Kitchen', 2, 0),
+((SELECT id FROM volunteers WHERE name='Carol Martinez'), '2026-01-07', 'Dorothy Day Food Pantry', 3, 0),
+((SELECT id FROM volunteers WHERE name='Southside Helpers'), '2026-01-14', 'Dorothy Day Food Pantry', 5, 2),
+((SELECT id FROM volunteers WHERE name='Eastside Volunteers'), '2026-01-21', 'Dorothy Day Food Pantry', 2, 1),
+((SELECT id FROM volunteers WHERE name='Faith Helpers'), '2026-01-08', 'Community Picnic', 4, 1),
+((SELECT id FROM volunteers WHERE name='Ian Thompson'), '2026-01-15', 'Community Picnic', 3, 0),
+((SELECT id FROM volunteers WHERE name='Carol Martinez'), '2026-01-22', 'Community Picnic', 6, 2);
+
+-- ---------------- Events ----------------
+INSERT INTO events (name, datetime, venue, type, shelter_id, notes)
+VALUES
+('Holiday Fundraiser', '2025-12-15 18:00:00-06', 'Community Hall', 'Fundraiser', NULL, 'Annual holiday fundraising event'),
+('Winter Coat Drive', '2025-12-20 10:00:00-06', 'Micah''s Mission - Basement', 'Community Events', 
+  (SELECT id FROM housing_building WHERE name='Micah''s Mission'), 'Collecting coats for families in need'),
+('Soup Kitchen Prep', '2025-12-22 09:00:00-06', 'Kitchen', 'Large Volunteer Event', NULL, 'Preparing meals for the community'),
+('Neighborhood Clean-Up', '2025-12-28 08:30:00-06', 'Bright Sky', 'Community Events', NULL, NULL),
+('Summer Picnic', '2025-06-10 12:00:00-06', 'Community Picnic', 'Community Events', NULL, 'Fun picnic with games and food'),
+('Back-to-School Drive', '2025-08-20 14:00:00-06', 'Dorothy Day Food Pantry', 'Fundraiser', NULL, 'Supplies for students'),
+('Volunteer Appreciation Night', '2025-09-15 18:30:00-06', 'Silver Linings', 'Other', NULL, 'Celebrating our volunteers'),
+('Emergency Shelter Setup', '2025-11-05 16:00:00-06', 'Micah''s Mission - Pantry', 'Large Volunteer Event', 
+  (SELECT id FROM housing_building WHERE name='Micah''s Mission'), 'Preparing emergency kits'),
+('Community Art Fair', '2025-10-12 10:00:00-06', 'Community Hall', 'Community Events', NULL, 'Local artists showcase'),
+('Charity Auction', '2025-11-22 19:00:00-06', 'Community Hall', 'Fundraiser', NULL, 'Auction to support programs');
+
+-- ---------------- Donations ----------------
+INSERT INTO donations (donor_id, date, amount, notable, restricted, notes)
+VALUES
+((SELECT id FROM donors WHERE name='Bob Johnson'), '2025-01-05', 150.00, FALSE, FALSE, 'Monthly support donation'),
+((SELECT id FROM donors WHERE name='Faith Helpers'), '2025-01-12', 500.00, TRUE, FALSE, 'Group fundraiser contribution'),
+((SELECT id FROM donors WHERE name='Community Giving Circle'), '2025-02-03', 250.00, FALSE, TRUE, 'Restricted for food pantry'),
+((SELECT id FROM donors WHERE name='Anonymous Donor'), '2025-02-10', 75.00, FALSE, FALSE, 'Anonymous cash donation'),
+((SELECT id FROM donors WHERE name='Bob Johnson'), '2025-03-01', 200.00, TRUE, FALSE, 'Winter support donation'),
+((SELECT id FROM donors WHERE name='Silver Linings Foundation'), '2025-03-15', 1000.00, TRUE, TRUE, 'Annual grant restricted to shelter services'),
+
+-- Additional donations (seed December / January)
+((SELECT id FROM donors WHERE name='Bob Johnson'), '2025-12-01', 90.50, FALSE, FALSE, 'All systems normal'),
+((SELECT id FROM donors WHERE name='Faith Helpers'), '2025-12-01', 85.00, FALSE, FALSE, 'Preparing for winter'),
+((SELECT id FROM donors WHERE name='Bob Johnson'), '2026-01-01', 88.00, FALSE, FALSE, 'Monthly maintenance completed'),
+((SELECT id FROM donors WHERE name='Faith Helpers'), '2026-01-01', 80.00, FALSE, FALSE, 'New lease agreements starting');
+
+-- ---------------- Housing ----------------
 INSERT INTO housing (
     housing_building_id, month_date, occupancy_percent, operational_reserves, replacement_reserves,
     current_vacancies, upcoming_vacancies, upcoming_new_leases, notes
 )
 VALUES
--- Bright Sky Apartments
-(1, '2025-09-01', 91.0, 11500, 4800, 2, 1, 1, 'September data'),
-(1, '2025-10-01', 89.5, 11800, 4900, 3, 1, 2, 'October data'),
-(1, '2025-11-01', 90.5, 12000, 5000, 3, 1, 2, 'November data'),
-(1, '2025-12-01', 85.0, 12500, 5200, 4, 2, 1, 'December data initial'),
+((SELECT id FROM housing_building WHERE name='Bright Sky Apartments'), '2025-09-01', 91.0, 11500, 4800, 2, 1, 1, 'September data'),
+((SELECT id FROM housing_building WHERE name='Bright Sky Apartments'), '2025-10-01', 89.5, 11800, 4900, 3, 1, 2, 'October data'),
+((SELECT id FROM housing_building WHERE name='Bright Sky Apartments'), '2025-11-01', 90.5, 12000, 5000, 3, 1, 2, 'November data'),
+((SELECT id FROM housing_building WHERE name='Bright Sky Apartments'), '2025-12-01', 85.0, 12500, 5200, 4, 2, 1, 'December data initial'),
+((SELECT id FROM housing_building WHERE name='Silver Linings Apartments'), '2025-09-01', 93.0, 14500, 5800, 1, 0, 1, 'September data'),
+((SELECT id FROM housing_building WHERE name='Silver Linings Apartments'), '2025-10-01', 91.5, 14800, 5900, 2, 1, 1, 'October data'),
+((SELECT id FROM housing_building WHERE name='Silver Linings Apartments'), '2025-11-01', 92.0, 15000, 6000, 2, 0, 1, 'November data'),
+((SELECT id FROM housing_building WHERE name='Silver Linings Apartments'), '2025-12-01', 88.0, 15500, 6200, 3, 1, 2, 'December data initial');
 
--- Silver Linings Apartments
-(2, '2025-09-01', 93.0, 14500, 5800, 1, 0, 1, 'September data'),
-(2, '2025-10-01', 91.5, 14800, 5900, 2, 1, 1, 'October data'),
-(2, '2025-11-01', 92.0, 15000, 6000, 2, 0, 1, 'November data'),
-(2, '2025-12-01', 88.0, 15500, 6200, 3, 1, 2, 'December data initial');
-
--- Seed donations for 2 months (approx. 8 weeks), 2–3 donations per week
--- Mix of notable and restricted flags
-
-INSERT INTO donations (donor_id, date, amount, notable, restricted, notes)
+-- ---------------- Media ----------------
+INSERT INTO media_stats (
+    month_date, platform, total_visits, unique_visits, pageviews, bounce_rate, social_views, audience_start, audience_end, total_sent, total_opens, open_rate, total_clicks, click_rate, notes
+)
 VALUES
--- Week 1
-(4, '2025-11-03', 100.00, false, false, 'Regular donation'),
-(6, '2025-11-04', 250.00, true, false, 'Special contribution'),
-(7, '2025-11-06', 75.00, false, true, 'Restricted for food pantry'),
-
--- Week 2
-(6, '2025-11-10', 150.00, true, false, 'Notable donation for Thanksgiving'),
-(4, '2025-11-12', 200.00, false, false, 'Regular donation'),
-(7, '2025-11-13', 50.00, false, true, 'Restricted to youth program'),
-
--- Week 3
-(4, '2025-11-17', 300.00, true, true, 'Special restricted event donation'),
-(6, '2025-11-18', 80.00, false, false, NULL),
-(7, '2025-11-20', 120.00, false, false, 'Regular weekly donation'),
-
--- Week 4
-(9, '2025-11-24', 90.00, false, true, 'Restricted for building fund'),
-(8, '2025-11-25', 400.00, true, false, 'Major contribution'),
-(4, '2025-11-27', 60.00, false, false, NULL),
-
--- Week 5
-(4, '2025-12-01', 110.00, false, false, 'December donation'),
-(6, '2025-12-03', 220.00, true, false, 'Special event donation'),
-(9, '2025-12-04', 75.00, false, true, 'Restricted donation'),
-
--- Week 6
-(10, '2025-12-08', 130.00, false, false, 'Regular donation'),
-(9, '2025-12-09', 250.00, true, true, 'Notable & restricted'),
-(8, '2025-12-11', 95.00, false, false, NULL),
-
--- Week 7
-(8, '2025-12-15', 180.00, false, true, 'Restricted for program'),
-(4, '2025-12-16', 300.00, true, false, 'Notable donation'),
-(9, '2025-12-18', 60.00, false, false, NULL),
-
--- Week 8
-(4, '2025-12-22', 150.00, false, false, 'Regular donation'),
-(11, '2025-12-23', 200.00, true, false, 'End-of-year donation'),
-(10, '2025-12-24', 75.00, false, true, 'Restricted for holiday fund');
+('2025-01-01', 'Website', 2800, 2300, 4900, 62, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'January Website Metrics'),
+('2025-02-01', 'Website', 4200, 3600, 6200, 76, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'February Website Metrics'),
+('2025-03-01', 'Website', 4000, 3500, 5600, 79.79, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'March Website Metrics'),
+('2025-01-01', 'Facebook', NULL, NULL, NULL, NULL, 24622, 6002, 6008, NULL, NULL, NULL, NULL, NULL, 'January Facebook Metrics'),
+('2025-02-01', 'Facebook', NULL, NULL, NULL, NULL, 42648, 6005, 6031, NULL, NULL, NULL, NULL, NULL, 'February Facebook Metrics'),
+('2025-03-01', 'Facebook', NULL, NULL, NULL, NULL, 31550, 6031, 6045, NULL, NULL, NULL, NULL, NULL, 'March Facebook Metrics'),
+('2025-05-01', 'Instagram', NULL, NULL, NULL, NULL, 916, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'May Instagram Metrics'),
+('2025-06-01', 'Instagram', NULL, NULL, NULL, NULL, 212, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'June Instagram Metrics'),
+('2025-11-01', 'TikTok', NULL, NULL, NULL, NULL, 523, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'November TikTok Metrics'),
+('2025-12-01', 'TikTok', NULL, NULL, NULL, NULL, 838, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'December TikTok Metrics'),
+('2025-10-24', 'Newsletter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2998, 786, 13.10, 118, 4, 'Oct 24 Newsletter'),
+('2025-10-31', 'Newsletter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2995, 537, 18.10, 79, 2.70, 'Oct 31 Newsletter'),
+('2025-11-07', 'Newsletter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2996, 544, 18.30, 82, 2.80, 'Nov 7 Newsletter');

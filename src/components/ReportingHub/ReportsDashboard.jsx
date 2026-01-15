@@ -1,5 +1,6 @@
 import React from "react";
 import Accordion from "react-bootstrap/Accordion";
+import "./ReportsDashboard.css";
 
 // Original Components
 import CommunityOutreachReportsPage from "../CommunityOutreach/Reports/CommunityOutreachReportsPage";
@@ -55,7 +56,7 @@ export default function ReportsHub() {
   ];
 
   return (
-    <div className="hub-container">
+    <div className="hub-container report-hub">
       <DepartmentHeader title="Department Reporting Dashboard" />
       <p>Select a section to view reports.</p>
 

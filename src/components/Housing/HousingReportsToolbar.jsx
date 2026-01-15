@@ -32,8 +32,7 @@ export default function HousingReportsToolbar({
   ];
 
   return (
-    <div className="hub-container housing">
-      <div className="toolbar-container housing">
+      <div className="toolbar-container housing-report">
         {/* Left side filters */}
         <div className="toolbar-left">
           {/* Report dropdown */}
@@ -105,6 +104,5 @@ export default function HousingReportsToolbar({
           </button>
         </div>
       </div>
-    </div>
   );
 }
