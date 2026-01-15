@@ -1,9 +1,10 @@
 import React from "react";
 import Accordion from "react-bootstrap/Accordion";
+import "./ReportsDashboard.css";
 
 // Original Components
 import CommunityOutreachReportsPage from "../CommunityOutreach/Reports/CommunityOutreachReportsPage";
-import DevelopmentReports from "../Development/DevelopmentReports";
+import DevelopmentReportsPage from "../Development/DevelopmentReportsPage";
 import HousingReports from "../Housing/HousingReports";
 import MediaReports from "../Media/Reports/MediaReports";
 
@@ -35,7 +36,7 @@ export default function ReportsHub() {
     {
       id: "development",
       title: "Development Reports",
-      Component: DevelopmentReports,
+      Component: DevelopmentReportsPage,
     },
     {
       id: "compliance",
@@ -55,7 +56,7 @@ export default function ReportsHub() {
   ];
 
   return (
-    <div className="hub-container">
+    <div className="hub-container report-hub">
       <DepartmentHeader title="Department Reporting Dashboard" />
       <p>Select a section to view reports.</p>
 

@@ -1,37 +1,27 @@
 
 
 /* ---------- Media Toolbar ---------- */
-.media-toolbar .toolbar-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end; /* clear button aligns with bottom of filters */
-  padding: 8px 12px;     /* shorter toolbar */
-  margin-bottom: 0;
-  width: 100%;
-  max-width: 1400px;
+.toolbar-container.media {
+  width: 100%;        
+  max-width: 100%;    
   margin-left: auto;
   margin-right: auto;
-  background-color: rgba(0,0,0,0.05); /* subtle background */
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
   gap: 12px;
+  box-sizing: border-box; /* includes padding in width */
 }
 
 /* Left side filters */
-.toolbar-left {
+/* .toolbar-left {
+  flex: 1;             
   display: flex;
   gap: 16px;
-  flex-wrap: wrap;
+  flex-wrap: wrap;   
   align-items: flex-end;
-  flex: 1;
-}
+} */
 
-/* Right side (Clear button) */
-.toolbar-right {
-  display: flex;
-  align-items: flex-end;
-  margin-left: 16px;
-}
 
 /* Individual filter group */
 .filter-group {

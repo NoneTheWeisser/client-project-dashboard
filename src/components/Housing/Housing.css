@@ -125,8 +125,19 @@
   background-color: var(--brand-accent);
 }
 
-/* ---------- Toolbar ---------- */
-.hub-container.housing .housing-toolbar {
+/* ---------- Housing Toolbar ---------- */
+.toolbar-container.housing {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+  width: 80%;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+.toolbar-container.housing-report {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
@@ -134,9 +145,10 @@
   gap: 12px;
   width: 100%;
   border-radius: 8px;
+  box-sizing: border-box;
 }
-
-.hub-container.housing .toolbar-left {
+/* Left side filters */
+.toolbar-container.housing .toolbar-left {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
@@ -145,26 +157,62 @@
   align-items: flex-end;
 }
 
-.hub-container.housing .toolbar-left .filter-group {
+.toolbar-container.housing .toolbar-left .filter-group {
   display: flex;
   flex-direction: column;
   min-width: 120px;
 }
 
-.hub-container.housing .toolbar-left input[type="text"] {
+.toolbar-container.housing .toolbar-left input[type="text"] {
   min-width: 300px;
 }
 
-.hub-container.housing .toolbar-right {
+/* Right side (if you ever need it) */
+.toolbar-container.housing .toolbar-right {
   display: flex;
   gap: 12px;
   flex-shrink: 0;
   align-items: flex-end;
 }
 
-.hub-container.housing .toolbar-right button {
+.toolbar-container.housing .toolbar-right button {
   min-width: 100px;
 }
+
+/* Individual filters */
+.toolbar-container.housing .filter-group label {
+  font-weight: 500;
+  font-size: 0.875rem;
+  margin-bottom: 4px;
+}
+
+.toolbar-container.housing .filter-group select,
+.toolbar-container.housing .filter-group input {
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 0.875rem;
+  background-color: #fff;
+}
+
+/* Clear button */
+.toolbar-container.housing .clear-button {
+  padding: 6px 14px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: 2px solid #888;
+  border-radius: 4px;
+  background-color: transparent;
+  color: #555;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.toolbar-container.housing .clear-button:hover {
+  background-color: #555;
+  color: #fff;
+}
+
 
 /* ---------- Tables ---------- */
 .hub-container.housing .housing-table {
@@ -206,51 +254,7 @@
   width: 100px;
 }
 
-/* ---------- Table Actions ---------- */
-.hub-container.housing .table-actions {
-  display: flex;
-  gap: 8px;
-  justify-content: center;
-  align-items: center;
-}
 
-.hub-container.housing .table-actions button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 4px 8px;
-  border: 1px solid transparent;
-  border-radius: 4px;
-  background: none;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: all 0.2s;
-}
-
-.hub-container.housing .table-actions .btn-table-edit {
-  color: var(--brand-accent);
-  border-color: var(--brand-accent);
-}
-
-.hub-container.housing .table-actions .btn-table-edit:hover {
-  background-color: var(--brand-accent);
-  color: #fff;
-}
-
-.hub-container.housing .table-actions .btn-table-delete {
-  color: #d32f2f;
-  border-color: #d32f2f;
-}
-
-.hub-container.housing .table-actions .btn-table-delete:hover {
-  background-color: #d32f2f;
-  color: #fff;
-}
-
-.hub-container.housing .table-actions svg {
-  width: 16px;
-  height: 16px;
-}
 
 /* ---------- Modals ---------- */
 .hub-container.housing .modal-overlay {

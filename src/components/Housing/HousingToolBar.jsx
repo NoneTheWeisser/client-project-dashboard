@@ -1,4 +1,5 @@
 import useStore from "../../zustand/store";
+import "./Housing.css";
 
 export default function HousingToolBar({
   year,
@@ -25,7 +26,6 @@ export default function HousingToolBar({
   ).sort();
 
   return (
-    <div className="hub-container housing">
       <div className="toolbar-container housing">
         {/* Left side: filters */}
         <div className="toolbar-left">
@@ -65,15 +65,12 @@ export default function HousingToolBar({
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
+          <div className="filter-group">
+            <button className="clear-button" onClick={onClear}>
+              Clear
+            </button>
+          </div>
         </div>
-
-        {/* Right side: Clear button */}
-        <div className="toolbar-right">
-          <button className="clear-button" onClick={onClear}>
-            Clear
-          </button>
-        </div>
-      </div>
     </div>
   );
 }
