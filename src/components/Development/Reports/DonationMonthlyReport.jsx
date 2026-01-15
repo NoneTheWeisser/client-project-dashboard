@@ -1,7 +1,10 @@
 import useStore from "../../../zustand/store";
 import { useEffect } from "react";
 
-export default function DonationMonthlyReport() {
+// Plain number with commas
+export const numberFormatter = new Intl.NumberFormat("en-US");
+
+export default function DonationMonthlyReport({ filters }) {
   const donationMonthlyReports = useStore(
     (state) => state.donationMonthlyReports
   );
@@ -14,16 +17,25 @@ export default function DonationMonthlyReport() {
 
   useEffect(() => {
     fetchMonthlyDonationReports();
-  }, []);
+  }, [fetchMonthlyDonationReports]);
 
   if (loadingDonationReports) return <p>Loading monthly reports...</p>;
 
+  // Filter by Year if selected
+  const filteredReports = donationMonthlyReports.filter((r) => {
+    if (filters.year) {
+      const reportYear = new Date(r.month_start).getFullYear();
+      return reportYear === Number(filters.year);
+    }
+    return true;
+  });
+
   return (
-    <div className="table-container" style={{ maxWidth: "1400px" }}>
-      <table className="table-app table-hover table-striped">
+    <div className="table-container">
+      <table className="table-app table-hover table-striped donation-monthly-table">
         <thead>
           <tr>
-            <th>Monthly</th>
+            <th>Month</th>
             <th>Total Donations</th>
             <th>Donation Count</th>
             <th>Restricted Amount</th>
@@ -31,13 +43,21 @@ export default function DonationMonthlyReport() {
           </tr>
         </thead>
         <tbody>
-          {donationMonthlyReports.map((r) => (
+          {filteredReports.map((r) => (
             <tr key={r.month_start}>
               <td>{r.month_label}</td>
-              <td>${r.total_amount}</td>
-              <td>{r.donation_count}</td>
-              <td>${r.restricted_amount}</td>
-              <td>${r.notable_amount}</td>
+              <td className="col-number">
+                ${numberFormatter.format(r.total_amount)}
+              </td>
+              <td className="col-number">
+                {numberFormatter.format(r.donation_count)}
+              </td>
+              <td className="col-number">
+                ${numberFormatter.format(r.restricted_amount)}
+              </td>
+              <td className="col-number">
+                ${numberFormatter.format(r.notable_amount)}
+              </td>
             </tr>
           ))}
         </tbody>

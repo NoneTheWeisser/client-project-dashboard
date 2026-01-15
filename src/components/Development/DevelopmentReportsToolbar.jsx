@@ -2,20 +2,24 @@ import React from "react";
 
 export default function DevelopmentReportsToolbar({
   category,
-  setCategory,
   report,
+  setCategory,
   setReport,
   reportOptions = [],
   filters,
   setFilters,
+  onClear,
   yearOptions = [],
   nameOptions = [],
-  onClear,
 }) {
+  // --- Determine if Name/Search should be disabled ---
+  const disableNameSearch =
+    category === "donations" && (report === "weekly" || report === "monthly");
+
   return (
     <div className="toolbar-container development">
       <div className="toolbar-left">
-        {/* ---------------- Category ---------------- */}
+        {/* Category */}
         <div className="filter-group">
           <label>Category</label>
           <select
@@ -27,7 +31,7 @@ export default function DevelopmentReportsToolbar({
           </select>
         </div>
 
-        {/* ---------------- Report ---------------- */}
+        {/* Report */}
         <div className="filter-group">
           <label>Report</label>
           <select value={report} onChange={(e) => setReport(e.target.value)}>
@@ -39,7 +43,7 @@ export default function DevelopmentReportsToolbar({
           </select>
         </div>
 
-        {/* ---------------- Year ---------------- */}
+        {/* Year */}
         <div className="filter-group">
           <label>Year</label>
           <select
@@ -55,34 +59,41 @@ export default function DevelopmentReportsToolbar({
           </select>
         </div>
 
-        {/* ---------------- Name / Event ---------------- */}
+        {/* Name / Event */}
         <div className="filter-group">
           <label>Name / Event</label>
-          <select
+          <input
+            type="text"
             value={filters.name || ""}
             onChange={(e) => setFilters({ ...filters, name: e.target.value })}
-          >
-            <option value="">All</option>
+            disabled={disableNameSearch}
+            style={
+              disableNameSearch ? { opacity: 0.5, cursor: "not-allowed" } : {}
+            }
+            list="name-options"
+          />
+          <datalist id="name-options">
             {nameOptions.map((n) => (
-              <option key={n} value={n}>
-                {n}
-              </option>
+              <option key={n} value={n} />
             ))}
-          </select>
+          </datalist>
         </div>
 
-        {/* ---------------- Search ---------------- */}
+        {/* Search */}
         <div className="filter-group">
           <label>Search</label>
           <input
             type="text"
-            placeholder="Search..."
             value={filters.search || ""}
             onChange={(e) => setFilters({ ...filters, search: e.target.value })}
+            disabled={disableNameSearch}
+            style={
+              disableNameSearch ? { opacity: 0.5, cursor: "not-allowed" } : {}
+            }
           />
         </div>
 
-        {/* ---------------- Clear ---------------- */}
+        {/* Clear */}
         <div className="filter-group">
           <button className="clear-button" onClick={onClear}>
             Clear
