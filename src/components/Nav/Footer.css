@@ -1,16 +1,18 @@
-/* ================================
-   Footer
-================================ */
 .footer {
   margin-top: 48px;
   padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
 }
 
 /* Thin divider line */
 .footer-divider {
+  width: 100%;
+  max-width: 1400px;
   height: 1px;
   background: rgba(0, 0, 0, 0.08);
-  margin-bottom: 16px;
 }
 
 /* Footer navigation */
@@ -28,14 +30,47 @@
   color: #555;
 }
 
-/* Active / hover */
+/* Hover / Active */
 .footer-nav a:hover,
 .footer-nav a.active {
   color: var(--brand-primary);
 }
 
-.copyright {
-    justify-self: center;
-    padding: 10px;
-    color: #959393;
+/* Desktop-only links */
+.desktop-only {
+  display: inline;
+}
+
+/* Mobile-only links (Home + Reporting) */
+.mobile-home {
+  display: none;
+}
+
+/* Copyright */
+.footer .copyright {
+  font-size: 0.75rem;
+  color: #666;
+  text-align: center;
+  margin-top: 0; 
+}
+
+/* Responsive: Mobile */
+@media (max-width: 768px) {
+  /* Hide desktop-only links */
+  .desktop-only {
+    display: none;
+  }
+
+  /* Show mobile links */
+  .mobile-home {
+    display: block;
+    text-align: center;
+    margin: 6px 0; 
+  }
+
+  .footer-nav {
+    flex-direction: column;
+    align-items: center;
+    gap: 0; 
+  }
 }

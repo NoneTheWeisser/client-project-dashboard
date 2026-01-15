@@ -5,23 +5,51 @@ function Footer() {
   return (
     <footer className="footer">
       <div className="footer-divider" />
+
       <nav className="footer-nav">
-        <NavLink to="/compliance">Compliance</NavLink>
-        <NavLink to="/outreach">Community Outreach</NavLink>
-        <NavLink to="/development">Development</NavLink>
-        <NavLink to="/finance">Finance</NavLink>
-        <NavLink to="/housing">Housing</NavLink>
-        <NavLink to="/hr">Human Resources</NavLink>
-        <NavLink to="/kitchen">Kitchen</NavLink>
-        <NavLink to="/media">Media</NavLink>
-        <NavLink to="/pantry">Pantry</NavLink>
-        <NavLink to="/shelter">Shelter</NavLink>
-        <NavLink to="/reporting">Reporting</NavLink>
+        {/* Desktop-only department links */}
+        <NavLink to="/compliance" className="desktop-only">
+          Compliance
+        </NavLink>
+        <NavLink to="/outreach" className="desktop-only">
+          Community Outreach
+        </NavLink>
+        <NavLink to="/development" className="desktop-only">
+          Development
+        </NavLink>
+        <NavLink to="/finance" className="desktop-only">
+          Finance
+        </NavLink>
+        <NavLink to="/housing" className="desktop-only">
+          Housing
+        </NavLink>
+        <NavLink to="/hr" className="desktop-only">
+          Human Resources
+        </NavLink>
+        <NavLink to="/kitchen" className="desktop-only">
+          Kitchen
+        </NavLink>
+        <NavLink to="/media" className="desktop-only">
+          Media
+        </NavLink>
+        <NavLink to="/pantry" className="desktop-only">
+          Pantry
+        </NavLink>
+        <NavLink to="/shelter" className="desktop-only">
+          Shelter
+        </NavLink>
+
+        {/* Always show on all screens */}
+        <NavLink to="/" className="mobile-home">
+          Home
+        </NavLink>
+        <NavLink to="/reporting" className="mobile-home">
+          Reporting
+        </NavLink>
       </nav>
+
       <div className="copyright">
-        <small>
-          <p>Copyright © {new Date().getFullYear()}</p>
-        </small>
+        <small>Copyright © 2026</small>
       </div>
     </footer>
   );
