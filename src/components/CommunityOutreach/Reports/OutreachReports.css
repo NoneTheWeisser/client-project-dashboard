@@ -1,38 +1,78 @@
-.report-container {
-  background: #fff;
-  border-radius: 8px;
-  padding: 16px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
-}
-
-.hub-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px 16px;
+.dashboard-container.development {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 1.5rem; /* space between charts and KPIs */
 }
 
-/* ----- Summary Cards ----- */
-.dashboard-container {
+.charts-row.development {
   display: flex;
-  gap: 20px;
+  gap: 1rem; /* space between line and pie chart */
+  align-items: center;
 }
 
-.chart-column {
-  flex: 3; /* chart takes 3/4 width */
+.chart-column.development:first-child {
+  flex: 3; /* Line chart takes 3/4 */
 }
 
-.kpi-column {
-  flex: 1; /* KPIs take 1/4 width */
+.chart-column.development:last-child {
+  flex: 1; /* Pie chart takes 1/4 */
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 16px;
+  justify-content: center; /* center pie chart horizontally in its column */
+  align-items: center; /* center pie chart vertically (fallback if row is taller) */
 }
-.kpi-title {
-  font-size: 16px; /* smaller than default */
-  font-weight: 600;
-  margin-bottom: 4px;
+
+/* Make charts responsive */
+.chart-column.development canvas {
+  width: 100% !important;
+  height: auto !important;
+}
+
+/* KPIs row */
+/* KPIs row */
+.kpi-row.development {
+  display: flex;
+  gap: 1rem; /* space between KPIs */
+  justify-content: space-between; /* even spacing across the row */
+  flex-wrap: wrap; /* wraps if screen is too narrow */
+}
+
+/* Each KPI box stretches equally */
+.kpi-row.development > * {
+  flex: 1; /* take equal space */
+  margin-top: 30px;
+  min-width: 150px; /* prevent them from getting too narrow */
+}
+
+/* KPI Value styling */
+.kpi-value.development {
+  font-size: 1.5rem;
+  margin-top: 20px;
+  font-weight: bold;
+  color: #1c71a6;
+  transition: transform 0.2s;
+  text-align: center; /* center the number inside each KPI box */
+}
+
+.kpi-value.development:hover {
+  transform: scale(1.1);
+}
+
+/* KPI Title styling */
+.kpi-row.development > * .kpi-title {
+  display: block;
+  text-align: center;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 0.25rem;
+}
+
+.kpi-value.development {
+  font-size: 20px;
+  font-weight: bold;
+  color: #1c71a6;
+  transition: transform 0.2s;
+}
+
+.kpi-value.development:hover {
+  transform: scale(1.1);
 }

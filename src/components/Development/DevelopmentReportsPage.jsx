@@ -11,51 +11,44 @@ import DonationWeeklyReport from "./Reports/DonationWeeklyReport";
 import DonationMonthlyReport from "./Reports/DonationMonthlyReport";
 import DonationByDonorReport from "./Reports/DonationByDonorReport";
 import MonthlyDonationChart from "./Charts/MonthlyDonationChart";
+import MonthlyDonationPie from "./Charts/MonthlyDonationPie";
 
 export default function DevelopmentReportsPage() {
   // ---------------- State ----------------
   const [category, setCategory] = useState("donations");
-  const [report, setReport] = useState("weekly");
-  const [filters, setFilters] = useState({
-    year: "",
-    name: "",
-    search: "",
-  });
+  const [report, setReport] = useState("monthly");
+  const [filters, setFilters] = useState({ year: "", name: "", search: "" });
+  const [pieData, setPieData] = useState({ restricted: 0, unrestricted: 0 });
 
   // ---------------- Store Data ----------------
   const donations = useStore((state) => state.donations) || [];
-  const donationWeeklyReports =
-    useStore((state) => state.donationWeeklyReports) || [];
   const donationMonthlyReports =
     useStore((state) => state.donationMonthlyReports) || [];
-
   const fetchDonations = useStore((state) => state.fetchDonations);
-  const fetchWeeklyDonationReports = useStore(
-    (state) => state.fetchWeeklyDonationReports
-  );
   const fetchMonthlyDonationReports = useStore(
     (state) => state.fetchMonthlyDonationReports
   );
+  const events = useStore((state) => state.events) || [];
+  const fetchEvents = useStore((state) => state.fetchEvents);
 
-  // ---------------- Fetch Data ----------------
+  // ---------------- Fetch data ----------------
   useEffect(() => {
     fetchDonations();
-    fetchWeeklyDonationReports();
     fetchMonthlyDonationReports();
-  }, [fetchDonations, fetchWeeklyDonationReports, fetchMonthlyDonationReports]);
+    fetchEvents();
+  }, [fetchDonations, fetchMonthlyDonationReports, fetchEvents]);
 
-  // ---------------- KPIs ----------------
-  // Determine latest donation month
-  const latestDonationDate = donations
-    .map((d) => new Date(d.date))
-    .sort((a, b) => b - a)[0]; // newest first
+  // ---------------- Compute KPIs ----------------
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const currentMonth = now.getMonth();
 
-  const latestYear = latestDonationDate?.getFullYear();
-  const latestMonth = latestDonationDate?.getMonth();
-
+  // Donations in current month
   const donationsThisMonth = donations.filter((d) => {
     const date = new Date(d.date);
-    return date.getFullYear() === latestYear && date.getMonth() === latestMonth;
+    return (
+      date.getFullYear() === currentYear && date.getMonth() === currentMonth
+    );
   });
 
   const totalDonationsMonth = donationsThisMonth.reduce(
@@ -77,31 +70,41 @@ export default function DevelopmentReportsPage() {
     ? `${topDonorEntry[0]} ($${topDonorEntry[1].toLocaleString()})`
     : "N/A";
 
-  // ---------------- Dropdown Options ----------------
-  let yearOptions = [];
-  if (report === "weekly") {
-    yearOptions = donationWeeklyReports
-      .map((r) => new Date(r.week_start).getFullYear())
-      .filter((v, i, a) => a.indexOf(v) === i)
-      .sort((a, b) => b - a);
-  } else if (report === "monthly") {
-    yearOptions = donationMonthlyReports
-      .map((r) => new Date(r.month_start).getFullYear())
-      .filter((v, i, a) => a.indexOf(v) === i)
-      .sort((a, b) => b - a);
-  }
+  const monthName = now.toLocaleString("default", { month: "long" });
 
-  // ---------------- Report Options ----------------
-  const reportOptions = [
-    { value: "weekly", label: "Donations Weekly" },
-    { value: "monthly", label: "Donations Monthly" },
-    { value: "by-donor", label: "Donors" },
-  ];
+  // ---------------- Next Event ----------------
+  const upcomingEvents = events
+    .map((e) => ({ ...e, dateObj: new Date(e.datetime) }))
+    .filter((e) => e.dateObj >= new Date()) // only future events
+    .sort((a, b) => a.dateObj - b.dateObj);
 
-  const handleClearFilters = () =>
-    setFilters({ year: "", name: "", search: "" });
+  const nextEvent = upcomingEvents[0];
+  const nextEventDisplay = nextEvent
+    ? `${nextEvent.name} (${nextEvent.dateObj.toLocaleDateString()})`
+    : "N/A";
 
-  // ---------------- Render Report Component ----------------
+  // ---------------- Pie Chart Data (last 6 months) ----------------
+  useEffect(() => {
+    if (!donationMonthlyReports.length) return;
+
+    const last6 = [...donationMonthlyReports]
+      .sort((a, b) => new Date(a.month_start) - new Date(b.month_start))
+      .slice(-6);
+
+    let restricted = 0;
+    let unrestricted = 0;
+
+    last6.forEach((r) => {
+      const total = Number(r.total_amount || 0);
+      const restrictedAmount = Number(r.restricted_amount || 0);
+      restricted += restrictedAmount;
+      unrestricted += total - restrictedAmount;
+    });
+
+    setPieData({ restricted, unrestricted });
+  }, [donationMonthlyReports]);
+
+  // ---------------- Report Component ----------------
   const renderReport = () => {
     switch (report) {
       case "weekly":
@@ -111,14 +114,31 @@ export default function DevelopmentReportsPage() {
       case "by-donor":
         return <DonationByDonorReport filters={filters} />;
       default:
-        return <DonationWeeklyReport filters={filters} />;
+        return <DonationMonthlyReport filters={filters} />;
     }
   };
 
-  // ---------------- Render ----------------
+  // ---------------- Dropdown Options ----------------
+  const reportOptions = [
+    { value: "weekly", label: "Donations Weekly" },
+    { value: "monthly", label: "Donations Monthly" },
+    { value: "by-donor", label: "Donors" },
+  ];
+
+  const yearOptions = donationMonthlyReports
+    .map((r) => new Date(r.month_start).getFullYear())
+    .filter((v, i, a) => a.indexOf(v) === i)
+    .sort((a, b) => b - a);
+
+  const nameOptions = Array.from(
+    new Set(donations.map((d) => d.donor_name))
+  ).sort();
+
+  const handleClearFilters = () =>
+    setFilters({ year: "", name: "", search: "" });
+
   return (
     <div className="hub-container development-reports">
-      {/* ---------------- Department Header ---------------- */}
       <DepartmentHeader
         title="Development"
         actions={
@@ -140,21 +160,32 @@ export default function DevelopmentReportsPage() {
         }
       />
 
-      {/* ---------------- KPIs + Chart ---------------- */}
-      <div className="dashboard-container outreach">
-        <div className="chart-column">
-          <MonthlyDonationChart reports={donationMonthlyReports} />
+      {/* ---------------- Charts ---------------- */}
+      <div className="dashboard-container development">
+        <div className="charts-row development">
+          <div className="chart-column development">
+            <MonthlyDonationChart reports={donationMonthlyReports} />
+          </div>
+          <div className="chart-column development">
+            <MonthlyDonationPie
+              restricted={pieData.restricted}
+              unrestricted={pieData.unrestricted}
+            />
+          </div>
         </div>
-        <div className="kpi-column">
+
+        {/* ---------------- KPIs ---------------- */}
+        <div className="kpi-row development">
           <DevelopmentKPI
-            title="Total Donations (Month)"
+            title={`Total ${monthName} Donations`}
             value={`$${totalDonationsMonth.toLocaleString()}`}
           />
           <DevelopmentKPI
-            title="# Donations (Month)"
+            title={`Number of ${monthName} Donations`}
             value={donationCountMonth}
           />
-          <DevelopmentKPI title="Top Donor (Month)" value={topDonor} />
+          <DevelopmentKPI title={`Top ${monthName} Donor`} value={topDonor} />
+          <DevelopmentKPI title="Next Event" value={nextEventDisplay} />
         </div>
       </div>
 
@@ -169,7 +200,7 @@ export default function DevelopmentReportsPage() {
           filters={filters}
           setFilters={setFilters}
           yearOptions={yearOptions}
-          nameOptions={[]}
+          nameOptions={nameOptions}
           onClear={handleClearFilters}
         />
       </div>

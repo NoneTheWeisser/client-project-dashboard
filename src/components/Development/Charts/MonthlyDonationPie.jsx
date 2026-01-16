@@ -1,19 +1,18 @@
-// MonthlyDonationPie.jsx
-import React from "react";
 import { Pie } from "react-chartjs-2";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title } from "chart.js";
+import ChartDataLabels from "chartjs-plugin-datalabels";
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+// Only register core elements, NOT ChartDataLabels globally
+ChartJS.register(ArcElement, Tooltip, Legend, Title);
 
 export default function MonthlyDonationPie({ restricted = 0, unrestricted = 0 }) {
   const data = {
     labels: ["Restricted", "Unrestricted"],
     datasets: [
       {
-        label: "Donation Composition (Last 6 Months)",
         data: [restricted, unrestricted],
-        backgroundColor: ["#ffc107", "#007bff"],
-        hoverOffset: 10,
+        backgroundColor: ["#03a696", "#1c71a6"],
+        hoverBackgroundColor: ["#2a5754", "#04b2d9"],
       },
     ],
   };
@@ -21,20 +20,22 @@ export default function MonthlyDonationPie({ restricted = 0, unrestricted = 0 })
   const options = {
     responsive: true,
     plugins: {
-      legend: { position: "bottom" },
-      tooltip: {
-        callbacks: {
-          label: function (context) {
-            const value = context.raw;
-            const total = restricted + unrestricted;
-            const percent = total ? ((value / total) * 100).toFixed(1) : 0;
-            return `${context.label}: $${value.toLocaleString()} (${percent}%)`;
-          },
-        },
+      title: {
+        display: true,
+        text: "Donations Breakdown (Last 6 Months)",
+        font: { size: 16, weight: "bold" },
       },
-      title: { display: true, text: "Donation Composition (Last 6 Months)" },
+      legend: {
+        display: true,
+        position: "bottom",
+      },
+      datalabels: {
+        color: "#fff",
+        font: { weight: "bold", size: 14 },
+        formatter: (value) => `$${value.toLocaleString()}`, // show actual number
+      },
     },
   };
 
-  return <Pie data={data} options={options} />;
+  return <Pie data={data} options={options} plugins={[ChartDataLabels]} />;
 }

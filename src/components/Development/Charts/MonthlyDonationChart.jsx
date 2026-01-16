@@ -13,7 +13,7 @@ import {
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-const COLORS = ["#007bff", "#28a745", "#ffc107", "#dc3545"]; 
+const COLORS = ["#1c71a6", "#03a696", "#04b2d9", "#a60a33"]; 
 
 export default function MonthlyDonationChart({ reports = [] }) {
   if (!reports.length) return <div>No data</div>;
