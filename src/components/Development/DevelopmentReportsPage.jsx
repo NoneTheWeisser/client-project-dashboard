@@ -166,7 +166,7 @@ export default function DevelopmentReportsPage() {
           <div className="chart-column development">
             <MonthlyDonationChart reports={donationMonthlyReports} />
           </div>
-          <div className="chart-column development">
+          <div className="pie-column development">
             <MonthlyDonationPie
               restricted={pieData.restricted}
               unrestricted={pieData.unrestricted}
