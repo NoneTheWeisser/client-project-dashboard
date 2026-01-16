@@ -12,35 +12,34 @@ import VolunteerKPI from "./VolunteerKPI";
 import "./OutreachReports.css";
 
 export default function CommunityOutreachReportsPage() {
-  // Filters for toolbar
+  // ---------------- State ----------------
   const [year, setYear] = useState("");
   const [location, setLocation] = useState("");
   const [search, setSearch] = useState("");
   const [activeReport, setActiveReport] = useState("weekly");
 
-  // Reports and raw engagement data from store
-  const weeklyReports = useStore((state) => state.volunteerWeeklyReports);
-  const monthlyReports = useStore((state) => state.volunteerMonthlyReports);
-  const byLocationReports = useStore(
-    (state) => state.volunteerByLocationReports
-  );
-  const monthlyByLocationReports = useStore(
-    (state) => state.volunteerMonthlyByLocationReports
-  );
-  const volunteerEngagements = useStore((state) => state.engagements);
+  // ---------------- Store Data ----------------
+  const weeklyReports = useStore((state) => state.volunteerWeeklyReports) || [];
+  const monthlyReports =
+    useStore((state) => state.volunteerMonthlyReports) || [];
+  const byLocationReports =
+    useStore((state) => state.volunteerByLocationReports) || [];
+  const monthlyByLocationReports =
+    useStore((state) => state.volunteerMonthlyByLocationReports) || [];
+  const volunteerEngagements = useStore((state) => state.engagements) || [];
 
   const fetchEngagements = useStore((state) => state.fetchEngagements);
   const fetchVolunteerMonthlyReports = useStore(
     (state) => state.fetchVolunteerMonthlyReports
   );
 
-  // Fetch data on mount
+  // ---------------- Fetch Data ----------------
   useEffect(() => {
     fetchEngagements();
     fetchVolunteerMonthlyReports();
   }, [fetchEngagements, fetchVolunteerMonthlyReports]);
 
-  // Compute period (month-to-date) & year-to-date
+  // ---------------- Current Month & YTD ----------------
   const now = new Date();
   const currentMonth = now.getMonth();
   const currentYear = now.getFullYear();
@@ -56,7 +55,6 @@ export default function CommunityOutreachReportsPage() {
     return new Date(r.event_date).getFullYear() === currentYear;
   });
 
-  // Totals for KPIs
   const periodVolunteers = periodData.reduce(
     (sum, r) => sum + (r.number_volunteers ?? 0),
     0
@@ -65,6 +63,7 @@ export default function CommunityOutreachReportsPage() {
     (sum, r) => sum + (r.number_volunteers ?? 0),
     0
   );
+
   const periodSignups = periodData.reduce(
     (sum, r) => sum + (r.software_signups ?? 0),
     0
@@ -74,13 +73,17 @@ export default function CommunityOutreachReportsPage() {
     0
   );
 
-  // Toolbar options
+  // Month name for KPI titles
+  const monthName = now.toLocaleString("default", { month: "long" });
+
+  // ---------------- Toolbar Options ----------------
   const allReports = [
     ...weeklyReports,
     ...monthlyReports,
     ...byLocationReports,
     ...monthlyByLocationReports,
   ];
+
   const YEAR_OPTIONS = Array.from(
     new Set(
       allReports
@@ -96,7 +99,14 @@ export default function CommunityOutreachReportsPage() {
     new Set(allReports.map((r) => r.location).filter(Boolean))
   ).sort();
 
-  // Render report table
+  const handleClearFilters = () => {
+    setYear("");
+    setLocation("");
+    setSearch("");
+    setActiveReport("weekly");
+  };
+
+  // ---------------- Render Report ----------------
   const renderReport = () => {
     const reportProps = { year, location, search };
     switch (activeReport) {
@@ -113,15 +123,9 @@ export default function CommunityOutreachReportsPage() {
     }
   };
 
-  const handleClearFilters = () => {
-    setYear("");
-    setLocation("");
-    setSearch("");
-    setActiveReport("weekly");
-  };
-
   return (
     <div className="hub-container outreach">
+      {/* ---------------- Department Header ---------------- */}
       <DepartmentHeader
         title="Community Outreach Reports"
         actions={
@@ -134,35 +138,37 @@ export default function CommunityOutreachReportsPage() {
         }
       />
 
-      {/* Chart + KPI layout */}
-      <div>
-        <h3>Total Monthly Volunteers: Year-Year</h3>
-        <div className="dashboard-container outreach">
-          <div className="chart-column">
-            <MonthlyVolunteerYoYChart
-              reports={monthlyReports}
-              monthsToShow={6}
-            />
-          </div>
+      {/* ---------------- Chart + KPIs ---------------- */}
+      <div className="dashboard-container outreach">
+        <div className="charts-row outreach">
+          {/* Chart takes 3/4 of width */}
+          <div className="dashboard-container outreach layout-75-25">
+            <div className="charts-row outreach">
+              <div className="chart-column outreach">
+                <MonthlyVolunteerYoYChart
+                  reports={monthlyReports}
+                  monthsToShow={6}
+                />
+              </div>
 
-          <div className="kpi-column">
-            <div className="kpi-column">
-              <VolunteerKPI
-                title="Total Volunteers"
-                monthlyReports={monthlyReports}
-                color="blue"
-              />
-              <VolunteerKPI
-                title="Software Signups"
-                monthlyReports={monthlyReports}
-                color="green"
-              />
+              <div className="kpi-column outreach">
+                <VolunteerKPI
+                  title={`Total ${monthName} Volunteers`}
+                  monthlyReports={monthlyReports}
+                  color="blue"
+                />
+                <VolunteerKPI
+                  title={`Software Signups (${monthName})`}
+                  monthlyReports={monthlyReports}
+                  color="green"
+                />
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Toolbar */}
+      {/* ---------------- Toolbar ---------------- */}
       <OutreachReportsToolbar
         year={year}
         setYear={setYear}
@@ -177,7 +183,7 @@ export default function CommunityOutreachReportsPage() {
         onClear={handleClearFilters}
       />
 
-      {/* Report Table */}
+      {/* ---------------- Report Table ---------------- */}
       <div className="report-container">{renderReport()}</div>
     </div>
   );
