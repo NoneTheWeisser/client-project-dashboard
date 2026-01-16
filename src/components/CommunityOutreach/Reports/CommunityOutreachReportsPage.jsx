@@ -139,22 +139,26 @@ export default function CommunityOutreachReportsPage() {
       />
 
       {/* ---------------- Chart + KPIs ---------------- */}
+      {/* todo - fix the double month and figure out why total vols isnt correct */}
       <div className="dashboard-container outreach">
         <div className="chart-column outreach">
+            <h3 className="chart-title">Monthly Volunteers — Last 6 Months</h3>
           <MonthlyVolunteerYoYChart reports={monthlyReports} monthsToShow={6} />
         </div>
 
         <div className="kpi-column outreach">
-          <VolunteerKPI
-            title={`Total ${monthName} Volunteers`}
-            monthlyReports={monthlyReports}
-            color="blue"
-          />
-          <VolunteerKPI
-            title={`Software Signups (${monthName})`}
-            monthlyReports={monthlyReports}
-            color="green"
-          />
+<VolunteerKPI
+  title={`Total ${monthName} Volunteers`}
+  monthlyReports={monthlyReports}
+  valueField="total_volunteers"
+  color="blue"
+/>
+<VolunteerKPI
+  title={`Software Signups (${monthName})`}
+  monthlyReports={monthlyReports}
+  valueField="total_signups"
+  color="green"
+/>
         </div>
       </div>
 
