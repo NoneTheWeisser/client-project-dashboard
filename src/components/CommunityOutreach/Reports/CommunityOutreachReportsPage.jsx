@@ -8,7 +8,7 @@ import VolunteerMonthlyReport from "./VolunteerMonthlyReport";
 import VolunteerByLocationReport from "./VolunteerByLocationReport";
 import VolunteerMonthlyByLocationReport from "./VolunteerMonthlyByLocationReport";
 import MonthlyVolunteerYoYChart from "../Charts/MonthlyVolunteerYoYChart";
-import VolunteerKPIs from "./VolunteerKPIs";
+import VolunteerKPI from "./VolunteerKPI";
 import "./OutreachReports.css";
 
 export default function CommunityOutreachReportsPage() {
@@ -147,12 +147,12 @@ export default function CommunityOutreachReportsPage() {
 
           <div className="kpi-column">
             <div className="kpi-column">
-              <VolunteerKPIs
+              <VolunteerKPI
                 title="Total Volunteers"
                 monthlyReports={monthlyReports}
                 color="blue"
               />
-              <VolunteerKPIs
+              <VolunteerKPI
                 title="Software Signups"
                 monthlyReports={monthlyReports}
                 color="green"
