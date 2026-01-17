@@ -10,6 +10,8 @@ import DevelopmentReportsToolbar from "./DevelopmentReportsToolbar";
 import DonationWeeklyReport from "./Reports/DonationWeeklyReport";
 import DonationMonthlyReport from "./Reports/DonationMonthlyReport";
 import DonationByDonorReport from "./Reports/DonationByDonorReport";
+import UpcomingEventsReport from "./Reports/UpcomingEventsReport";
+import EventsByVenueReport from "./Reports/EventsByVenueReport";
 import MonthlyDonationKPI from "./Charts/MonthlyDonationKPI";
 import MonthlyDonationChart from "./Charts/MonthlyDonationChart";
 import MonthlyDonationPie from "./Charts/MonthlyDonationPie";
@@ -107,26 +109,46 @@ export default function DevelopmentReportsPage() {
   }, [donationMonthlyReports]);
 
   // ---------------- Report Component ----------------
-  const renderReport = () => {
-    switch (report) {
-      case "weekly":
-        return <DonationWeeklyReport filters={filters} />;
-      case "monthly":
-        return <DonationMonthlyReport filters={filters} />;
-      case "by-donor":
-        return <DonationByDonorReport filters={filters} />;
-      default:
-        return <DonationMonthlyReport filters={filters} />;
+const renderReport = () => {
+    if (category === "donations") {
+      switch (report) {
+        case "weekly":
+          return <DonationWeeklyReport filters={filters} />;
+        case "monthly":
+          return <DonationMonthlyReport filters={filters} />;
+        case "by-donor":
+          return <DonationByDonorReport filters={filters} />;
+        default:
+          return <DonationWeeklyReport filters={filters} />;
+      }
+    } else if (category === "events") {
+      switch (report) {
+        case "upcoming":
+          return <UpcomingEventsReport filters={filters} />;
+        case "by-venue":
+          return <EventsByVenueReport filters={filters} />;
+        default:
+          return <UpcomingEventsReport filters={filters} />;
+      }
     }
   };
 
-  // ---------------- Dropdown Options ----------------
-  const reportOptions = [
-    { value: "weekly", label: "Donations Weekly" },
-    { value: "monthly", label: "Donations Monthly" },
-    { value: "by-donor", label: "Donors" },
-  ];
+  
 
+
+  // ---------------- Dropdown Options ----------------
+  const reportOptions =
+    category === "donations"
+      ? [
+          { value: "weekly", label: "Donations Weekly" },
+          { value: "monthly", label: "Donations Monthly" },
+          { value: "by-donor", label: "Donors" },
+        ]
+      : [
+          { value: "upcoming", label: "Upcoming Events" },
+          { value: "by-venue", label: "Events By Venue" },
+        ];
+        
   const yearOptions = donationMonthlyReports
     .map((r) => new Date(r.month_start).getFullYear())
     .filter((v, i, a) => a.indexOf(v) === i)
