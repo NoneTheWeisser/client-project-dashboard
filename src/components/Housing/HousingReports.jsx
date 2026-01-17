@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
+import {
+  currencyFormatter,
+  numberFormatter,
+  formatPercent,
+} from "../../styles/formatters.js";
 import useStore from "../../zustand/store";
 import HousingMonthlySummary from "./HousingMonthlySummary.jsx";
 import HousingMonthlyTable from "./HousingMonthlyTable.jsx";
@@ -7,6 +12,9 @@ import DepartmentHeader from "../DesignComponents/DepartmentHeader";
 import HousingReportsToolbar from "./HousingReportsToolbar";
 import HousingKPI from "./Charts/HousingKPI.jsx";
 import HousingOccupancyBar from "./Charts/HousingOccupancyBar.jsx";
+import HousingOperationalReservesBar from "./Charts/HousingOperationalReservesBar.jsx";
+import { HousingVacancyKPI } from "./Charts/HousingVacancyKPI.jsx";
+import "./Charts/HousingDashboard.css";
 
 export default function HousingReports() {
   const fetchMonthlyHousing = useStore(
@@ -57,84 +65,36 @@ export default function HousingReports() {
     return true;
   });
 
-  // Compute KPIs (most recent month)
-  const mostRecent = [...reportData].sort(
-    (a, b) => new Date(b.month_start) - new Date(a.month_start)
-  )[0];
-
-  const kpis = mostRecent
-    ? [
-        {
-          title: "Avg Occupancy %",
-          value: `${mostRecent.occupancy_percent ?? 0}%`,
-        },
-        {
-          title: "Operational Reserves",
-          value: `$${mostRecent.operational_reserves?.toLocaleString() ?? 0}`,
-        },
-        {
-          title: "Replacement Reserves",
-          value: `$${mostRecent.replacement_reserves?.toLocaleString() ?? 0}`,
-        },
-        {
-          title: "Current Vacancies",
-          value: mostRecent.current_vacancies ?? 0,
-        },
-      ]
-    : [];
-
   // ---------------- KPI Calculations ----------------
   const lastMonthData = reportData[0]; // most recent month
-  const last6Months = reportData.slice(0, 6); // last 6 months for averages
 
-  // Average occupancy over last month
-  const avgOccupancy = lastMonthData
-    ? Number(lastMonthData.occupancy_percent ?? 0)
-    : 0;
+  // Get most recent month
+  const latestMonth = [...reportData].sort(
+    (a, b) => new Date(b.month_start) - new Date(a.month_start)
+  )[0]?.month_start;
 
-  // Total current vacancies (sum across buildings)
-  const totalCurrentVacancies = lastMonthData
-    ? reportData
+  // Map buildings to current + upcoming vacancies
+  const vacancyByBuilding = reportData
+    .filter((r) => r.month_start === latestMonth)
+    .map((r) => ({
+      building: r.building_name,
+      current: r.current_vacancies ?? 0,
+      upcoming: r.upcoming_vacancies ?? 0,
+    }));
+
+  const reservesByBuilding = lastMonthData
+    ? [...reportData]
         .filter(
           (r) =>
             new Date(r.month_start).getMonth() ===
             new Date(lastMonthData.month_start).getMonth()
         )
-        .reduce((sum, r) => sum + (r.current_vacancies ?? 0), 0)
-    : 0;
-
-  // Total upcoming vacancies
-  const totalUpcomingVacancies = lastMonthData
-    ? reportData
-        .filter(
-          (r) =>
-            new Date(r.month_start).getMonth() ===
-            new Date(lastMonthData.month_start).getMonth()
-        )
-        .reduce((sum, r) => sum + (r.upcoming_vacancies ?? 0), 0)
-    : 0;
-
-  // Operational reserves
-  const totalOperationalReserves = lastMonthData
-    ? reportData
-        .filter(
-          (r) =>
-            new Date(r.month_start).getMonth() ===
-            new Date(lastMonthData.month_start).getMonth()
-        )
-        .reduce((sum, r) => sum + (r.operational_reserves ?? 0), 0)
-    : 0;
-
-  // Replacement reserves
-  const totalReplacementReserves = lastMonthData
-    ? reportData
-        .filter(
-          (r) =>
-            new Date(r.month_start).getMonth() ===
-            new Date(lastMonthData.month_start).getMonth()
-        )
-        .reduce((sum, r) => sum + (r.replacement_reserves ?? 0), 0)
-    : 0;
+        .map((r) => ({
+          building: r.building_name,
+          operational: r.operational_reserves ?? 0,
+          replacement: r.replacement_reserves ?? 0,
+        }))
+    : [];
 
   return (
     <div className="hub-container">
@@ -160,35 +120,40 @@ export default function HousingReports() {
         }
       />
 
+      {/* ---------------- Dashboard ---------------- */}
       <div className="dashboard-container housing">
+        {/* Charts Row */}
         <div className="charts-row housing">
-          {/* ---------------- Occupancy Bar Chart ---------------- */}
           <div className="chart-column housing">
             <HousingOccupancyBar records={reportData} />
           </div>
-
-          {/* ---------------- KPI Column ---------------- */}
-          <div className="kpi-column housing">
-            {kpis.map((kpi) => (
-              <HousingKPI key={kpi.title} title={kpi.title} value={kpi.value} />
-            ))}
-
-            {/* Optional additional KPIs */}
-            <HousingKPI
-              title="Current Vacancies"
-              value={reportData.reduce(
-                (sum, r) => sum + Number(r.current_vacancies || 0),
-                0
-              )}
-            />
-            <HousingKPI
-              title="Upcoming Vacancies"
-              value={reportData.reduce(
-                (sum, r) => sum + Number(r.upcoming_vacancies || 0),
-                0
-              )}
-            />
+          <div className="chart-column housing">
+            <HousingOperationalReservesBar records={reportData} />
           </div>
+        </div>
+
+        {/* KPI Row */}
+        <div className="kpi-row housing horizontal">
+          {/* Reserves per building */}
+          {reservesByBuilding.map((b) => (
+            <div key={b.building} className="kpi-card housing">
+              <div className="kpi-title housing">{b.building}</div>
+              <div className="kpi-value housing" style={{ color: "#03a696" }}>
+                Op: {currencyFormatter.format(b.operational)} <br />
+                Repl: {currencyFormatter.format(b.replacement)}
+              </div>
+            </div>
+          ))}
+
+          {/* Vacancy KPIs */}
+          {vacancyByBuilding.map((v) => (
+            <HousingVacancyKPI
+              key={v.building}
+              building={v.building}
+              current={v.current}
+              upcoming={v.upcoming}
+            />
+          ))}
         </div>
       </div>
 
@@ -201,23 +166,17 @@ export default function HousingReports() {
         setBuilding={setBuilding}
         search={search}
         setSearch={setSearch}
-        activeReport={activeReport}
-        setActiveReport={setActiveReport}
         onClear={handleClear}
       />
 
-      {/* Report content */}
+      {/* Monthly Table */}
       <div style={{ marginTop: "1rem" }}>
         {loadingHousingReports ? (
           <p>Loading report…</p>
-        ) : activeReport === "table" ? (
-          filteredRecords.length === 0 ? (
-            <p>No records match the current filters.</p>
-          ) : (
-            <HousingMonthlyTable records={filteredRecords} />
-          )
+        ) : filteredRecords.length === 0 ? (
+          <p>No records match the current filters.</p>
         ) : (
-          <HousingMonthlySummary />
+          <HousingMonthlyTable records={filteredRecords} />
         )}
       </div>
     </div>
