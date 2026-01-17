@@ -39,6 +39,7 @@ export default function DevelopmentReportsPage() {
   }, [fetchDonations, fetchMonthlyDonationReports, fetchEvents]);
 
   // ---------------- Compute KPIs ----------------
+  // todo should we combine total$ and total donations to one card to make more room?
   const now = new Date();
   const currentYear = now.getFullYear();
   const currentMonth = now.getMonth();

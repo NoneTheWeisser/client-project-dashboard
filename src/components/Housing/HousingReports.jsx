@@ -5,6 +5,8 @@ import HousingMonthlySummary from "./HousingMonthlySummary.jsx";
 import HousingMonthlyTable from "./HousingMonthlyTable.jsx";
 import DepartmentHeader from "../DesignComponents/DepartmentHeader";
 import HousingReportsToolbar from "./HousingReportsToolbar";
+import HousingKPI from "./Charts/HousingKPI.jsx";
+import HousingOccupancyBar from "./Charts/HousingOccupancyBar.jsx";
 
 export default function HousingReports() {
   const fetchMonthlyHousing = useStore(
@@ -55,6 +57,85 @@ export default function HousingReports() {
     return true;
   });
 
+  // Compute KPIs (most recent month)
+  const mostRecent = [...reportData].sort(
+    (a, b) => new Date(b.month_start) - new Date(a.month_start)
+  )[0];
+
+  const kpis = mostRecent
+    ? [
+        {
+          title: "Avg Occupancy %",
+          value: `${mostRecent.occupancy_percent ?? 0}%`,
+        },
+        {
+          title: "Operational Reserves",
+          value: `$${mostRecent.operational_reserves?.toLocaleString() ?? 0}`,
+        },
+        {
+          title: "Replacement Reserves",
+          value: `$${mostRecent.replacement_reserves?.toLocaleString() ?? 0}`,
+        },
+        {
+          title: "Current Vacancies",
+          value: mostRecent.current_vacancies ?? 0,
+        },
+      ]
+    : [];
+
+  // ---------------- KPI Calculations ----------------
+  const lastMonthData = reportData[0]; // most recent month
+  const last6Months = reportData.slice(0, 6); // last 6 months for averages
+
+  // Average occupancy over last month
+  const avgOccupancy = lastMonthData
+    ? Number(lastMonthData.occupancy_percent ?? 0)
+    : 0;
+
+  // Total current vacancies (sum across buildings)
+  const totalCurrentVacancies = lastMonthData
+    ? reportData
+        .filter(
+          (r) =>
+            new Date(r.month_start).getMonth() ===
+            new Date(lastMonthData.month_start).getMonth()
+        )
+        .reduce((sum, r) => sum + (r.current_vacancies ?? 0), 0)
+    : 0;
+
+  // Total upcoming vacancies
+  const totalUpcomingVacancies = lastMonthData
+    ? reportData
+        .filter(
+          (r) =>
+            new Date(r.month_start).getMonth() ===
+            new Date(lastMonthData.month_start).getMonth()
+        )
+        .reduce((sum, r) => sum + (r.upcoming_vacancies ?? 0), 0)
+    : 0;
+
+  // Operational reserves
+  const totalOperationalReserves = lastMonthData
+    ? reportData
+        .filter(
+          (r) =>
+            new Date(r.month_start).getMonth() ===
+            new Date(lastMonthData.month_start).getMonth()
+        )
+        .reduce((sum, r) => sum + (r.operational_reserves ?? 0), 0)
+    : 0;
+
+  // Replacement reserves
+  const totalReplacementReserves = lastMonthData
+    ? reportData
+        .filter(
+          (r) =>
+            new Date(r.month_start).getMonth() ===
+            new Date(lastMonthData.month_start).getMonth()
+        )
+        .reduce((sum, r) => sum + (r.replacement_reserves ?? 0), 0)
+    : 0;
+
   return (
     <div className="hub-container">
       {/* Page Header */}
@@ -62,15 +143,54 @@ export default function HousingReports() {
         title="North Campus Housing Reports"
         actions={
           <>
-            <NavLink to="/housing" end className={({ isActive }) => (isActive ? "active" : "")}>
+            <NavLink
+              to="/housing"
+              end
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
               Data Entry
             </NavLink>
-            <NavLink to="/housing/reports" className={({ isActive }) => (isActive ? "active" : "")}>
+            <NavLink
+              to="/housing/reports"
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
               Reports
             </NavLink>
           </>
         }
       />
+
+      <div className="dashboard-container housing">
+        <div className="charts-row housing">
+          {/* ---------------- Occupancy Bar Chart ---------------- */}
+          <div className="chart-column housing">
+            <HousingOccupancyBar records={reportData} />
+          </div>
+
+          {/* ---------------- KPI Column ---------------- */}
+          <div className="kpi-column housing">
+            {kpis.map((kpi) => (
+              <HousingKPI key={kpi.title} title={kpi.title} value={kpi.value} />
+            ))}
+
+            {/* Optional additional KPIs */}
+            <HousingKPI
+              title="Current Vacancies"
+              value={reportData.reduce(
+                (sum, r) => sum + Number(r.current_vacancies || 0),
+                0
+              )}
+            />
+            <HousingKPI
+              title="Upcoming Vacancies"
+              value={reportData.reduce(
+                (sum, r) => sum + Number(r.upcoming_vacancies || 0),
+                0
+              )}
+            />
+          </div>
+        </div>
+      </div>
 
       {/* Toolbar */}
       <HousingReportsToolbar
