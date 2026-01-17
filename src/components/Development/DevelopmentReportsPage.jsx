@@ -10,6 +10,7 @@ import DevelopmentReportsToolbar from "./DevelopmentReportsToolbar";
 import DonationWeeklyReport from "./Reports/DonationWeeklyReport";
 import DonationMonthlyReport from "./Reports/DonationMonthlyReport";
 import DonationByDonorReport from "./Reports/DonationByDonorReport";
+import MonthlyDonationKPI from "./Charts/MonthlyDonationKPI";
 import MonthlyDonationChart from "./Charts/MonthlyDonationChart";
 import MonthlyDonationPie from "./Charts/MonthlyDonationPie";
 
@@ -176,16 +177,13 @@ export default function DevelopmentReportsPage() {
         </div>
 
         {/* ---------------- KPIs ---------------- */}
-        <div className="kpi-row development">
-          <DevelopmentKPI
-            title={`Total ${monthName} Donations`}
-            value={`$${totalDonationsMonth.toLocaleString()}`}
+        <div className="kpi-row development horizontal">
+          <MonthlyDonationKPI
+            month={monthName}
+            total={totalDonationsMonth}
+            count={donationCountMonth}
+            topDonor={topDonor}
           />
-          <DevelopmentKPI
-            title={`Number of ${monthName} Donations`}
-            value={donationCountMonth}
-          />
-          <DevelopmentKPI title={`Top ${monthName} Donor`} value={topDonor} />
           <DevelopmentKPI title="Next Event" value={nextEventDisplay} />
         </div>
       </div>

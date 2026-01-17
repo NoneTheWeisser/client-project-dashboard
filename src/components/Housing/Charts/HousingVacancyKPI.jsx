@@ -2,6 +2,7 @@ export function HousingVacancyKPI({ building, current, upcoming }) {
   return (
     <div className="kpi-card housing vacancy">
       <div className="kpi-title housing">{building}</div>
+      <div className="kpi-title housing">Vacancies</div>
       <div className="vacancy-split">
         <div className="vacancy-box current">
           <div className="vacancy-value">{current}</div>
