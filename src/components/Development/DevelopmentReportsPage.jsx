@@ -148,7 +148,7 @@ const renderReport = () => {
           { value: "upcoming", label: "Upcoming Events" },
           { value: "by-venue", label: "Events By Venue" },
         ];
-        
+
   const yearOptions = donationMonthlyReports
     .map((r) => new Date(r.month_start).getFullYear())
     .filter((v, i, a) => a.indexOf(v) === i)
@@ -207,6 +207,7 @@ const renderReport = () => {
             topDonor={topDonor}
           />
           <DevelopmentKPI title="Next Event" value={nextEventDisplay} />
+          {/* todo - maybe we should feature 2-3 events */}
         </div>
       </div>
 
