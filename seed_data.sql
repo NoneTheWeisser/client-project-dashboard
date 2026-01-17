@@ -80,7 +80,7 @@ VALUES
 ((SELECT id FROM volunteers WHERE name='Faith Helpers'), '2025-10-03', 'Community Picnic', 28, 6),
 ((SELECT id FROM volunteers WHERE name='Downtown Community Group'), '2025-10-10', 'Micah''s Mission - Basement', 18, 3),
 ((SELECT id FROM volunteers WHERE name='Eastside Volunteers'), '2025-10-17', 'Micah''s Mission - Pantry', 22, 5),
-((SELECT id FROM volunteers WHERE name='Bob Smith'), '2025-10-10', 'Micah''s Mission - Basement', 20, 4),
+`((SELECT id FROM volunteers WHERE name='Bob Smith'), '2025-10-10', 'Micah''s Mission - Basement', 20, 4),
 ((SELECT id FROM volunteers WHERE name='Grace Lee'), '2025-10-17', 'Micah''s Mission - Pantry', 25, 6),
 
 -- November 2025
@@ -248,3 +248,32 @@ VALUES
 ('2025-10-24', 'Newsletter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2998, 786, 13.10, 118, 4, 'Oct 24 Newsletter'),
 ('2025-10-31', 'Newsletter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2995, 537, 18.10, 79, 2.70, 'Oct 31 Newsletter'),
 ('2025-11-07', 'Newsletter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2996, 544, 18.30, 82, 2.80, 'Nov 7 Newsletter');
+
+-- ---------------- kitchen ----------------
+-- Add 2022-2023 historical data to supplement existing records
+INSERT INTO kitchen (week_date, total_meals_served, notes)
+VALUES
+-- 2022
+('2022-01-03', 450, 'New Year week, steady operations'),
+('2022-03-14', 520, 'Spring break week, increased attendance'),
+('2022-05-09', 480, 'Mother''s Day week preparations'),
+('2022-06-20', 510, 'Summer program start'),
+('2022-08-08', 495, 'Mid-summer operations'),
+('2022-09-12', 540, 'Back to school surge'),
+('2022-10-17', 525, 'Fall season steady'),
+('2022-11-14', 610, 'Thanksgiving preparation week'),
+('2022-11-21', 380, 'Post-Thanksgiving, slower week'),
+('2022-12-19', 320, 'Holiday week, reduced operations'),
+
+-- 2023
+('2023-01-09', 465, 'Winter operations resuming'),
+('2023-02-13', 490, 'Valentine''s week activities'),
+('2023-03-20', 515, 'Spring season begins'),
+('2023-04-17', 505, 'Easter week preparations'),
+('2023-06-05', 530, 'Summer programs in full swing'),
+('2023-07-10', 545, 'Peak summer operations'),
+('2023-08-14', 520, 'Late summer steady'),
+('2023-09-18', 550, 'Fall semester start'),
+('2023-10-30', 580, 'Halloween week, busy'),
+('2023-11-20', 640, 'Pre-Thanksgiving rush'),
+('2023-12-11', 475, 'Holiday preparations');
