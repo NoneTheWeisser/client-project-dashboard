@@ -7,19 +7,14 @@ const {
 } = require("../modules/authentication-middleware");
 
 const router = express.Router();
+
+// Logging middleware (optional but helpful)
 router.use((req, res, next) => {
   console.log("user.router hit:", req.method, req.originalUrl);
   next();
 });
 
-router.put("/me", rejectUnauthenticated, async (req, res) => {
-  console.log("req.isAuthenticated():", req.isAuthenticated());
-  console.log("req.user:", req.user);
-  res.sendStatus(200);
-});
 // -------------------- SESSION ROUTES --------------------
-
-// GET current session user
 router.get("/", (req, res) => {
   if (req.isAuthenticated()) {
     res.json(req.user);
@@ -28,34 +23,26 @@ router.get("/", (req, res) => {
   }
 });
 
-// REGISTER (normal user self-registration)
 router.post("/register", (req, res) => {
   const { username, email, firstName, lastName, password } = req.body;
-
   const hashedPassword = encryptLib.encryptPassword(password);
 
-  const sqlText = `
-    INSERT INTO "user" ("username", "password", "email", "first_name", "last_name")
-    VALUES ($1, $2, $3, $4, $5)
-    RETURNING id;
-  `;
-  const sqlValues = [username, hashedPassword, email, firstName, lastName];
-
   pool
-    .query(sqlText, sqlValues)
+    .query(
+      `INSERT INTO "user" ("username", "password", "email", "first_name", "last_name") VALUES ($1,$2,$3,$4,$5) RETURNING id;`,
+      [username, hashedPassword, email, firstName, lastName]
+    )
     .then(() => res.sendStatus(201))
-    .catch((dbErr) => {
-      console.error("POST /api/user/register error:", dbErr);
+    .catch((err) => {
+      console.error("POST /api/user/register error:", err);
       res.sendStatus(500);
     });
 });
 
-// LOGIN
 router.post("/login", userStrategy.authenticate("local"), (req, res) => {
   res.sendStatus(200);
 });
 
-// LOGOUT
 router.delete("/logout", (req, res, next) => {
   req.logout((err) => {
     if (err) return next(err);
@@ -65,86 +52,49 @@ router.delete("/logout", (req, res, next) => {
 
 // -------------------- PROFILE ROUTES --------------------
 
-// GET user by ID
-router.get("/:id", rejectUnauthenticated, async (req, res) => {
-  const userId = Number(req.params.id);
-
-  try {
-    const result = await pool.query(`SELECT * FROM "user" WHERE id = $1;`, [
-      userId,
-    ]);
-    if (result.rowCount === 0) return res.sendStatus(404);
-
-    res.json(result.rows[0]);
-  } catch (err) {
-    console.error("GET /api/user/:id error:", err);
-    res.sendStatus(500);
-  }
+// GET current user's info (optional)
+router.get("/me", rejectUnauthenticated, (req, res) => {
+  res.json(req.user);
 });
 
-// PUT user by ID (self-edit or admin)
-router.put("/:id", rejectUnauthenticated, async (req, res) => {
-  const userId = Number(req.params.id);
-
-  // Only admin OR the user themselves can update
-  if (req.user.role !== "admin" && req.user.id !== userId)
-    return res.sendStatus(403);
-
-  const { username, email, first_name, last_name, role, department } = req.body;
-
-  const sqlText = `
-    UPDATE "user"
-    SET username=$1, email=$2, first_name=$3, last_name=$4, role=$5, department=$6, updated_at=NOW()
-    WHERE id=$7
-    RETURNING *;
-  `;
-  const sqlValues = [
-    username,
-    email,
-    first_name,
-    last_name,
-    role,
-    department,
-    userId,
-  ];
-
-  try {
-    const result = await pool.query(sqlText, sqlValues);
-    if (result.rowCount === 0) return res.sendStatus(404);
-
-    res.json(result.rows[0]);
-  } catch (err) {
-    console.error("PUT /api/user/:id error:", err);
-    res.sendStatus(500);
-  }
-});
-
-// PUT current user's profile
+// UPDATE current user's profile
 router.put("/me", rejectUnauthenticated, async (req, res) => {
-  console.log("PUT /me hit");
-  console.log("req.isAuthenticated():", req.isAuthenticated());
-  console.log("req.user:", req.user);
   const userId = req.user.id;
-  const { username, email, first_name, last_name, role, department } = req.body;
+  const { email, first_name, last_name } = req.body;
+
+  if (!email && !first_name && !last_name) {
+    return res.status(400).json({ error: "No valid fields to update" });
+  }
+
+  const fields = [];
+  const values = [];
+  let i = 1;
+
+  if (email !== undefined) {
+    fields.push(`email=$${i++}`);
+    values.push(email);
+  }
+  if (first_name !== undefined) {
+    fields.push(`first_name=$${i++}`);
+    values.push(first_name);
+  }
+  if (last_name !== undefined) {
+    fields.push(`last_name=$${i++}`);
+    values.push(last_name);
+  }
+
+  fields.push(`updated_at=NOW()`); // always update timestamp
 
   const sqlText = `
     UPDATE "user"
-    SET username=$1, email=$2, first_name=$3, last_name=$4, role=$5, department=$6, updated_at=NOW()
-    WHERE id=$7
+    SET ${fields.join(", ")}
+    WHERE id=$${i}
     RETURNING *;
   `;
-  const sqlValues = [
-    username,
-    email,
-    first_name,
-    last_name,
-    role,
-    department,
-    userId,
-  ];
+  values.push(userId);
 
   try {
-    const result = await pool.query(sqlText, sqlValues);
+    const result = await pool.query(sqlText, values);
     if (result.rowCount === 0) return res.sendStatus(404);
 
     res.json(result.rows[0]);
@@ -154,7 +104,7 @@ router.put("/me", rejectUnauthenticated, async (req, res) => {
   }
 });
 
-// PUT user password (self-only)
+// UPDATE password (self only)
 router.put("/:id/password", rejectUnauthenticated, async (req, res) => {
   const userId = Number(req.params.id);
   const { currentPassword, newPassword } = req.body;
@@ -169,7 +119,6 @@ router.put("/:id/password", rejectUnauthenticated, async (req, res) => {
     if (result.rowCount === 0) return res.sendStatus(404);
 
     const currentHashed = result.rows[0].password;
-
     if (!encryptLib.comparePassword(currentPassword, currentHashed))
       return res.status(401).json({ error: "Current password incorrect" });
 
@@ -186,7 +135,7 @@ router.put("/:id/password", rejectUnauthenticated, async (req, res) => {
   }
 });
 
-// DELETE user by ID (admin-only)
+// DELETE user (admin only)
 router.delete("/:id", rejectUnauthenticated, async (req, res) => {
   if (req.user.role !== "admin") return res.sendStatus(403);
 

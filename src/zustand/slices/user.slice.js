@@ -101,28 +101,26 @@ const createUserSlice = (set, get) => ({
     set({ authErrorMessage: message });
   },
 
-updateProfile: async (profileData) => {
-  try {
-    // Convert frontend camelCase to backend snake_case
-    const payload = {
-      username: profileData.username,
-      email: profileData.email,
-      first_name: profileData.firstName,
-      last_name: profileData.lastName,
-      role: profileData.role,    
-      department: profileData.department || null,
-    };
+  updateProfile: async (profileData) => {
+    try {
+      const userId = get().user.id;
+      if (!userId) throw new Error("No user logged in");
 
-    const { data: updatedUser } = await axios.put("/api/user/me", payload);
+      const payload = {
+        email: profileData.email,
+        first_name: profileData.firstName,
+        last_name: profileData.lastName,
+      };
 
-    set({ user: updatedUser });
-    console.log("Profile updated successfully!");
-  } catch (err) {
-    console.error("updateProfile error:", err);
-    get().setAuthErrorMessage("Failed to update profile. Please try again.");
-  }
-},
+      const { data: updatedUser } = await axios.put(`/api/user/me`, payload);
 
+      set({ user: updatedUser });
+      console.log("Profile updated successfully!");
+    } catch (err) {
+      console.error("updateProfile error:", err);
+      get().setAuthErrorMessage("Failed to update profile. Please try again.");
+    }
+  },
 
   updatePassword: async ({ currentPassword, newPassword }) => {
     try {
