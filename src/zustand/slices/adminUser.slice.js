@@ -3,8 +3,8 @@ import axios from "axios";
 axios.defaults.withCredentials = true;
 
 const createAdminUserSlice = (set, get) => ({
-  users: [],        
-  adminError: "",   
+  users: [],
+  adminError: "",
 
   // Fetch all users (admin-only)
   fetchUsers: async () => {
@@ -13,7 +13,10 @@ const createAdminUserSlice = (set, get) => ({
       set({ users: data });
     } catch (err) {
       console.error("fetchUsers error:", err);
-      set({ adminError: err.response?.status === 403 ? "Forbidden" : "Failed to fetch users" });
+      set({
+        adminError:
+          err.response?.status === 403 ? "Forbidden" : "Failed to fetch users",
+      });
     }
   },
 
@@ -31,9 +34,13 @@ const createAdminUserSlice = (set, get) => ({
   // Toggle active status for a user
   toggleUserActive: async (userId, active) => {
     try {
-      const { data } = await axios.put(`/api/admin/users/${userId}/active`, { active });
+      const { data } = await axios.put(`/api/admin/users/${userId}/active`, {
+        active,
+      });
       set((state) => ({
-        users: state.users.map((u) => (u.id === data.id ? { ...u, active: data.active } : u)),
+        users: state.users.map((u) =>
+          u.id === data.id ? { ...u, active: data.active } : u
+        ),
       }));
     } catch (err) {
       console.error("toggleUserActive error:", err);
@@ -55,6 +62,19 @@ const createAdminUserSlice = (set, get) => ({
   },
 
   clearAdminError: () => set({ adminError: "" }),
+
+  updateUser: async (id, payload) => {
+    try {
+      if (!id) throw new Error("User ID is required");
+
+      const { data } = await axios.put(`/api/admin/users/${id}`, payload);
+
+      return data;
+    } catch (err) {
+      console.error("updateUser error:", err);
+      throw err;
+    }
+  },
 });
 
 export default createAdminUserSlice;

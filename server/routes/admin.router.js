@@ -93,4 +93,78 @@ router.get("/test", (req, res) => {
   res.send("Admin router is working!");
 });
 
+// UPDATE user (ADMIN only)
+router.put("/users/:id", rejectUnauthenticated, async (req, res) => {
+  if (req.user.role !== "admin") return res.sendStatus(403);
+
+  const { id } = req.params;
+  const { username, email, first_name, last_name, role, department, password } =
+    req.body;
+
+  try {
+    let sqlText;
+    let sqlValues;
+
+    if (password) {
+      const hashedPassword = encryptLib.encryptPassword(password);
+
+      sqlText = `
+        UPDATE "user"
+        SET username = $1,
+            email = $2,
+            first_name = $3,
+            last_name = $4,
+            role = $5,
+            department = $6,
+            password = $7,
+            updated_at = NOW()
+        WHERE id = $8
+        RETURNING id, username, email, first_name, last_name, role, department, active;
+      `;
+
+      sqlValues = [
+        username,
+        email,
+        first_name,
+        last_name,
+        role,
+        department,
+        hashedPassword,
+        id,
+      ];
+    } else {
+      sqlText = `
+        UPDATE "user"
+        SET username = $1,
+            email = $2,
+            first_name = $3,
+            last_name = $4,
+            role = $5,
+            department = $6,
+            updated_at = NOW()
+        WHERE id = $7
+        RETURNING id, username, email, first_name, last_name, role, department, active;
+      `;
+
+      sqlValues = [
+        username,
+        email,
+        first_name,
+        last_name,
+        role,
+        department,
+        id,
+      ];
+    }
+
+    const result = await pool.query(sqlText, sqlValues);
+    if (result.rowCount === 0) return res.sendStatus(404);
+
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error("PUT /api/admin/users/:id error:", err);
+    res.sendStatus(500);
+  }
+});
+
 module.exports = router;
