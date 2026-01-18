@@ -5,9 +5,7 @@ import useStore from "../../zustand/store";
 import Nav from "../Nav/Nav";
 
 import HomePage from "../HomePage/HomePage";
-import AboutPage from "../AboutPage/AboutPage";
 import LoginPage from "../LoginPage/LoginPage";
-import RegisterPage from "../RegisterPage/RegisterPage";
 
 import DonorsPage from "../Development/Donors/DonorsPage";
 import EventsPage from "../Development/Events/EventsPage";
@@ -58,6 +56,11 @@ import PantryWeeklyList from "../pantry/PantryWeeklyList";
 import PantryWeeklyForm from "../pantry/PantryWeeklyForm";
 import PantryReports from "../pantry/PantryReports";
 
+import AdminHome from "../Admin/AdminHome";
+import AdminRegistration from "../Admin/AdminRegistration";
+import AdminUserManagement from "../Admin/AdminUserManagement";
+import UserSettings from "../Admin/UserSettings/UserSettings";
+
 import ReportsDashboard from "../ReportingHub/ReportsDashboard";
 import Footer from "../Nav/Footer";
 
@@ -86,12 +89,15 @@ function App() {
             path="/login"
             element={user.id ? <Navigate to="/" replace /> : <LoginPage />}
           />
-          <Route
-            exact
-            path="/registration"
-            element={user.id ? <Navigate to="/" replace /> : <RegisterPage />}
-          />
-          {/* <Route exact path="/about" element={<AboutPage />} /> */}
+          {/* Admin */}
+          <Route exact path="/admin" element={<AdminHome />} />
+          <Route exact path="/admin/registration" element={<AdminRegistration />} />
+          <Route exact path="/admin/users" element={<AdminUserManagement />} />
+          
+          {/* User Settings */}
+          <Route exact path="/user/settings" element={<UserSettings />} />
+
+
 
           {/* Housing */}
           <Route path="/housing" element={<HousingHome />} />

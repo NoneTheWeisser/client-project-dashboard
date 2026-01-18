@@ -22,7 +22,7 @@ function Nav() {
   return (
     <div className="header-container">
       <header className="nav-header">
-        {/* LEFT / CENTER: Logo + Title */}
+        {/* LEFT: Logo + Title */}
         <div className="nav-left">
           <Link to="/" className="nav-logo" onClick={closeMenu}>
             <img
@@ -34,7 +34,7 @@ function Nav() {
           <h4 className="nav-title">Churches United Dashboard</h4>
         </div>
 
-        {/* HAMBURGER (mobile only via CSS) */}
+        {/* HAMBURGER (mobile) */}
         <button
           className="hamburger"
           aria-label="Toggle navigation"
@@ -47,21 +47,16 @@ function Nav() {
         {/* RIGHT: Navigation Links */}
         <nav className={`nav-right ${menuOpen ? "open" : ""}`}>
           <ul>
+            {/* Guest links */}
             {!user?.id && (
-              <>
-                <li>
-                  <NavLink to="/login" onClick={closeMenu}>
-                    Login
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink to="/registration" onClick={closeMenu}>
-                    Register
-                  </NavLink>
-                </li>
-              </>
+              <li>
+                <NavLink to="/login" onClick={closeMenu}>
+                  Login
+                </NavLink>
+              </li>
             )}
 
+            {/* Logged-in user links */}
             {user?.id && (
               <>
                 <li>
@@ -69,6 +64,37 @@ function Nav() {
                     Home
                   </NavLink>
                 </li>
+
+                {/* Admin-only links */}
+                {user.role === "admin" && (
+                  <>
+                    <li>
+                      <NavLink to="/admin" onClick={closeMenu}>
+                        Admin
+                      </NavLink>
+                    </li>
+                    {/* <li>
+                      <NavLink to="/admin/registration" onClick={closeMenu}>
+                        Register
+                      </NavLink>
+                    </li> */}
+                  </>
+                )}
+
+                {/* User settings visible to all logged-in users */}
+                <li>
+                  <NavLink to="/user/settings" onClick={closeMenu}>
+                    Settings
+                  </NavLink>
+                </li>
+
+                <li>
+                  <NavLink to="/reporting" onClick={closeMenu}>
+                    Reporting
+                  </NavLink>
+                </li>
+
+                {/* Logout */}
                 <li>
                   <button onClick={handleLogout} className="logout-btn">
                     Logout
@@ -76,12 +102,6 @@ function Nav() {
                 </li>
               </>
             )}
-
-            <li>
-              <NavLink to="/reporting" onClick={closeMenu}>
-                Reporting
-              </NavLink>
-            </li>
           </ul>
         </nav>
       </header>
