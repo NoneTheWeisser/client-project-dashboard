@@ -127,4 +127,81 @@ router.delete("/:id", rejectUnauthenticated, async (req, res) => {
   }
 });
 
+router.put("/:id/password", rejectUnauthenticated, async (req, res) => {
+  const userId = Number(req.params.id);
+  const { currentPassword, newPassword } = req.body;
+
+  // Only the user themselves can update their password
+  if (req.user.id !== userId) return res.sendStatus(403);
+
+  try {
+    // Get current hashed password from DB
+    const result = await pool.query(
+      `SELECT password FROM "user" WHERE id = $1;`,
+      [userId]
+    );
+    if (result.rowCount === 0) return res.sendStatus(404);
+
+    const currentHashed = result.rows[0].password;
+
+    // Verify current password
+    const passwordMatches = encryptLib.comparePassword(
+      currentPassword,
+      currentHashed
+    );
+    if (!passwordMatches)
+      return res.status(401).json({ error: "Current password incorrect" });
+
+    // Hash new password and update
+    const newHashed = encryptLib.encryptPassword(newPassword);
+    await pool.query(
+      `UPDATE "user" SET password=$1, updated_at=NOW() WHERE id=$2;`,
+      [newHashed, userId]
+    );
+
+    res.sendStatus(200);
+  } catch (err) {
+    console.error("PUT /api/user/:id/password error:", err);
+    res.sendStatus(500);
+  }
+});
+
+router.put("/:id/password", rejectUnauthenticated, async (req, res) => {
+  const userId = Number(req.params.id);
+  const { currentPassword, newPassword } = req.body;
+
+  // Only the user themselves can update their password
+  if (req.user.id !== userId) return res.sendStatus(403);
+
+  try {
+    // Get current hashed password from DB
+    const result = await pool.query(
+      `SELECT password FROM "user" WHERE id = $1;`,
+      [userId]
+    );
+    if (result.rowCount === 0) return res.sendStatus(404);
+
+    const currentHashed = result.rows[0].password;
+
+    // Verify current password
+    const passwordMatches = encryptLib.comparePassword(
+      currentPassword,
+      currentHashed
+    );
+    if (!passwordMatches)
+      return res.status(401).json({ error: "Current password incorrect" });
+
+    // Hash new password and update
+    const newHashed = encryptLib.encryptPassword(newPassword);
+    await pool.query(
+      `UPDATE "user" SET password=$1, updated_at=NOW() WHERE id=$2;`,
+      [newHashed, userId]
+    );
+
+    res.sendStatus(200);
+  } catch (err) {
+    console.error("PUT /api/user/:id/password error:", err);
+    res.sendStatus(500);
+  }
+});
 module.exports = router;

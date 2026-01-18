@@ -110,16 +110,21 @@ register: async (newUserCredentials) => {
     }
   },
 
-  updatePassword: async ({ currentPassword, newPassword }) => {
-    try {
-      await axios.put("/api/users/me/password", {
-        currentPassword,
-        newPassword,
-      });
-    } catch (err) {
-      console.error("updatePassword error:", err);
-    }
-  },
+  
+updatePassword: async ({ currentPassword, newPassword }) => {
+  try {
+    const userId = get().user.id;
+    if (!userId) throw new Error("No user logged in");
+
+    await axios.put(`/api/user/${userId}/password`, { currentPassword, newPassword });
+    console.log("Password updated successfully!");
+  } catch (err) {
+    console.error("updatePassword error:", err);
+    get().setAuthErrorMessage(
+      "Failed to update password. Please check your current password and try again."
+    );
+  }
+},
 });
 
 export default createUserSlice;
