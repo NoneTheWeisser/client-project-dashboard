@@ -1,92 +1,106 @@
-import React from "react";
-import Accordion from "react-bootstrap/Accordion";
-import "./ReportsDashboard.css";
-
-import CommunityOutreachReportsPage from "../CommunityOutreach/Reports/CommunityOutreachReportsPage";
-import DevelopmentReportsPage from "../Development/DevelopmentReportsPage";
-import HousingReports from "../Housing/HousingReports";
-import MediaReports from "../Media/Reports/MediaReports";
-import ComplianceReporting from "../ComplianceWeekly/ComplianceReporting";
-import ShelterReporting from "../Shelter/ShelterReporting";
-import FinanceReporting from "../Finance/FinanceReporting";
-
+import { Link } from "react-router-dom";
 import DepartmentHeader from "../DesignComponents/DepartmentHeader";
-import PantryReports from "../pantry/PantryReports";
-import KitchenReports from "../kitchen/KitchenReports";
-import HRReports from "../hr/HRReports";
-import MonthlyDonationPie from "../Development/Charts/MonthlyDonationPie";
+import ReportsSummary from "./ReportsSummary";
+import "../../styles/departmentCards.css";
+import useStore from "../../zustand/store";
+import { useEffect } from "react";
+import { useState } from "react";
+import "./Summary/ReportsSummary.css";
 
-export default function ReportsHub() {
-  // Dynamic array of report sections
+export default function ReportsDashboard() {
+  const summaryData = {
+    outreach: useStore((s) => s.outreachMonthlyReports),
+    development: useStore((s) => s.developmentMonthlyReports),
+  };
+
+  const volunteerMonthlyReports = useStore(
+    (state) => state.volunteerMonthlyReports
+  );
+  const fetchVolunteerMonthlyReports = useStore(
+    (state) => state.fetchVolunteerMonthlyReports
+  );
+
+  useEffect(() => {
+    fetchVolunteerMonthlyReports();
+  }, [fetchVolunteerMonthlyReports]);
+
   const reportSections = [
     {
-      id: "housing",
-      title: "North Campus Housing Reports",
-      Component: HousingReports,
+      path: "/outreach/reports",
+      title: "Community Outreach",
+      description: "Volunteer engagement, signups, and locations.",
     },
     {
-      id: "media",
-      title: "Media Reporting",
-      Component: MediaReports,
+      path: "/development/reports",
+      title: "Development",
+      description: "Donations, donors, and fundraising trends.",
     },
     {
-      id: "volunteer",
-      title: "Community Outreach Reports",
-      Component: CommunityOutreachReportsPage,
+      path: "/finance/reports",
+      title: "Finance",
+      description: "Financial metrics and reporting.",
     },
     {
-      id: "development",
-      title: "Development Reports",
-      Component: DevelopmentReportsPage,
+      path: "/housing/reports",
+      title: "Housing",
+      description: "Occupancy, vacancies, and housing metrics.",
     },
     {
-      id: "compliance",
-      title: "Compliance Reports",
-      Component: ComplianceReporting,
+      path: "/media/reports",
+      title: "Media",
+      description: "Website, social, and newsletter metrics.",
     },
     {
-      id: "shelter",
-      title: "Shelter Reports",
-      Component: ShelterReporting,
+      path: "/pantry/reports",
+      title: "Pantry",
+      description: "Pantry usage and distribution reports.",
     },
     {
-      id: "finance",
-      title: "Finance Reports",
-      Component: FinanceReporting,
+      path: "/kitchen/reports",
+      title: "Kitchen",
+      description: "Meal service and kitchen reporting.",
     },
-        {
-      id: "pantry",
-      title: "Pantry Reports",
-      Component: PantryReports,
+    {
+      path: "/hr/reports",
+      title: "Human Resources",
+      description: "HR metrics and weekly updates.",
     },
-        {
-      id: "kitchen",
-      title: "Kitchen Reports",
-      Component: KitchenReports,
+    {
+      path: "/compliance/reports",
+      title: "Compliance",
+      description: "Weekly compliance tracking.",
     },
-        {
-      id: "hr",
-      title: "Human Resources Reports",
-      Component: HRReports,
+    {
+      path: "/shelter/reports",
+      title: "Shelter",
+      description: "Shelter operations and guest reporting.",
     },
   ];
 
   return (
     <div className="hub-container report-hub">
-      <DepartmentHeader title="Department Reporting Dashboard" />
-      <p>Select a section to view reports.</p>
+      <div className="report-summary">
+        <DepartmentHeader title="Department Reporting Dashboard" />
 
-      <Accordion defaultActiveKey="0" alwaysOpen={false}>
-        {reportSections.map(({ id, title, Component }, index) => (
-          <Accordion.Item eventKey={index.toString()} key={id}>
-            <Accordion.Header>{title}</Accordion.Header>
-            <Accordion.Body>
-              <Component />
-            </Accordion.Body>
-          </Accordion.Item>
+        <ReportsSummary />
+      </div>
+
+      <p className="mb-4">Select a department to view reports.</p>
+      <div className="department-cards-container">
+        {reportSections.map((section) => (
+          <Link
+            key={section.path}
+            to={section.path}
+            className="card-link-wrapper"
+          >
+            <div className="department-card">
+              <h4>{section.title}</h4>
+              <p>{section.description}</p>
+              <span className="btn btn-primary">View Reports</span>
+            </div>
+          </Link>
         ))}
-      </Accordion>
+      </div>
     </div>
   );
 }
-

@@ -1,0 +1,149 @@
+   /* -------- Reports Summary - Development -------- */
+.reports-summary {
+  margin-bottom: 2rem;
+}
+
+/* Grid for all summary cards (Outreach, Development, etc.) */
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1rem;
+}
+
+/* Individual card base */
+.summary-card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+}
+
+/* -------- Development Summary Specific -------- */
+.summary-card-development {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Title */
+.summary-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--brand-primary);
+  margin-bottom: 1rem;
+}
+
+/* KPI row */
+.summary-card-development .summary-kpis-development {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap; /* wrap on smaller screens */
+}
+
+/* Next event card */
+.summary-card-development .summary-next-event-development {
+  margin-top: 1rem;
+}
+
+/* Charts row */
+.summary-card-development .summary-charts-row-development {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+/* Each chart container */
+.summary-card-development .summary-chart-donations,
+.summary-card-development .summary-chart-pie {
+  flex: 1;
+  min-width: 250px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Chart title */
+.summary-card-development .summary-chart-donations .chart-title,
+.summary-card-development .summary-chart-pie .chart-title {
+  margin-bottom: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--brand-primary);
+}
+
+/* Canvas sizing fix: prevent shrinking on hover */
+.summary-card-development .summary-chart canvas {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+}
+
+   
+/* -------- Outreach Summary Specific -------- */
+
+.summary-card.outreach {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.summary-card.outreach .summary-kpis-outreach {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: nowrap; /* ensures they stay side by side */
+}
+
+.summary-card.outreach .summary-chart {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+/* Optional: make KPI cards stretch equally */
+.summary-card.outreach .summary-kpis-outreach > * {
+  flex: 1;
+}
+
+
+/* -------- Department Cards -------- */
+
+/* -------- Housing -------- */
+.housing-kpis.side-by-side {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.housing-kpis.side-by-side .small-kpi {
+  flex: 1 1 120px; /* grow/shrink, minimum width 120px */
+  min-width: 120px;
+  max-width: 200px;
+  font-size: 0.85rem;
+  padding: 8px;
+}
+/* Flex row container for KPIs */
+.summary-kpis.flex-row {
+  display: flex;
+  gap: 0.5rem;       
+  flex-wrap: wrap;   
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+/* Individual KPI card */
+.summary-kpis.flex-row .kpi-card {
+  flex: 1 1 150px;    
+  min-width: 150px;
+  max-width: 200px;   
+  box-sizing: border-box;
+}
+.housing-summary .kpi-card .kpi-title {
+  font-size: 0.65rem; /* smaller than default */
+  font-weight: 600;   /* optional: keep bold */
+  margin-bottom: 1px; /* optional: reduce spacing */
+}
+
+.housing-summary .summary-charts-row {
+  margin-top: 1.5rem;
+}
