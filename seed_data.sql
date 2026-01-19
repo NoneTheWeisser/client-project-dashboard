@@ -591,3 +591,64 @@ INSERT INTO hr_weekly (week_date, total_positions, open_positions, new_hires_thi
 ('2024-09-09', 55, 2, 2, 1, 7, 'Fall hiring'),
 ('2024-11-11', 56, 3, 1, 0, 8, 'Holiday season staffing');
 
+--- 2026 compliance data-----
+-- SAMPLE DATA FOR JANUARY 2026
+-- Compliance Weekly Reports
+-- This data shows realistic growth trends for a homeless shelter/housing program
+
+INSERT INTO compliance_weekly (
+  date,
+  hh_without_children,
+  hh_with_children,
+  adults,
+  children,
+  seniors_55_plus,
+  female,
+  male,
+  other_gender,
+  white,
+  black_african_american,
+  native_american,
+  other_race,
+  multi_racial,
+  one_condition,
+  two_conditions,
+  three_plus_conditions,
+  total_exits,
+  created_by
+) VALUES
+-- JANUARY 2026
+('2026-01-06', 56, 27, 106, 51, 25, 79, 100, 3, 57, 65, 13, 25, 22, 67, 39, 25, 8, 1),
+('2026-01-13', 57, 27, 107, 52, 25, 80, 101, 3, 58, 66, 13, 25, 22, 68, 39, 25, 7, 1),
+('2026-01-20', 58, 28, 109, 53, 26, 81, 104, 3, 59, 67, 14, 26, 22, 69, 40, 26, 9, 1),
+('2026-01-27', 59, 28, 110, 54, 26, 82, 105, 3, 60, 68, 14, 26, 22, 70, 40, 26, 6, 1);
+
+-- NOTES ON THE DATA:
+-- Week of Jan 6: 83 total households, 182 total individuals (106 adults + 51 children + 25 seniors)
+-- Week of Jan 13: 84 total households, 184 total individuals (107 adults + 52 children + 25 seniors)
+-- Week of Jan 20: 86 total households, 188 total individuals (109 adults + 53 children + 26 seniors)
+-- Week of Jan 27: 87 total households, 190 total individuals (110 adults + 54 children + 26 seniors)
+
+-- Demographics verification for Jan 6:
+-- Age: 106 + 51 + 25 = 182
+-- Gender: 79 + 100 + 3 = 182
+-- Race: 57 + 65 + 13 + 25 + 22 = 182
+-- Conditions: 67 + 39 + 25 = 131 (individuals can have multiple conditions)
+
+-- Demographics verification for Jan 13:
+-- Age: 107 + 52 + 25 = 184
+-- Gender: 80 + 101 + 3 = 184
+-- Race: 58 + 66 + 13 + 25 + 22 = 184
+-- Conditions: 68 + 39 + 25 = 132
+
+-- Demographics verification for Jan 20:
+-- Age: 109 + 53 + 26 = 188
+-- Gender: 81 + 104 + 3 = 188
+-- Race: 59 + 67 + 14 + 26 + 22 = 188
+-- Conditions: 69 + 40 + 26 = 135
+
+-- Demographics verification for Jan 27:
+-- Age: 110 + 54 + 26 = 190
+-- Gender: 82 + 105 + 3 = 190
+-- Race: 60 + 68 + 14 + 26 + 22 = 190
+-- Conditions: 70 + 40 + 26 = 136
