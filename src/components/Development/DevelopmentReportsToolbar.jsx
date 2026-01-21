@@ -14,6 +14,7 @@ export default function DevelopmentReportsToolbar({
   nameOptions = [],
 }) {
   // --- Determine if Name/Search should be disabled ---
+  // todo - but with name/event filter
   const disableNameSearch =
     category === "donations" && (report === "weekly" || report === "monthly");
 
