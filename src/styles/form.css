@@ -98,3 +98,10 @@ button.secondary {
 button.secondary:hover {
   background-color: #616161;
 }
+
+
+.form-success-message {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  color: green;
+}
