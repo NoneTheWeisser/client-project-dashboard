@@ -1,7 +1,9 @@
+
+
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import useStore from '../../zustand/store';
-//import './Shelter.css';
+import './Shelter.css';
 
 function ShelterWeeklyForm() {
   const navigate = useNavigate();
@@ -107,9 +109,8 @@ function ShelterWeeklyForm() {
 
       <div className="form-container">
         <button 
-          className="secondary" 
+          className="secondary shelter-back-button" 
           onClick={() => navigate('/shelter/weekly')}
-          style={{ marginBottom: '16px' }}
         >
           ← Back to List
         </button>
@@ -118,7 +119,7 @@ function ShelterWeeklyForm() {
           
           {/* Week Date */}
           <label>
-            Week Date: *
+            <span>Week Date: *</span>
             <input
               type="date"
               name="date"
@@ -129,12 +130,10 @@ function ShelterWeeklyForm() {
           </label>
           
           {/* Guest Categories */}
-          <h4 style={{ marginTop: '16px', color: 'var(--brand-primary)', gridColumn: '1 / -1' }}>
-            Guest Categories
-          </h4>
+          <h4 className="shelter-form-section-header">Guest Categories</h4>
           <div className="form-row">
             <label>
-              Single Men:
+              <span>Single Men:</span>
               <input
                 type="text"
                 inputMode="numeric"
@@ -145,7 +144,7 @@ function ShelterWeeklyForm() {
             </label>
             
             <label>
-              Housing Men:
+              <span>Housing Men:</span>
               <input
                 type="text"
                 inputMode="numeric"
@@ -156,7 +155,7 @@ function ShelterWeeklyForm() {
             </label>
             
             <label>
-              Single Women:
+              <span>Single Women:</span>
               <input
                 type="text"
                 inputMode="numeric"
@@ -165,9 +164,11 @@ function ShelterWeeklyForm() {
                 onChange={handleChange}
               />
             </label>
-            
+          </div>
+          
+          <div className="form-row">
             <label>
-              Housing Women:
+              <span>Housing Women:</span>
               <input
                 type="text"
                 inputMode="numeric"
@@ -178,7 +179,7 @@ function ShelterWeeklyForm() {
             </label>
             
             <label>
-              Families:
+              <span>Families:</span>
               <input
                 type="text"
                 inputMode="numeric"
@@ -189,7 +190,7 @@ function ShelterWeeklyForm() {
             </label>
             
             <label>
-              Hybrid/VA Holdover:
+              <span>Hybrid/VA Holdover:</span>
               <input
                 type="text"
                 inputMode="numeric"
@@ -201,12 +202,10 @@ function ShelterWeeklyForm() {
           </div>
           
           {/* Operations & Outreach */}
-          <h4 style={{ marginTop: '24px', color: 'var(--brand-primary)', gridColumn: '1 / -1' }}>
-            Operations & Outreach
-          </h4>
+          <h4 className="shelter-form-section-header">Operations & Outreach</h4>
           <div className="form-row">
             <label>
-              Incident Reports:
+              <span>Incident Reports:</span>
               <input
                 type="text"
                 inputMode="numeric"
@@ -217,7 +216,7 @@ function ShelterWeeklyForm() {
             </label>
             
             <label>
-              Community Members Served:
+              <span>Community Members Served:</span>
               <input
                 type="text"
                 inputMode="numeric"
@@ -228,7 +227,7 @@ function ShelterWeeklyForm() {
             </label>
             
             <label>
-              Nights Found Sleeping Outside:
+              <span>Nights Found Sleeping Outside:</span>
               <input
                 type="text"
                 inputMode="numeric"
@@ -240,11 +239,9 @@ function ShelterWeeklyForm() {
           </div>
           
           {/* Notes */}
-          <h4 style={{ marginTop: '24px', color: 'var(--brand-primary)', gridColumn: '1 / -1' }}>
-            Additional Notes
-          </h4>
-          <label style={{ gridColumn: '1 / -1' }}>
-            Notes:
+          <h4 className="shelter-form-section-header">Additional Notes</h4>
+          <label className="full-width">
+            <span>Notes:</span>
             <textarea
               name="notes"
               value={formData.notes}
@@ -253,7 +250,7 @@ function ShelterWeeklyForm() {
             />
           </label>
           
-          <div className="form-actions" style={{ gridColumn: '1 / -1', marginTop: '16px' }}>
+          <div className="form-actions">
             <button type="submit" className="primary">
               {isEditMode ? 'Update' : 'Create'} Report
             </button>

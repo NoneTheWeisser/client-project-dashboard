@@ -180,13 +180,6 @@
 }
 
 /* Finance Reporting Styles */
-.finance-section-header {
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-bottom: 24px;
-  color: #333;
-}
-
 .finance-section-divider {
   border-top: 2px solid #e0e0e0;
   margin-bottom: 32px;
@@ -263,12 +256,9 @@
 }
 
 /* Finance Year Selector */
-/* .finance-year-selector {
+.finance-year-selector {
   margin-bottom: 20px;
-} */
- .finance-year-selector {
-  margin-bottom: 20px;
-  margin-left: auto; /* pushes it to the right */
+  margin-left: auto;
   display: flex;
   align-items: center;
 }
@@ -285,6 +275,23 @@
   border-radius: 4px;
   border: 1px solid #ccc;
   font-size: 0.9rem;
+}
+
+/* Finance Form Specific Styles */
+.finance-back-button {
+  margin-bottom: 16px;
+}
+
+.finance-section-header {
+  margin-top: 24px;
+  color: var(--brand-primary);
+  grid-column: 1 / -1;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.finance-section-header:first-of-type {
+  margin-top: 16px;
 }
 
 /* Responsive */
@@ -312,4 +319,22 @@
     justify-content: flex-start;
     width: 100%;
   }
+}
+
+/* Finance Form Specific Styles */
+.finance-back-button {
+  margin-bottom: 16px;
+}
+
+/* Form section headers (different from report section headers) */
+.grid-form .finance-form-section-header {
+  margin-top: 24px;
+  color: var(--brand-primary);
+  grid-column: 1 / -1;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.grid-form .finance-form-section-header:first-of-type {
+  margin-top: 16px;
 }
