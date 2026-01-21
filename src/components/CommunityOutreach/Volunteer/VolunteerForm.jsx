@@ -11,7 +11,9 @@ export default function VolunteerForm({ volunteerToEdit, onFinish }) {
 
   const [name, setName] = useState("");
   const [type, setType] = useState("Individual");
+  const [successMessage, setSuccessMessage] = useState("");
 
+  // Populate form if editing
   useEffect(() => {
     if (volunteerToEdit) {
       setName(volunteerToEdit.name);
@@ -20,6 +22,7 @@ export default function VolunteerForm({ volunteerToEdit, onFinish }) {
       setName("");
       setType("Individual");
     }
+    setSuccessMessage(""); // clear success when switching volunteers
   }, [volunteerToEdit]);
 
   const handleSubmit = async (e) => {
@@ -28,7 +31,9 @@ export default function VolunteerForm({ volunteerToEdit, onFinish }) {
 
     // prevent duplicates
     const nameExists = volunteers.some(
-      (v) => v.name.toLowerCase() === name.trim().toLowerCase()
+      (v) =>
+        v.name.toLowerCase() === name.trim().toLowerCase() &&
+        v.id !== volunteerToEdit?.id // allow current name when editing
     );
 
     if (!volunteerToEdit && nameExists) {
@@ -36,26 +41,25 @@ export default function VolunteerForm({ volunteerToEdit, onFinish }) {
       return;
     }
 
-    const payload = {
-      name: name.trim(),
-      type,
-    };
+    const payload = { name: name.trim(), type };
 
     try {
       if (volunteerToEdit) {
-        console.log("Editing volunteer", {
-          id: volunteerToEdit.id,
-          ...payload,
-        });
         await editVolunteer(volunteerToEdit.id, payload);
+        setSuccessMessage("Volunteer updated successfully!");
       } else {
-        console.log("Adding volunteer", payload);
         await addVolunteer(payload);
+        setSuccessMessage("Volunteer added successfully!");
       }
 
-      // reset form
+      // reset form fields
       setName("");
       setType("Individual");
+
+      // Hide success message after 3 seconds
+      setTimeout(() => setSuccessMessage(""), 3000);
+
+      // Optional callback after success (keep it after showing message)
       if (onFinish) onFinish();
     } catch (err) {
       console.error("VolunteerForm handleSubmit error:", err);
@@ -65,7 +69,7 @@ export default function VolunteerForm({ volunteerToEdit, onFinish }) {
   if (loading) return <p className="table-loading">Loading...</p>;
   if (error) return <p className="table-error">Error: {error}</p>;
 
-   return (
+  return (
     <div className="volunteer-form-container">
       <form onSubmit={handleSubmit} className="volunteer-form">
         <h3>{volunteerToEdit ? "Edit Volunteer" : "Add Volunteer"}</h3>
@@ -99,6 +103,11 @@ export default function VolunteerForm({ volunteerToEdit, onFinish }) {
             </button>
           )}
         </div>
+
+        {/* Success Message */}
+        {successMessage && (
+          <p className="form-success-message">{successMessage}</p>
+        )}
       </form>
     </div>
   );

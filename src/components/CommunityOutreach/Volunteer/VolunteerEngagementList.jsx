@@ -2,15 +2,16 @@ import useStore from "../../../zustand/store";
 
 export default function VolunteerEngagementList({ onEdit, filters = {} }) {
   const engagements = useStore((state) => state.engagements);
+  const deleteEngagement = useStore((state) => state.deleteEngagement);
+  const fetchEngagements = useStore((state) => state.fetchEngagements); 
 
+  // --- Filtered data ---
   const filtered = engagements.filter((e) => {
     const matchesVolunteer =
       !filters.volunteerId || e.volunteer_id.toString() === filters.volunteerId;
-    const matchesLocation =
-      !filters.location || e.location === filters.location;
+    const matchesLocation = !filters.location || e.location === filters.location;
     const matchesYear =
-      !filters.year ||
-      new Date(e.event_date).getFullYear().toString() === filters.year;
+      !filters.year || new Date(e.event_date).getFullYear().toString() === filters.year;
     const matchesSearch =
       !filters.search ||
       e.location.toLowerCase().includes(filters.search.toLowerCase()) ||
@@ -21,6 +22,20 @@ export default function VolunteerEngagementList({ onEdit, filters = {} }) {
   });
 
   if (filtered.length === 0) return <p>No engagements logged.</p>;
+
+  // --- Handlers ---
+  const handleDelete = async (id) => {
+    if (!window.confirm("Delete this engagement?")) return;
+
+    try {
+      await deleteEngagement(id);
+      // optional: refresh table after deletion
+      if (fetchEngagements) await fetchEngagements();
+    } catch (err) {
+      console.error("Failed to delete engagement:", err);
+      alert("Error deleting engagement.");
+    }
+  };
 
   return (
     <div className="table-container table-contained">
@@ -53,10 +68,7 @@ export default function VolunteerEngagementList({ onEdit, filters = {} }) {
                   </button>
                   <button
                     className="btn-table-delete"
-                    onClick={() => {
-                      if (window.confirm("Delete this engagement?"))
-                        deleteEngagement(e.id);
-                    }}
+                    onClick={() => handleDelete(e.id)}
                   >
                     Delete
                   </button>

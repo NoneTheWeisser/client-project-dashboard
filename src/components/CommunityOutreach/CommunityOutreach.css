@@ -361,6 +361,11 @@
   background-color: #e0e0e0;
 }
 
+.form-success-message {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  color: green;
+}
 
 
 /* ---------- Responsive adjustments ---------- */
