@@ -14,7 +14,7 @@ export default function NewsletterReport() {
 
   return (
     <>
-      <h3>Newsletter Performance</h3>
+      <h2>Newsletter Performance</h2>
       <div className="table-container" style={{ maxWidth: "100%" }}>
         <table className="table-app table-hover table-striped">
           <thead>

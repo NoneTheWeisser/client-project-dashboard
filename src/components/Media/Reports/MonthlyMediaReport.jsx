@@ -14,7 +14,7 @@ export default function MonthlyMediaReport({ records }) {
       className="table-container"
       style={{ maxWidth: "1400px", margin: "0 auto" }}
     >
-      <h3>Monthly Media Report</h3>
+      <h2>Monthly Media Report</h2>
       <table className="table-app table-hover table-striped media-table">
         <thead>
           <tr>
