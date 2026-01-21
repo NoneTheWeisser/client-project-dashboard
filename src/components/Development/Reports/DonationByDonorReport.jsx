@@ -48,6 +48,8 @@ export default function DonationByDonorReport({ filters }) {
   
   return (
     <div className="table-container" style={{ maxWidth: "1200px" }}>
+            <h2>Lifetime Donor Report</h2>
+
       <table className="table-app table-hover table-striped donation-by-donor-table">
         <thead>
           <tr>

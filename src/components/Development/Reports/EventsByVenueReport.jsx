@@ -40,6 +40,7 @@ export default function EventsByVenueReport({ filters }) {
 
   return (
     <div className="table-container">
+      <h2>Events By Venue Report</h2>
       <table className="table-app table-hover table-striped events-by-venue-table">
         <thead>
           <tr>

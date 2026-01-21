@@ -96,14 +96,10 @@ export default function EventsToolBar({
             onChange={(e) => setFilters({ ...filters, notes: e.target.value })}
           />
         </div>
-
-        {/* Clear button */}
-        <div className="filter-group">
           <button className="clear-button" onClick={rightButtons[0]?.onClick}>
             {rightButtons[0]?.label || "Clear"}
           </button>
         </div>
       </div>
-    </div>
   );
 }

@@ -6,13 +6,13 @@ export const numberFormatter = new Intl.NumberFormat("en-US");
 
 export default function DonationWeeklyReport({ filters }) {
   const donationWeeklyReports = useStore(
-    (state) => state.donationWeeklyReports
+    (state) => state.donationWeeklyReports,
   );
   const fetchWeeklyDonationReports = useStore(
-    (state) => state.fetchWeeklyDonationReports
+    (state) => state.fetchWeeklyDonationReports,
   );
   const loadingDonationReports = useStore(
-    (state) => state.loadingDonationReports
+    (state) => state.loadingDonationReports,
   );
 
   useEffect(() => {
@@ -32,6 +32,7 @@ export default function DonationWeeklyReport({ filters }) {
 
   return (
     <div className="table-container">
+      <h2>Weekly Donations Report</h2>
       <table className="table-app table-hover table-striped donation-weekly-table">
         <thead>
           <tr>

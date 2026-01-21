@@ -6,13 +6,13 @@ export const numberFormatter = new Intl.NumberFormat("en-US");
 
 export default function DonationMonthlyReport({ filters }) {
   const donationMonthlyReports = useStore(
-    (state) => state.donationMonthlyReports
+    (state) => state.donationMonthlyReports,
   );
   const fetchMonthlyDonationReports = useStore(
-    (state) => state.fetchMonthlyDonationReports
+    (state) => state.fetchMonthlyDonationReports,
   );
   const loadingDonationReports = useStore(
-    (state) => state.loadingDonationReports
+    (state) => state.loadingDonationReports,
   );
 
   useEffect(() => {
@@ -32,6 +32,8 @@ export default function DonationMonthlyReport({ filters }) {
 
   return (
     <div className="table-container">
+      <h2>Monthly Donations Report</h2>
+
       <table className="table-app table-hover table-striped donation-monthly-table">
         <thead>
           <tr>
