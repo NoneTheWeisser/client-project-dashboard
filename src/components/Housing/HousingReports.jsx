@@ -18,14 +18,14 @@ import "./Charts/HousingDashboard.css";
 
 export default function HousingReports() {
   const fetchMonthlyHousing = useStore(
-    (state) => state.fetchHousingMonthlyReport
+    (state) => state.fetchHousingMonthlyReport,
   );
   const fetchSummaryHousing = useStore(
-    (state) => state.fetchHousingMonthlySummary
+    (state) => state.fetchHousingMonthlySummary,
   );
   const reportData = useStore((state) => state.housingMonthlyReport);
   const loadingHousingReports = useStore(
-    (state) => state.loadingHousingReports
+    (state) => state.loadingHousingReports,
   );
 
   // Toolbar state
@@ -70,7 +70,7 @@ export default function HousingReports() {
 
   // Get most recent month
   const latestMonth = [...reportData].sort(
-    (a, b) => new Date(b.month_start) - new Date(a.month_start)
+    (a, b) => new Date(b.month_start) - new Date(a.month_start),
   )[0]?.month_start;
 
   // Map buildings to current + upcoming vacancies
@@ -87,7 +87,7 @@ export default function HousingReports() {
         .filter(
           (r) =>
             new Date(r.month_start).getMonth() ===
-            new Date(lastMonthData.month_start).getMonth()
+            new Date(lastMonthData.month_start).getMonth(),
         )
         .map((r) => ({
           building: r.building_name,
@@ -171,6 +171,7 @@ export default function HousingReports() {
 
       {/* Monthly Table */}
       <div style={{ marginTop: "1rem" }}>
+        <h2>Monthly Housing Report</h2>
         {loadingHousingReports ? (
           <p>Loading report…</p>
         ) : filteredRecords.length === 0 ? (

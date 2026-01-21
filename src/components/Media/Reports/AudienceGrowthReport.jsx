@@ -14,7 +14,7 @@ export default function AudienceGrowthReport() {
 
   return (
     <>
-      <h3>Audience Growth</h3>
+      <h2>Audience Growth</h2>
       <div className="table-container" style={{ maxWidth: "100%" }}>
         <table className="table-app table-hover table-striped">
           <thead>

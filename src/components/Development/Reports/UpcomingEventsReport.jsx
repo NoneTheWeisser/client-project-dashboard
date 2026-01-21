@@ -44,6 +44,7 @@ export default function UpcomingEventsReport({ filters }) {
 
   return (
     <div className="table-container">
+      <h2>Upcoming Events Report</h2>
       <table className="table-app table-hover table-striped upcoming-events-table">
         <thead>
           <tr>
