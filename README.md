@@ -1,95 +1,150 @@
-# Churches United Dashboard
+# Department Reporting Dashboard
 
-**Duration:** 2 Week Sprint  
+Duration: ~3–4 week sprint
 
-This project is a centralized dashboard for Churches United, a nonprofit serving the Fargo–Moorhead community. The dashboard helps consolidate data from multiple programs — shelter, food pantry, housing, development, and community outreach — into one easy-to-use system. Leadership and board members can access real-time summaries, while department users can enter weekly data quickly and accurately.  
+## Overview
+
+The Department Reporting Dashboard is a full-stack web application designed to consolidate and visualize key metrics across multiple organizational departments, including:
+
+Community Outreach, Development, Finance, Housing, Media, Pantry, Kitchen, HR, Compliance, and Shelter.
+
+This repository serves as the **technical handoff** for future developers who may maintain, extend, or redeploy the application.
+
+Client credentials, service logins, and sensitive configuration values are intentionally **not included** in this repository and are provided separately in the client handoff document.
 
 ---
 
-## Deployed Version
+## Project Description
 
-To see the fully functional dashboard, visit: [DEPLOYED VERSION LINK]
+The dashboard enables staff and administrators to quickly view KPIs, charts, tables, and upcoming events for each department. It supports both high-level summaries and detailed monthly reporting, allowing data to be filtered by year, building, volunteer, donor, and other relevant attributes.
+
+The application was built with long-term maintainability in mind, using reusable components, centralized state management, and a modular folder structure.
+
+### Problems Solved
+
+- Centralizes reporting for multiple departments into a single application
+- Replaces manual or spreadsheet-based reporting workflows
+- Visualizes data through KPIs, charts, and tables
+- Enables filtering and exploration of historical data
+- Provides a scalable structure for adding new departments or metrics
+
+### Solution Summary
+
+- React-based frontend with reusable KPI cards, charts, and tables
+- Zustand for global state management
+- Express.js backend API
+- PostgreSQL database for persistent data storage
+- Chart.js for data visualization
+- Modular architecture to support future expansion
 
 ---
 
-## Introduction / User Story
+## Deployed Application
 
-Churches United operates multiple programs and collects a wide variety of data. Each department previously tracked its data in separate tools, making organization-wide reporting time-consuming and error-prone.  
+The application is currently deployed and publicly accessible at:
 
-The dashboard solves this problem by:  
+**[DEPLOYED URL HERE]** --TODO
 
-- Allowing department users to enter data directly in the system  
-- Providing leadership and board members with consolidated summaries and visualizations  
-- Reducing time spent managing spreadsheets so staff can focus on the people they serve  
+Deployment credentials, hosting provider access, and pricing details are provided to the client in the separate handoff document.
 
-During the demo, you’ll see the dashboard from several perspectives: department managers entering data, the CEO reviewing reports, and board members exploring metrics.  
+---
+
+## Screenshots
+
+<div style="display: flex; gap: 10px; flex-wrap: wrap;">
+  <img src="./public/img/readme/homepage.jpg" alt="Dashboard Overview" width="300" />
+  <img src="./public/img/readme/housing.jpg" alt="Housing Data Entry" width="300" />
+  <img src="./public/img/readme/reports.jpg" alt="Department Reports" width="300" />
+</div>
 
 ---
 
 ## Prerequisites
 
-Make sure the following are installed on your machine:
+The following tools must be installed before running the project locally:
 
-- Node.js  
-- PostgreSQL  
-- Optional: Postico (or another Postgres client)  
+- [Node.js](https://nodejs.org/) (v16+ recommended)
+- [PostgreSQL](https://www.postgresql.org/)
+- Optional: [Postico](https://eggerapps.at/postico/) or another Postgres client
 
 ---
 
-## Installation / Setup
+## Environment Variables
 
-1. Clone the repository  
-2. Run `npm install` in the root directory to install dependencies  
-3. Install additional UI and charting libraries:
+This project requires environment variables to function correctly.
+
+Create a `.env` file in the project root using the following format:
 
 ```
-npm install react-bootstrap bootstrap
-npm install bootstrap-icons
-npm install react-icons
-npm install chart.js chartjs-plugin-datalabels
+DATABASE_URL=postgresql://username:password@localhost:5432/database_name
+SESSION_SECRET=your_session_secret
 ```
-4. Create a PostgreSQL database named cu_dashboard
-5. Run the queries in tables.sql to create all tables and seed any necessary data
-6. Run the server and client :
+
+A .env.sample file should be included in the repo with placeholder values.
+Do not commit real credentials.
+
+## Local Installation & Setup
+
+Follow these steps to run the application locally:
+
+1. Clone the repository
+2. Install dependencies:
+
+```
+ npm install
+```
+
+3. Create a PostgreSQL database:
+
+```
+ CREATE DATABASE your_database_name;
+```
+
+4. Run the SQL scripts in tables.sql to create tables and seed initial data
+5. Create a .env file as described above
+6. Start the application:
 ```
 npm run server
 npm run client
 ```
 
-## Project Structure
-- src/ – React frontend with Zustand state management
-- server/ – Express backend
-- public/ – Static assets such as favicon and images
-
-Shared UI components and global styles are included to maintain a consistent design across the dashboard.
+7. The client will open automatically in a new browser tab
 
 ## Usage
 
-Example User Stories:
-- Department Manager: Enters weekly data for meals, volunteers, donations, or events.
-- CEO: Reviews high-level summaries in the Reporting Hub and clicks into department cards for detailed reports.
-- Board Member: Explores visualizations and trends for specific departments.
+- Navigate to the dashboard homepage to view department summary cards
+- Select a department to view detailed KPIs, charts, and tables
+- KPI cards display high-level metrics (e.g., volunteers, donations, housing occupancy)
+- Charts show monthly or yearly trends
+- Tables allow filtering by relevant fields such as year, building, volunteer, or donor
 
-The home page serves as a hub with 9 department cards, each linking to the respective department’s page.
+## Deployment
+The application is currently deployed using [hosting provider name].
+
+To deploy a new instance:
+- Configure environment variables in the hosting platform
+- Set up a managed PostgreSQL database
+- Build and deploy the server and client applications
+Hosting and scaling costs vary depending on traffic and data volume. Current pricing and recommendations are outlined in the client handoff document.
+
+## Known Issues
+Any known bugs or limitations should be tracked as GitHub Issues in this repository. These issues are non-blocking unless otherwise noted.
 
 ## Built With
-
-- Frontend: React, Zustand, React Bootstrap
-- Backend: Node.js, Express
+- Frontend: React, React Router, Zustand
+- Backend: Express.js
 - Database: PostgreSQL
-- Charts & Visualization: Chart.js, chartjs-plugin-datalabels
-- Icons: Bootstrap Icons, React Icons
+- Data Visualization: Chart.js
+- Styling: CSS Modules, Bootstrap, and custom theme styles
 
-## Future Improvements
-- Enable exporting reports as PDFs or CSVs for easy sharing
-- Enable importing CSV files to reduce manual data entry and allow historical data integration
-- Expand the Reporting Hub to display metrics from all departments in a single view
-- Enhance charts and trend visualizations for deeper insights
+## License
+MIT
+(Only include this section if a LICENSE file exists in the repository.)
 
 ## Acknowledgements
+Thanks to Emerging Digital Academy for the instruction, mentorship, and support that made this project possible.
 
-Thanks to Emerging Digital Academy and our client, Devlyn Brooks, for guiding and supporting this project.
+## Support
+For questions related to ongoing maintenance or feature requests, please contact:
 
-Support
-
-For questions or suggestions, please reach out via email: blaineb@emergingprairie.com
+youremail@domain.com. --TODO
