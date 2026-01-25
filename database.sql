@@ -8,15 +8,6 @@ DROP TABLE IF EXISTS "user";
 -------------------------------------------------------
 --------------------------------------------------
 -- TABLE SCHEMAS:
--- Default
--- CREATE TABLE "user" (
---   "id" SERIAL PRIMARY KEY,
---   "username" VARCHAR (80) UNIQUE NOT NULL,
---   "password" VARCHAR (1000) NOT NULL,
---   "inserted_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
---   "updated_at" TIMESTAMPTZ NOT NULL DEFAULT now()
--- );;
-
 -- Proposed user table 
 CREATE TABLE "user" (
     "id" SERIAL PRIMARY KEY,
@@ -49,21 +40,6 @@ CREATE TABLE "pantry" (
   "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   "updated_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
---seed data
-
-INSERT INTO "pantry" 
-  ("week_date", "first_time_households", "returning_households", "total_adults", "total_children", "total_seniors", "total_pounds_distributed", "notes", "created_by")
-VALUES
-  ('2024-11-04', 5, 8, 20, 15, 3, 450.50, 'Normal week', 1),
-  ('2024-11-11', 3, 10, 18, 12, 4, 380.75, 'Veterans Day week', 1),
-  ('2024-11-18', 7, 12, 25, 18, 5, 520.00, 'Thanksgiving prep', 1),
-  ('2024-11-25', 2, 9, 15, 10, 2, 340.25, 'Post-Thanksgiving', 1),
-  ('2024-12-02', 4, 11, 22, 14, 3, 410.50, 'Back to normal', 1),
-  ('2024-12-09', 6, 13, 28, 20, 6, 495.75, 'Holiday rush', 1),
-  ('2024-12-16', 3, 8, 16, 11, 2, 350.00, 'Holiday week', 1);
-
-
 -------------------------------------------------------
 --------------------------------------------------
 --------- hr_weekly table
@@ -79,7 +55,7 @@ VALUES
   "created_by" INTEGER REFERENCES "user"(id) ON DELETE SET NULL,
   "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   "updated_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-
+);
   ---------------
    
 DROP TABLE IF EXISTS kitchen CASCADE;
@@ -94,7 +70,6 @@ CREATE TABLE "kitchen" (
   "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   "updated_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
 
 INSERT INTO "kitchen" 
   ("week_date", "total_meals_served", "notes", "created_by")
@@ -112,9 +87,15 @@ VALUES
   ('2025-01-13', 430, 'Normal winter week', 1),
   ('2025-01-20', 445, 'MLK Day weekend, increased demand', 1);
 
-   );
+  
 
 ---------Event table
+CREATE TABLE shelters (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE "events" (
     "id" SERIAL PRIMARY KEY, 
     "name" VARCHAR(255) NOT NULL,
@@ -152,6 +133,13 @@ CREATE TABLE housing (
 
 
 ---------Donation tables
+CREATE TABLE "donors" (
+  "id" BIGSERIAL PRIMARY KEY,
+  "name" VARCHAR(255) NOT NULL,
+  "type" VARCHAR(50) NOT NULL,
+  "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  "updated_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
 
 CREATE TABLE "donations" (
   "id" BIGSERIAL PRIMARY KEY,
@@ -161,13 +149,6 @@ CREATE TABLE "donations" (
   "notable" BOOLEAN NOT NULL DEFAULT FALSE,
   "restricted" BOOLEAN NOT NULL DEFAULT FALSE,
   "notes" TEXT,
-  "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  "updated_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
-CREATE TABLE "donors" (
-  "id" BIGSERIAL PRIMARY KEY,
-  "name" VARCHAR(255) NOT NULL,
-  "type" VARCHAR(50) NOT NULL,
   "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
   "updated_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -205,14 +186,6 @@ CREATE TABLE "volunteers" (
   "updated_at" TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
-DROP TABLE IF EXISTS "volunteer_events" CASCADE;
-DROP TABLE IF EXISTS "volunteer_engagements" CASCADE;
-
-
--- Remove all data but keep table structure
-TRUNCATE TABLE volunteer_engagements RESTART IDENTITY CASCADE;
-DROP TABLE IF EXISTS volunteer_engagements CASCADE;
-
 CREATE TABLE "volunteer_engagements" (
   "id" SERIAL PRIMARY KEY,
   "volunteer_id" INTEGER NOT NULL
@@ -229,10 +202,7 @@ CREATE TABLE "volunteer_engagements" (
 );
 
 
--- ============================================
--- COMPLIANCE WEEKLY TABLE - FRESH START
--- ============================================
-
+-- COMPLIANCE WEEKLY TABLE
 -- Drop existing table if exists
 DROP TABLE IF EXISTS compliance_weekly CASCADE;
 
@@ -275,70 +245,8 @@ CREATE TABLE "compliance_weekly" (
     "updated_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
     "submitted_at" TIMESTAMPTZ
 );
---  fake seed data for hr weekly testing 
-INSERT INTO "hr_weekly"
-  ("week_date", "total_positions", "open_positions", "new_hires_this_week", "employee_turnover", "evaluations_due", "notes", "created_by")
-VALUES
-  ('2024-11-04', 12, 2, 0, 0, 3, 'Normal week', 1),
-  ('2024-11-11', 12, 2, 1, 0, 2, 'One new hire in Kitchen', 1),
-  ('2024-11-18', 12, 1, 0, 0, 4, 'Thanksgiving prep week', 1),
-  ('2024-11-25', 12, 1, 0, 1, 1, 'One termination', 1),
-  ('2024-12-02', 13, 2, 1, 0, 5, 'New development position added', 1),
-  ('2024-12-09', 13, 2, 0, 0, 3, 'Holiday season', 1),
-  ('2024-12-16', 13, 1, 1, 0, 2, 'End of year hiring', 1);
 
-
--
--- SEED DATA:
---   You'll need to actually register users via the application in order to get hashed
---   passwords. Once you've done that, you can modify this INSERT statement to include
---   your dummy users. Be sure to copy/paste their hashed passwords, as well.
---   This is only for development purposes! Here's a commented-out example:
--- INSERT INTO "user"
---   ("username", "password")
---   VALUES
---   ('unicorn10', '$2a$10$oGi81qjXmTh/slGzYOr2fu6NGuCwB4kngsiWQPToNrZf5X8hxkeNG'), --pw: 123
---   ('cactusfox', '$2a$10$8./c/6fB2BkzdIrAUMWOxOlR75kgmbx/JMrMA5gA70c9IAobVZquW'); --pw: 123
-
-
--------------------------------------------------------
---------------------------------------------------
--- AUTOMAGIC UPDATED_AT:
-
--- Did you know that you can make and execute functions
--- in PostgresQL? Wild, right!? I'm not making this up. Here
--- is proof that I am not making this up:
-  -- https://x-team.com/blog/automatic-timestamps-with-postgresql/
-
--- Create a function that sets a row's updated_at column
--- to NOW():
-CREATE OR REPLACE FUNCTION set_updated_at_to_now() -- 👈
-RETURNS TRIGGER AS $$
-BEGIN
-  NEW.updated_at = NOW();
-  RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
--- Create a trigger on the user table that will execute
--- the set_update_at_to_now function on any rows that
--- have been touched by an UPDATE query:
-CREATE TRIGGER on_user_update
-BEFORE UPDATE ON "user"
-FOR EACH ROW
-EXECUTE PROCEDURE set_updated_at_to_now();
-
-
-
-
-
-
-
-
-
--- ============================================
--- SHELTER WEEKLY TABLE - BASED ON ACTUAL DATA
--- ============================================
+-- SHELTER WEEKLY TABLE 
 -- Tracks: Review dates, Shelter guests by type, Incidents, Community members served
 
 DROP TABLE IF EXISTS shelter_weekly CASCADE;
@@ -376,11 +284,7 @@ CREATE TABLE "shelter_weekly" (
 );
 
 
-
-
--- ============================================
 -- FINANCE WEEKLY TABLE - BASED ON ACTUAL DATA
--- ============================================
 -- Tracks: Assets, Operating account, Bills, Payroll, Revenue, Major expenses
 
 DROP TABLE IF EXISTS finance_weekly CASCADE;
@@ -411,3 +315,31 @@ CREATE TABLE "finance_weekly" (
     "updated_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
     "submitted_at" TIMESTAMPTZ
 );
+
+
+-------------------------------------------------------
+--------------------------------------------------
+-- AUTOMAGIC UPDATED_AT:
+
+-- Did you know that you can make and execute functions
+-- in PostgresQL? Wild, right!? I'm not making this up. Here
+-- is proof that I am not making this up:
+  -- https://x-team.com/blog/automatic-timestamps-with-postgresql/
+
+-- Create a function that sets a row's updated_at column
+-- to NOW():
+CREATE OR REPLACE FUNCTION set_updated_at_to_now() -- 👈
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.updated_at = NOW();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Create a trigger on the user table that will execute
+-- the set_update_at_to_now function on any rows that
+-- have been touched by an UPDATE query:
+CREATE TRIGGER on_user_update
+BEFORE UPDATE ON "user"
+FOR EACH ROW
+EXECUTE PROCEDURE set_updated_at_to_now();
