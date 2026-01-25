@@ -43,7 +43,7 @@ The application was built with long-term maintainability in mind, using reusable
 
 The application is currently deployed and publicly accessible at:
 
-**[DEPLOYED URL HERE]** --TODO
+**[[DEPLOYED URL](https://churches-united-dashboard-app.fly.dev/#/)]** 
 
 Deployment credentials, hosting provider access, and pricing details are provided to the client in the separate handoff document.
 

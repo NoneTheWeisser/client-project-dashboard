@@ -559,6 +559,13 @@ INSERT INTO pantry (week_date, first_time_households, returning_households, tota
 ('2024-07-08', 30, 136, 200, 103, 48, 3600, 'Summer distribution'),
 ('2024-09-09', 36, 145, 220, 115, 54, 3850, 'Back to school season'),
 ('2024-11-11', 40, 160, 240, 130, 60, 4300, 'Holiday season peak');
+('2024-11-04', 5, 8, 20, 15, 3, 450.50, 'Normal week', 1),
+('2024-11-11', 3, 10, 18, 12, 4, 380.75, 'Veterans Day week', 1),
+('2024-11-18', 7, 12, 25, 18, 5, 520.00, 'Thanksgiving prep', 1),
+('2024-11-25', 2, 9, 15, 10, 2, 340.25, 'Post-Thanksgiving', 1),
+('2024-12-02', 4, 11, 22, 14, 3, 410.50, 'Back to normal', 1),
+('2024-12-09', 6, 13, 28, 20, 6, 495.75, 'Holiday rush', 1),
+('2024-12-16', 3, 8, 16, 11, 2, 350.00, 'Holiday week', 1);
 
 -- ============================================
 -- HR SEED DATA
@@ -590,6 +597,13 @@ INSERT INTO hr_weekly (week_date, total_positions, open_positions, new_hires_thi
 ('2024-07-08', 55, 3, 1, 1, 6, 'Summer operations'),
 ('2024-09-09', 55, 2, 2, 1, 7, 'Fall hiring'),
 ('2024-11-11', 56, 3, 1, 0, 8, 'Holiday season staffing');
+('2024-11-04', 12, 2, 0, 0, 3, 'Normal week', 1),
+('2024-11-11', 12, 2, 1, 0, 2, 'One new hire in Kitchen', 1),
+('2024-11-18', 12, 1, 0, 0, 4, 'Thanksgiving prep week', 1),
+('2024-11-25', 12, 1, 0, 1, 1, 'One termination', 1),
+('2024-12-02', 13, 2, 1, 0, 5, 'New development position added', 1),
+('2024-12-09', 13, 2, 0, 0, 3, 'Holiday season', 1),
+('2024-12-16', 13, 1, 1, 0, 2, 'End of year hiring', 1);
 
 --- 2026 compliance data-----
 -- SAMPLE DATA FOR JANUARY 2026

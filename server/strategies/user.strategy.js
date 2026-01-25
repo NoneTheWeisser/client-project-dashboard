@@ -1,7 +1,7 @@
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
-const encryptLib = require('../modules/encryption');
-const pool = require('../modules/pool');
+const passport = require("passport");
+const LocalStrategy = require("passport-local").Strategy;
+const encryptLib = require("../modules/encryption");
+const pool = require("../modules/pool");
 
 // When a user successfully logs in, this passport method persists
 // that user's id into a session.
@@ -25,7 +25,8 @@ passport.deserializeUser((id, done) => {
   `;
   const sqlValues = [id];
 
-  pool.query(sqlText, sqlValues)
+  pool
+    .query(sqlText, sqlValues)
     .then((dbRes) => {
       const user = dbRes && dbRes.rows && dbRes.rows[0];
       if (user) {
@@ -39,7 +40,7 @@ passport.deserializeUser((id, done) => {
       }
     })
     .catch((dbErr) => {
-      console.log('Error with query in passport.deserializeUser:', dbErr);
+      console.log("Error with query in passport.deserializeUser:", dbErr);
       // done takes an error (we have one) and a user (null in this case)
       // this will result in the server returning a 500 status code
       done(dbErr, null);
@@ -61,7 +62,7 @@ passport.use(
     pool.query(sqlText, sqlValues)
       .then((dbRes) => {
         const user = dbRes && dbRes.rows && dbRes.rows[0];
-        
+
         if (user && encryptLib.comparePassword(password, user.password)) {
           // The request body's password has been hashed and matches the stored
           // hashed password. AKA: Login was successful! Now, we use Passport's
@@ -88,6 +89,5 @@ passport.use(
       });
   })
 );
-
 
 module.exports = passport;
