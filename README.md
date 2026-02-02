@@ -2,13 +2,21 @@
 
 Duration: ~3–4 week sprint
 
+## Repository Context
+
+This repository represents **my personal copy and deployment** of the Department Reporting Dashboard, created for portfolio and demonstration purposes.
+
+The application was originally developed as part of a **group client engagement** during a 3–4 week sprint. This version is maintained independently from the client’s official repository and is intended to showcase my contributions, architecture decisions, and deployment approach.
+
+Client credentials and sensitive configuration values are not included.
+
 ## Overview
 
 The Department Reporting Dashboard is a full-stack web application designed to consolidate and visualize key metrics across multiple organizational departments, including:
 
 Community Outreach, Development, Finance, Housing, Media, Pantry, Kitchen, HR, Compliance, and Shelter.
 
-This repository serves as the **technical handoff** for future developers who may maintain, extend, or redeploy the application.
+This repository reflects the final application architecture and implementation used for deployment and long-term maintenance.
 
 Client credentials, service logins, and sensitive configuration values are intentionally **not included** in this repository and are provided separately in the client handoff document.
 
@@ -41,9 +49,9 @@ The application was built with long-term maintainability in mind, using reusable
 
 ## Deployed Application
 
-The application is currently deployed and publicly accessible at:
+This repository is deployed as a **personal instance** of the application and is publicly accessible at:
 
-**[[DEPLOYED URL](https://churches-united-dashboard-app.fly.dev/#/)]** 
+<!-- **[[DEPLOYED URL](https://churches-united-dashboard-app.fly.dev/#/)]** -->
 
 Deployment credentials, hosting provider access, and pricing details are provided to the client in the separate handoff document.
 
@@ -103,6 +111,7 @@ Follow these steps to run the application locally:
 4. Run the SQL scripts in tables.sql to create tables and seed initial data
 5. Create a .env file as described above
 6. Start the application:
+
 ```
 npm run server
 npm run client
@@ -119,18 +128,22 @@ npm run client
 - Tables allow filtering by relevant fields such as year, building, volunteer, or donor
 
 ## Deployment
+
 The application is currently deployed using [hosting provider name].
 
 To deploy a new instance:
+
 - Configure environment variables in the hosting platform
 - Set up a managed PostgreSQL database
 - Build and deploy the server and client applications
-Hosting and scaling costs vary depending on traffic and data volume. Current pricing and recommendations are outlined in the client handoff document.
+  Hosting and scaling costs vary depending on traffic and data volume. Current pricing and recommendations are outlined in the client handoff document.
 
 ## Known Issues
+
 Any known bugs or limitations should be tracked as GitHub Issues in this repository. These issues are non-blocking unless otherwise noted.
 
 ## Built With
+
 - Frontend: React, React Router, Zustand
 - Backend: Express.js
 - Database: PostgreSQL
@@ -138,16 +151,18 @@ Any known bugs or limitations should be tracked as GitHub Issues in this reposit
 - Styling: CSS Modules, Bootstrap, and custom theme styles
 
 ## License
+
 MIT
 (Only include this section if a LICENSE file exists in the repository.)
 
 ## Acknowledgements
+
 Thanks to Emerging Digital Academy for the instruction, mentorship, and support that made this project possible.
 
 ## Support
+
 For questions related to ongoing maintenance or feature requests, please contact:
 
 abdilleahmed779@gmail.com
 abdiwahabnunow@gmail.com
 nicholas.weisser@gmail.com
-
