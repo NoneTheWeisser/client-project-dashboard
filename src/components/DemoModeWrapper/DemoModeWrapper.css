@@ -1,9 +1,9 @@
 .demo-banner {
-  background-color: #ffcc00;
-  color: #333;
+  background-color: #2a5754;
+  color: white;
   padding: 0.5rem 1rem;
   text-align: center;
-  font-weight: bold;
+  /* font-weight: bold; */
 }
 
 .demo-mode {

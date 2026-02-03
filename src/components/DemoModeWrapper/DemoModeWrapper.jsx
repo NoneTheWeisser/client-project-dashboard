@@ -14,7 +14,7 @@ export default function DemoModeWrapper({ children }) {
     <div className={isDemo ? "demo-mode" : ""}>
       {isDemo && (
         <div className="demo-banner">
-          You are in <strong>Demo Mode</strong>. Changes will not be saved.
+          You are in <strong>Demo Mode</strong>. Feel free to edit and submit. Nothing here is permanent.
         </div>
       )}
       {children}
