@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import PantryWeeklyReport from "./Reports/PantryWeeklyReport.jsx";
 import PantryMonthlyReport from "./Reports/PantryMonthlyReport.jsx";
 import PantryStatsReport from "./Reports/PantryStatsReport.jsx";
+import DepartmentHeader from "../DesignComponents/DepartmentHeader.jsx";
 
 export default function PantryReports() {
   const [activeTab, setActiveTab] = useState("weekly");
@@ -19,11 +21,31 @@ export default function PantryReports() {
 
   return (
     <div className="container mt-4">
+            <DepartmentHeader
+              title="Pantry Distribution"
+              actions={
+                <>
+                  <NavLink
+                    to="/pantry"
+                    end
+                    className={({ isActive }) => (isActive ? "active" : "")}
+                  >
+                    Department Home
+                  </NavLink>
+                  <NavLink
+                    to="/pantry/reports"
+                    className={({ isActive }) => (isActive ? "active" : "")}
+                  >
+                    Reports
+                  </NavLink>
+                </>
+              }
+            />
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2>Pantry Reports & Analytics</h2>
-        <Link to="/pantry" className="btn btn-secondary">
+        {/* <h2>Pantry Reports & Analytics</h2> */}
+        {/* <Link to="/pantry" className="btn btn-secondary">
           Back to Pantry Home
-        </Link>
+        </Link> */}
       </div>
 
       <div className="card mb-4">

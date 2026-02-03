@@ -1,5 +1,26 @@
 /* Shelter.css - Scoped styles with shelter- prefix */
 
+.hub-container.shelter {
+  max-width: 1200px;
+  font-family: "Inter", sans-serif;
+}
+
+/* Shelter-specific card sizing */
+.hub-container.shelter .department-card {
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.hub-container.shelter .department-card p {
+  flex-grow: 1;
+}
+
+.hub-container.shelter .department-card .btn {
+  align-self: flex-start;
+}
+
 /* Shelter Department Header */
 .shelter-department-header {
   display: flex;
@@ -241,7 +262,6 @@
 
 .shelter-tab-button {
   padding: 12px 24px;
-  fontSize: 0.95rem;
   background: none;
   border: none;
   cursor: pointer;

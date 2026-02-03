@@ -32,7 +32,7 @@ function ShelterWeeklyList() {
   if (error) return <div className="table-error">Error: {error}</div>;
   
   return (
-    <div className="hub-container">
+    <div className="hub-container shelter">
       <div className="department-header">
         <h2>Shelter - Weekly Records</h2>
         <div className="department-actions">

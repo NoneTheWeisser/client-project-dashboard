@@ -1,45 +1,58 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink, Link } from "react-router-dom";
+import DepartmentHeader from "../DesignComponents/DepartmentHeader";
+import "../../styles/departmentCards.css";
+import "./Shelter.css";
 
 export default function ShelterHome() {
   return (
-    <div className="hub-container">
-      <div className="department-header">
-        <h2>Shelter</h2>
-        <div className="department-actions">
-          <Link to="/shelter" className="active">Data Entry</Link>
-          <Link to="/shelter/reports">Reports</Link>
-        </div>
-      </div>
+    <div className="hub-container shelter">
+      {/* Department Header */}
+      <DepartmentHeader
+        title="Shelter"
+        actions={
+          <>
+            <NavLink
+              to="/shelter"
+              end
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              Department Home
+            </NavLink>
+            <NavLink
+              to="/shelter/reports"
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              Reports
+            </NavLink>
+          </>
+        }
+      />
 
-      <div className="row g-4">
-        <div className="col-md-6">
-          <div className="card h-100 shadow-sm">
-            <div className="card-body">
-              <h5 className="card-title">Weekly Shelter Management</h5>
-              <p className="card-text">
-                Track guest counts, occupancy levels, incident reports, and operational metrics on a weekly basis.
-              </p>
-              <Link to="/shelter/weekly" className="btn btn-secondary">
-                View Weekly Records
-              </Link>
-            </div>
+      {/* Department Cards */}
+      <div className="department-cards-container">
+        {/* Weekly Records */}
+        <Link to="/shelter/weekly" className="card-link-wrapper">
+          <div className="department-card">
+            <h4>Shelter Management</h4>
+            <p>
+              Track guest counts, occupancy levels, incident reports, and
+              operational metrics on a weekly basis.
+            </p>
+            <span className="btn btn-primary">View Weekly Records</span>
           </div>
-        </div>
+        </Link>
 
-        <div className="col-md-6">
-          <div className="card h-100 shadow-sm">
-            <div className="card-body">
-              <h5 className="card-title">Shelter Reports & Analytics</h5>
-              <p className="card-text">
-                View comprehensive reports on occupancy trends and shelter operations
-              </p>
-              <Link to="/shelter/reports" className="btn btn-secondary">
-                View Reports
-              </Link>
-            </div>
+        {/* Reports */}
+        <Link to="/shelter/reports" className="card-link-wrapper">
+          <div className="department-card">
+            <h4>Shelter Reports & Analytics</h4>
+            <p>
+              View comprehensive reports on occupancy trends and shelter
+              operations.
+            </p>
+            <span className="btn btn-primary">View Reports</span>
           </div>
-        </div>
+        </Link>
       </div>
     </div>
   );
