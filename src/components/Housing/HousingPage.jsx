@@ -48,70 +48,70 @@ export default function HousingPage() {
   });
 
   return (
-    <div className="hub-container housing">
-      <DepartmentHeader
-        title="North Campus Housing"
-        actions={
-          <>
-            <NavLink
-              to="/housing/data"
-              className={({ isActive }) => (isActive ? "active" : "")}
-            >
-              Department Home
-            </NavLink>
-            <NavLink
-              to="/housing/reports"
-              className={({ isActive }) => (isActive ? "active" : "")}
-            >
-              Reports
-            </NavLink>
-          </>
-        }
-      />
-      <div className="toolbar-wrapper volunteer">
-        {/* Toolbar */}
-        <HousingToolBar
-          year={year}
-          setYear={setYear}
-          building={building}
-          setBuilding={setBuilding}
-          search={search}
-          setSearch={setSearch}
-          onClear={handleClearFilters}
+      <div className="hub-container housing">
+        <DepartmentHeader
+          title="North Campus Housing"
+          actions={
+            <>
+              <NavLink
+                to="/housing/data"
+                className={({ isActive }) => (isActive ? "active" : "")}
+              >
+                Department Home
+              </NavLink>
+              <NavLink
+                to="/housing/reports"
+                className={({ isActive }) => (isActive ? "active" : "")}
+              >
+                Reports
+              </NavLink>
+            </>
+          }
         />
+        <div className="toolbar-wrapper volunteer">
+          {/* Toolbar */}
+          <HousingToolBar
+            year={year}
+            setYear={setYear}
+            building={building}
+            setBuilding={setBuilding}
+            search={search}
+            setSearch={setSearch}
+            onClear={handleClearFilters}
+          />
 
-        <div className="toolbar-action-button">
-          <button
-            onClick={() => {
-              setEditingRecord(null);
-              setShowForm(true);
-            }}
-          >
-            Add Housing Record
-          </button>
-        </div>
-      </div>
-
-      {/* Table */}
-      <HousingTable
-        records={filteredRecords}
-        onEdit={(row) => {
-          setEditingRecord(row);
-          setShowForm(true);
-        }}
-      />
-
-      {/* Modal Form */}
-      {showForm && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <HousingForm
-              record={editingRecord}
-              onClose={() => setShowForm(false)}
-            />
+          <div className="toolbar-action-button">
+            <button
+              onClick={() => {
+                setEditingRecord(null);
+                setShowForm(true);
+              }}
+            >
+              Add Housing Record
+            </button>
           </div>
         </div>
-      )}
-    </div>
+
+        {/* Table */}
+        <HousingTable
+          records={filteredRecords}
+          onEdit={(row) => {
+            setEditingRecord(row);
+            setShowForm(true);
+          }}
+        />
+
+        {/* Modal Form */}
+        {showForm && (
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <HousingForm
+                record={editingRecord}
+                onClose={() => setShowForm(false)}
+              />
+            </div>
+          </div>
+        )}
+      </div>
   );
 }
