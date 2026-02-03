@@ -1,80 +1,120 @@
-import React, { useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import useStore from '../../zustand/store';
+import { useEffect } from "react";
+import { useNavigate, NavLink } from "react-router-dom";
+import useStore from "../../zustand/store";
+import DepartmentHeader from "../DesignComponents/DepartmentHeader";
 
 export default function KitchenWeeklyList() {
   const navigate = useNavigate();
-  const { kitchenRecords, fetchKitchenRecords, deleteKitchenRecord, kitchenLoading, kitchenError } = useStore();
+
+  const {
+    kitchenRecords,
+    fetchKitchenRecords,
+    deleteKitchenRecord,
+    kitchenLoading,
+    kitchenError,
+  } = useStore();
 
   useEffect(() => {
     fetchKitchenRecords();
   }, [fetchKitchenRecords]);
 
   const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this record?')) {
+    if (!window.confirm("Are you sure you want to delete this record?")) return;
+
+    try {
       await deleteKitchenRecord(id);
+      await fetchKitchenRecords();
+    } catch (err) {
+      console.error("Delete failed:", err);
     }
   };
 
-  if (kitchenLoading) {
-    return <div className="container mt-4"><h3>Loading...</h3></div>;
-  }
-
-  if (kitchenError) {
-    return <div className="container mt-4 alert alert-danger">{kitchenError}</div>;
-  }
+  if (kitchenLoading) return <p>Loading kitchen records…</p>;
+  if (kitchenError) return <p className="error-text">{kitchenError}</p>;
 
   return (
-    <div className="container mt-4">
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2>Kitchen Weekly Records</h2>
-        <div>
-          <Link to="/kitchen" className="btn btn-secondary me-2">
-            Back to Kitchen Home
-          </Link>
-          <Link to="/kitchen/weekly/new" className="btn btn-primary">
-            Add New Record
-          </Link>
-        </div>
-      </div>
+    <div className="hub-container kitchen">
+      {/* Department Header */}
+      <DepartmentHeader
+        title="Kitchen"
+        actions={
+          <>
+            <NavLink
+              to="/kitchen"
+              end
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              Department Home
+            </NavLink>
+            <NavLink
+              to="/kitchen/reports"
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              Reports
+            </NavLink>
+          </>
+        }
+      />
 
-      <div className="table-responsive">
-        <table className="table table-striped table-hover">
-          <thead className="table-dark">
+      <div className="table-container kitchen">
+        <div className="table-header">
+          <h3>Kitchen Weekly Records</h3>
+
+          <button
+            className="toolbar-action-button"
+            onClick={() => navigate("/kitchen/weekly/new")}
+          >
+            Add Record
+          </button>
+        </div>
+
+        <table className="table-app table-hover table-striped kitchen-table">
+          <thead>
             <tr>
-              <th>Week Date</th>
-              <th>Total Meals Served</th>
-              <th>Notes</th>
-              <th>Actions</th>
+              <th className="col-month">Week</th>
+              <th className="col-number">Meals Served</th>
+              <th className="col-notes">Notes</th>
+              <th className="col-actions">Actions</th>
             </tr>
           </thead>
           <tbody>
-            {kitchenRecords?.length > 0 ? (
-              kitchenRecords.map((record) => (
-                <tr key={record.id}>
-                  <td>{new Date(record.week_date).toLocaleDateString()}</td>
-                  <td>{record.total_meals_served}</td>
-                  <td>{record.notes || 'N/A'}</td>
-                  <td>
-                    <button
-                      onClick={() => navigate(`/kitchen/weekly/edit/${record.id}`)}
-                      className="btn btn-sm btn-warning me-2"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => handleDelete(record.id)}
-                      className="btn btn-sm btn-danger"
-                    >
-                      Delete
-                    </button>
+            {kitchenRecords?.length ? (
+              kitchenRecords.map((r) => (
+                <tr key={r.id}>
+                  <td className="col-month">
+                    {new Date(r.week_date).toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                    })}
+                  </td>
+
+                  <td className="col-number">{r.total_meals_served}</td>
+
+                  <td className="col-notes">{r.notes ?? "-"}</td>
+
+                  <td className="col-actions">
+                    <div className="table-actions">
+                      <button
+                        className="btn-table-edit"
+                        onClick={() => navigate(`/kitchen/weekly/edit/${r.id}`)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="btn-table-delete"
+                        onClick={() => handleDelete(r.id)}
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="4" className="text-center">
-                  No records found. Click "Add New Record" to get started.
+                <td colSpan="4" className="empty-state">
+                  No kitchen records yet.
                 </td>
               </tr>
             )}

@@ -1,49 +1,58 @@
-
-import React from 'react';
-import { Link } from 'react-router-dom';
-
+import { NavLink, Link } from "react-router-dom";
+import DepartmentHeader from "../DesignComponents/DepartmentHeader";
+import "../../styles/departmentCards.css";
+import "./Kitchen.css";
 
 export default function KitchenHome() {
   return (
-    <div className="hub-container">
-      <div className="department-header">
-        <h2>Kitchen Services</h2>
-        <div className="department-actions">
-          <Link to="/kitchen/weekly" className="active">Data Entry</Link>
-          <Link to="/kitchen/reports">Reports</Link>
-        </div>
-      </div>
+    <div className="hub-container kitchen">
+      {/* Department Header */}
+      <DepartmentHeader
+        title="Kitchen"
+        actions={
+          <>
+            <NavLink
+              to="/kitchen"
+              end
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              Department Home
+            </NavLink>
+            <NavLink
+              to="/kitchen/reports"
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              Reports
+            </NavLink>
+          </>
+        }
+      />
 
-      <div className="row g-4">
-        <div className="col-md-6">
-          <div className="card h-100 shadow-sm">
-            <div className="card-body">
-              <h5 className="card-title">Weekly Kitchen Management</h5>
-              <p className="card-text">
-                Track meals served, inventory usage, volunteer hours, and food waste on a weekly basis.
-              </p>
-              <Link to="/kitchen/weekly" className="btn btn-secondary">
-                View Weekly Records
-              </Link>
-            </div>
+      {/* Department Cards */}
+      <div className="department-cards-container">
+        {/* Weekly Data Entry */}
+        <Link to="/kitchen/weekly" className="card-link-wrapper">
+          <div className="department-card">
+            <h4>Weekly Kitchen Management</h4>
+            <p>
+              Track meals served, inventory usage, volunteer hours, and food
+              waste.
+            </p>
+            <span className="btn btn-primary">View Weekly Records</span>
           </div>
-        </div>
+        </Link>
 
-        <div className="col-md-6">
-          <div className="card h-100 shadow-sm">
-            <div className="card-body">
-              <h5 className="card-title"> Kitchen Reports & Analytics</h5>
-              <p className="card-text">
-                View comprehensive reports on meal service trends and resource utilization
-              </p>
-              <Link to="/kitchen/reports" className="btn btn-secondary">
-                View Reports
-              </Link>
-            </div>
+        {/* Reports */}
+        <Link to="/kitchen/reports" className="card-link-wrapper">
+          <div className="department-card">
+            <h4>Reports</h4>
+            <p>
+              View meal service trends, inventory usage, and kitchen analytics.
+            </p>
+            <span className="btn btn-primary">View Reports</span>
           </div>
-        </div>
+        </Link>
       </div>
     </div>
   );
 }
-

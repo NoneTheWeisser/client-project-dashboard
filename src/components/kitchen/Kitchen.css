@@ -1,0 +1,152 @@
+/* ================================
+   Kitchen container
+================================ */
+.hub-container.kitchen {
+  max-width: 1000px;
+  font-family: "Inter", sans-serif;
+}
+
+/* ================================
+   Department cards (Kitchen Home)
+================================ */
+.hub-container.kitchen .department-card {
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.hub-container.kitchen .department-card p {
+  flex-grow: 1;
+}
+
+.hub-container.kitchen .department-card .btn {
+  align-self: flex-start;
+}
+
+/* ================================
+   Table header (shared pattern)
+================================ */
+.table-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* ================================
+   Housing-style toolbar action
+================================ */
+.toolbar-action-button {
+  margin-left: auto;          /* pushes button to far right */
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Optional: if Housing themes buttons */
+.hub-container.kitchen .toolbar-action-button {
+  background-color: var(--brand-secondary);
+  color: white;
+}
+
+
+/* Reports toolbar */
+.reports-toolbar.kitchen {
+  margin: 1rem 0;
+}
+
+.toolbar-group {
+  display: flex;
+  gap: 1rem;
+}
+
+/* Report tabs */
+.report-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.tab {
+  padding: 0.5rem 1rem;
+  background: #f3f4f6;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.tab.active {
+  background: var(--brand-secondary);
+  color: white;
+}
+
+/* Report content spacing */
+.report-content {
+  margin-top: 1rem;
+}
+
+
+/* Tabs + Filters row */
+.reports-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* Keep tabs grouped */
+.report-tabs {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Push filters content neatly */
+.reports-toolbar.kitchen {
+  margin: 0;
+}
+
+.toolbar-group {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-end;
+}
+
+/* ================================
+   Kitchen – Tabs + Filters Row
+================================ */
+.hub-container.kitchen .reports-header.kitchen {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;  
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* Tabs container */
+.hub-container.kitchen .reports-header.kitchen .report-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0;   
+}
+
+/* Filters container */
+.hub-container.kitchen .reports-header.kitchen .reports-toolbar.kitchen {
+  margin: 0;
+}
+
+/* Toolbar group */
+.hub-container.kitchen .reports-header.kitchen .toolbar-group {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-end;
+}
+
+/* Normalize label spacing */
+.hub-container.kitchen .reports-header.kitchen label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin: 0;
+}
