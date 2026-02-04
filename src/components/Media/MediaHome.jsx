@@ -4,7 +4,7 @@ import "../../styles/departmentCards.css";
 
 export default function MediaHome() {
   return (
-    <div className="hub-container">
+    <div className="hub-container media">
       {/* Department Header */}
       <DepartmentHeader
         title="Media"

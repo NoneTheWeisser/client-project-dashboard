@@ -45,7 +45,7 @@ export default function HRWeeklyList() {
       <div className="department-header">
         <h2>Human Resources - Weekly Records</h2>
         <div className="department-actions">
-          <Link to="/hr/weekly" className="active">Data Entry</Link>
+          <Link to="/hr/" className="active">Department Home</Link>
           <Link to="/hr/reports">Reports</Link>
         </div>
       </div>
