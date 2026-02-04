@@ -45,13 +45,13 @@ const pantryError = useStore((state) => state.pantryError);
       <div className="department-header">
         <h2>Pantry Distribution - Weekly Records</h2>
         <div className="department-actions">
-          <Link to="/pantry/weekly" className="active">Data Entry</Link>
+          <Link to="/pantry/" className="active">Department Home</Link>
           <Link to="/pantry/reports">Reports</Link>
         </div>
       </div>
 
       <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '16px' }}>
-        <Link to="/pantry/weekly/new" className="btn btn-primary">
+        <Link to="/pantry/weekly/new" className="btn btn-secondary">
           Add New Record
         </Link>
       </div>

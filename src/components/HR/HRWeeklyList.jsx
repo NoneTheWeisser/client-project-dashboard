@@ -51,7 +51,7 @@ export default function HRWeeklyList() {
       </div>
 
       <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '16px' }}>
-        <Link to="/hr/weekly/new" className="btn btn-primary">
+        <Link to="/hr/weekly/new" className="btn btn-secondary">
           Add New Record
         </Link>
       </div>

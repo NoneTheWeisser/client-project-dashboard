@@ -51,9 +51,9 @@ The application was built with long-term maintainability in mind, using reusable
 
 This repository is deployed as a **personal instance** of the application and is publicly accessible at:
 
-<!-- **[[DEPLOYED URL](https://churches-united-dashboard-app.fly.dev/#/)]** -->
+Check out the live demo of the Department Reporting Dashboard: [Demo Link](https://client-dashboard-app.fly.dev/demo)
 
-Deployment credentials, hosting provider access, and pricing details are provided to the client in the separate handoff document.
+**Note:** This is a demo account. All data is for demonstration purposes only. You can explore the features and make changes, but nothing here is real and any edits will not affect real data.
 
 ---
 
