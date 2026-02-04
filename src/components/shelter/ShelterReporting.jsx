@@ -464,7 +464,7 @@ function ShelterReporting() {
       <div className="department-header">
         <h2>Shelter Reports</h2>
         <div className="department-actions">
-          <Link to="/shelter">Data Entry</Link>
+          <Link to="/shelter">Department Home</Link>
           <Link to="/shelter/reports" className="active">Reports</Link>
         </div>
       </div>

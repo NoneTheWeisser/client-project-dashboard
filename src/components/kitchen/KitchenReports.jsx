@@ -1,8 +1,10 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import DepartmentHeader from "../DesignComponents/DepartmentHeader";
 import KitchenWeeklyReport from "./Reports/KitchenWeeklyReport.jsx";
 import KitchenMonthlyReport from "./Reports/KitchenMonthlyReport.jsx";
 import KitchenStatsReport from "./Reports/KitchenStatsReport.jsx";
+import "./Kitchen.css";
 
 export default function KitchenReports() {
   const [activeTab, setActiveTab] = useState("weekly");
@@ -18,66 +20,90 @@ export default function KitchenReports() {
   };
 
   return (
-    <div className="container mt-4">
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2>Kitchen Reports & Analytics</h2>
-        <Link to="/kitchen" className="btn btn-secondary">
-          Back to Kitchen Home
-        </Link>
-      </div>
+    <div className="hub-container kitchen">
+      {/* Page Header */}
+      <DepartmentHeader
+        title="Kitchen Reports & Analytics"
+        actions={
+          <>
+            <NavLink
+              to="/kitchen"
+              end
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              Department Home
+            </NavLink>
+            <NavLink
+              to="/kitchen/reports"
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              Reports
+            </NavLink>
+          </>
+        }
+      />
 
-      <div className="card mb-4">
-        <div className="card-body">
-          <div className="row g-3">
-            <div className="col-md-4">
-              <label className="form-label">Filter by Year</label>
+      {/* Tabs + Filters */}
+      <div className="reports-header kitchen">
+        {/* Tabs */}
+        <div className="report-tabs">
+          <button
+            className={activeTab === "weekly" ? "tab active" : "tab"}
+            onClick={() => setActiveTab("weekly")}
+          >
+            Weekly Report
+          </button>
+
+          <button
+            className={activeTab === "monthly" ? "tab active" : "tab"}
+            onClick={() => setActiveTab("monthly")}
+          >
+            Monthly Report
+          </button>
+
+          <button
+            className={activeTab === "stats" ? "tab active" : "tab"}
+            onClick={() => setActiveTab("stats")}
+          >
+            Statistics & Charts
+          </button>
+        </div>
+
+        {/* Filters */}
+        <div className="reports-toolbar kitchen">
+          <div className="toolbar-group">
+            <label>
+              Filter by Year
               <select
-                className="form-select"
                 value={filters.year}
-                onChange={(e) => setFilters({ ...filters, year: e.target.value })}
+                onChange={(e) =>
+                  setFilters({ ...filters, year: e.target.value })
+                }
               >
                 <option value="">All Years</option>
                 <option value="2024">2024</option>
                 <option value="2025">2025</option>
                 <option value="2026">2026</option>
               </select>
-            </div>
-            <div className="col-md-4">
-              <label className="form-label">Search</label>
+            </label>
+
+            <label>
+              Search
               <input
                 type="text"
-                className="form-control"
                 placeholder="Search notes..."
                 value={filters.search}
-                onChange={(e) => setFilters({ ...filters, search: e.target.value })}
+                onChange={(e) =>
+                  setFilters({ ...filters, search: e.target.value })
+                }
               />
-            </div>
+            </label>
           </div>
         </div>
       </div>
 
-      <div className="mb-3">
-        <button
-          className={`btn ${activeTab === "weekly" ? "btn-primary" : "btn-outline-primary"} me-2`}
-          onClick={() => setActiveTab("weekly")}
-        >
-          Weekly Report
-        </button>
-        <button
-          className={`btn ${activeTab === "monthly" ? "btn-primary" : "btn-outline-primary"} me-2`}
-          onClick={() => setActiveTab("monthly")}
-        >
-          Monthly Report
-        </button>
-        <button
-          className={`btn ${activeTab === "stats" ? "btn-primary" : "btn-outline-primary"}`}
-          onClick={() => setActiveTab("stats")}
-        >
-          Statistics & Charts
-        </button>
-      </div>
-
-      <div>{tabs[activeTab]}</div>
+      {/* Active Report */}
+      <div className="report-content">{tabs[activeTab]}</div>
     </div>
   );
 }

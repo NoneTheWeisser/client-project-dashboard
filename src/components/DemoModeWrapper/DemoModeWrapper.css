@@ -1,0 +1,11 @@
+.demo-banner {
+  background-color: #2a5754;
+  color: white;
+  padding: 0.5rem 1rem;
+  text-align: center;
+  /* font-weight: bold; */
+}
+
+.demo-mode {
+  opacity: 1;
+}

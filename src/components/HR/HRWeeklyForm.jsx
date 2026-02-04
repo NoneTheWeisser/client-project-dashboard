@@ -80,7 +80,7 @@ export default function HRWeeklyForm() {
       <div className="department-header">
         <h2>Human Resources - {isEditMode ? 'Edit Record' : 'New Record'}</h2>
         <div className="department-actions">
-          <Link to="/hr/weekly" className="active">Data Entry</Link>
+          <Link to="/hr/weekly" className="active">Department Home</Link>
           <Link to="/hr/reports">Reports</Link>
         </div>
       </div>

@@ -97,7 +97,7 @@ function FinanceWeeklyForm() {
       <div className="department-header">
         <h2>Finance - {isEditMode ? 'Edit' : 'New'} Weekly Report</h2>
         <div className="department-actions">
-          <Link to="/finance" className="active">Data Entry</Link>
+          <Link to="/finance" className="active">Department Home</Link>
           <Link to="/finance/reports">Reports</Link>
         </div>
       </div>

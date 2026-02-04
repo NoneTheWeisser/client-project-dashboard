@@ -789,7 +789,7 @@ function ComplianceReporting() {
       <div className="department-header">
         <h2>Compliance Reports</h2>
         <div className="department-actions">
-          <Link to="/compliance">Data Entry</Link>
+          <Link to="/compliance">Department Home</Link>
           <Link to="/compliance/reports" className="active">Reports</Link>
         </div>
       </div>

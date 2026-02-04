@@ -228,13 +228,13 @@
 .finance-tabs-container {
   display: flex;
   gap: 0;
-  border-bottom: 2px solid #e0e0e0;
+  /* border-bottom: 2px solid #e0e0e0; */
   margin-bottom: 24px;
 }
 
 .finance-tab-button {
   padding: 12px 24px;
-  fontSize: 0.95rem;
+  /* fontSize: 0.95rem; */
   background: none;
   border: none;
   cursor: pointer;
@@ -337,4 +337,112 @@
 
 .grid-form .finance-form-section-header:first-of-type {
   margin-top: 16px;
+}
+
+.hub-container.finance {
+  max-width: 1200px;
+}
+
+/* finance-specific card sizing */
+.hub-container.finance .department-card {
+  min-height: 150px;
+  font-family: "Inter", sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.hub-container.finance .department-card p {
+  flex-grow: 1;
+}
+
+.hub-container.finance .department-card .btn {
+  align-self: flex-start;
+}
+
+
+.finance-tabs-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  gap: 16px;
+}
+
+.finance-tabs-container {
+  display: flex;
+  gap: 8px;
+}
+
+.finance-year-selector.inline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.finance-year-selector.inline label {
+  font-weight: 500;
+  color: #444;
+}
+
+.department-action-button {
+  appearance: none;
+  background: #fff;
+  border: 1px solid var(--brand-primary);
+  color: var(--brand-primary);
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+}
+
+.department-action-button:hover {
+  background: rgba(0, 123, 255, 0.08);
+}
+
+.department-action-button.active {
+  background: var(--brand-primary);
+  color: #fff;
+  border-color: var(--brand-primary);
+}
+
+.finance-tabs-header {
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+
+/* =========================================================
+   Finance Tabs (match Shelter exactly)
+========================================================= */
+
+.finance-hub-container .finance-tabs-container {
+  display: flex;
+  gap: 0;
+  /* border-bottom: 2px solid #e0e0e0; */
+  margin-bottom: 24px;
+}
+
+.finance-hub-container .finance-tab-button {
+  padding: 12px 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  bottom: -2px;
+  transition: all 0.2s;
+  border-bottom: 3px solid transparent;
+}
+
+.finance-hub-container .finance-tab-button.active {
+  font-weight: 600;
+  color: var(--brand-primary);
+  border-bottom: 3px solid var(--brand-primary);
+}
+
+.finance-hub-container .finance-tab-button:not(.active) {
+  font-weight: 500;
+  color: #666;
 }

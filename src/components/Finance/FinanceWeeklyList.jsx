@@ -1,84 +1,91 @@
-import { useEffect, useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import useStore from '../../zustand/store';
-import '../../styles/tables.css';
+import { useEffect, useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import useStore from "../../zustand/store";
+import "../../styles/tables.css";
 
 function FinanceWeeklyList() {
   const navigate = useNavigate();
   const [year, setYear] = useState(2025);
-  
+
   const records = useStore((state) => state.finance.records);
   const loading = useStore((state) => state.finance.loading);
   const error = useStore((state) => state.finance.error);
   const fetchRecords = useStore((state) => state.fetchFinanceRecords);
   const deleteRecord = useStore((state) => state.deleteFinanceRecord);
-  
+
   useEffect(() => {
     fetchRecords(year);
   }, [fetchRecords, year]);
-  
+
   const formatDate = (dateString) => {
-    if (!dateString) return '—';
-    return new Date(dateString).toLocaleDateString('en-US');
+    if (!dateString) return "—";
+    return new Date(dateString).toLocaleDateString("en-US");
   };
-  
+
   const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 2
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      minimumFractionDigits: 2,
     }).format(amount || 0);
   };
-  
+
   const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this record?')) {
+    if (window.confirm("Are you sure you want to delete this record?")) {
       await deleteRecord(id);
     }
   };
-  
+
   if (loading) return <div className="table-loading">Loading...</div>;
   if (error) return <div className="table-error">Error: {error}</div>;
-  
+
   return (
-    <div className="hub-container">
+    <div className="hub-container finance">
+      {/* Department Header */}
       <div className="department-header">
-        <h2>Finance - Weekly Records</h2>
+        <h2>Finance – Weekly Records</h2>
         <div className="department-actions">
-          <Link to="/finance" className="active">Data Entry</Link>
+          <Link to="/finance" className="active">
+            Department Home
+          </Link>
           <Link to="/finance/reports">Reports</Link>
         </div>
       </div>
 
-      {/* Toolbar with Year Selector and Add Button */}
+      {/* Toolbar */}
       <div className="toolbar-container">
         <div className="toolbar-left">
           <div className="filter-group">
-            <label htmlFor="year-select">Year:</label>
-            <select 
+            <label htmlFor="year-select">Year</label>
+            <select
               id="year-select"
-              value={year} 
-              onChange={(e) => setYear(parseInt(e.target.value))}
+              value={year}
+              onChange={(e) => setYear(Number(e.target.value))}
             >
-              <option value="2023">2023</option>
-              <option value="2024">2024</option>
-              <option value="2025">2025</option>
-              <option value="2026">2026</option>
-              <option value="2027">2027</option>
+              {[2023, 2024, 2025, 2026, 2027].map((y) => (
+                <option key={y} value={y}>
+                  {y}
+                </option>
+              ))}
             </select>
           </div>
         </div>
 
         <div className="toolbar-right">
-          <Link to="/finance/weekly/new" className="btn-add-record">
+          <Link
+            to="/finance/weekly/new"
+            className="btn btn-secondary"
+          >
             Add New Record
           </Link>
         </div>
       </div>
-      
+
+      {/* Table / Empty State */}
       {records.length === 0 ? (
         <div className="table-empty">
           <p>No records found for {year}.</p>
-          <p>Click "Add New Record" to create one.</p>
+          <p>Click “Add Finance Record” to create one.</p>
         </div>
       ) : (
         <div className="table-container" style={{ maxWidth: "1400px", margin: "0 auto" }}>
@@ -100,22 +107,34 @@ function FinanceWeeklyList() {
                 <tr key={r.id}>
                   <td>{formatDate(r.date)}</td>
                   <td className="col-number">{formatCurrency(r.total_assets)}</td>
-                  <td className="col-number">{formatCurrency(r.operating_account_balance)}</td>
-                  <td className="col-number" style={{ color: 'green' }}>{formatCurrency(r.revenue_received)}</td>
-                  <td className="col-number" style={{ color: 'red' }}>{formatCurrency(r.bills_paid)}</td>
-                  <td className="col-number" style={{ color: 'red' }}>{formatCurrency(r.payroll_paid)}</td>
-                  <td className="col-number" style={{ color: r.net_change >= 0 ? 'green' : 'red' }}>
+                  <td className="col-number">
+                    {formatCurrency(r.operating_account_balance)}
+                  </td>
+                  <td className="col-number" style={{ color: "green" }}>
+                    {formatCurrency(r.revenue_received)}
+                  </td>
+                  <td className="col-number" style={{ color: "red" }}>
+                    {formatCurrency(r.bills_paid)}
+                  </td>
+                  <td className="col-number" style={{ color: "red" }}>
+                    {formatCurrency(r.payroll_paid)}
+                  </td>
+                  <td
+                    className="col-number"
+                    style={{ color: r.net_change >= 0 ? "green" : "red" }}
+                  >
                     {formatCurrency(r.net_change)}
                   </td>
                   <td>
                     <div className="table-actions">
                       <button
                         className="btn btn-sm btn-table-edit"
-                        onClick={() => navigate(`/finance/weekly/edit/${r.id}`)}
+                        onClick={() =>
+                          navigate(`/finance/weekly/edit/${r.id}`)
+                        }
                       >
                         Edit
                       </button>
-                      
                       <button
                         className="btn btn-sm btn-table-delete"
                         onClick={() => handleDelete(r.id)}

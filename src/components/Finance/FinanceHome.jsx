@@ -1,45 +1,58 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink, Link } from "react-router-dom";
+import DepartmentHeader from "../DesignComponents/DepartmentHeader";
+import "../../styles/departmentCards.css";
+import "./Finance.css";
 
 export default function FinanceHome() {
   return (
-    <div className="hub-container">
-      <div className="department-header">
-        <h2>Finance</h2>
-        <div className="department-actions">
-          <Link to="/finance" className="active">Data Entry</Link>
-          <Link to="/finance/reports">Reports</Link>
-        </div>
-      </div>
+    <div className="hub-container finance">
+      {/* Department Header */}
+      <DepartmentHeader
+        title="Finance"
+        actions={
+          <>
+            <NavLink
+              to="/finance"
+              end
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              Department Home
+            </NavLink>
+            <NavLink
+              to="/finance/reports"
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              Reports
+            </NavLink>
+          </>
+        }
+      />
 
-      <div className="row g-4">
-        <div className="col-md-6">
-          <div className="card h-100 shadow-sm">
-            <div className="card-body">
-              <h5 className="card-title">Weekly Finance Management</h5>
-              <p className="card-text">
-                Track revenue, expenses, payroll, assets, and financial positions on a weekly basis.
-              </p>
-              <Link to="/finance/weekly" className="btn btn-secondary">
-                View Weekly Records
-              </Link>
-            </div>
+      {/* Department Cards */}
+      <div className="department-cards-container">
+        {/* Weekly Records */}
+        <Link to="/finance/weekly" className="card-link-wrapper">
+          <div className="department-card">
+            <h4>Weekly Finance Management</h4>
+            <p>
+              Track revenue, expenses, payroll, assets, and financial positions
+              on a weekly basis.
+            </p>
+            <span className="btn btn-primary">View Weekly Records</span>
           </div>
-        </div>
+        </Link>
 
-        <div className="col-md-6">
-          <div className="card h-100 shadow-sm">
-            <div className="card-body">
-              <h5 className="card-title">Finance Reports & Analytics</h5>
-              <p className="card-text">
-                View comprehensive reports on cash flow analysis and financial metrics
-              </p>
-              <Link to="/finance/reports" className="btn btn-secondary">
-                View Reports
-              </Link>
-            </div>
+        {/* Reports */}
+        <Link to="/finance/reports" className="card-link-wrapper">
+          <div className="department-card">
+            <h4>Finance Reports & Analytics</h4>
+            <p>
+              View comprehensive reports on cash flow analysis and key financial
+              metrics.
+            </p>
+            <span className="btn btn-primary">View Reports</span>
           </div>
-        </div>
+        </Link>
       </div>
     </div>
   );

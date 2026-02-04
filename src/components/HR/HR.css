@@ -1,0 +1,60 @@
+.hub-container.hr {
+  max-width: 1200px;
+  font-family: "Inter", sans-serif;
+}
+
+/* hr-specific card sizing */
+.hub-container.hr .department-card {
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.hub-container.hr .department-card p {
+  flex-grow: 1;
+}
+
+.hub-container.hr .department-card .btn {
+  align-self: flex-start;
+}
+
+
+/* ------- Filter/Tabs -------- */
+/* Tabs + filters row */
+.tabs-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  /* margin-bottom: 1.5rem; */
+}
+
+/* Keep tabs together */
+.tabs-toolbar .tabs-container {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Compact filter styling */
+.filters-container.compact {
+  display: flex;
+  align-items: center;
+}
+
+.filters-container.compact .filter-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.filters-container.compact label {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.filters-container.compact select {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.85rem;
+  min-width: 90px;
+}

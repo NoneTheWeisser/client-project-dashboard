@@ -1,45 +1,57 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink, Link } from "react-router-dom";
+import DepartmentHeader from "../DesignComponents/DepartmentHeader";
+import "../../styles/departmentCards.css";
+import "./HR.css";
 
 export default function HRHome() {
   return (
-    <div className="hub-container">
-      <div className="department-header">
-        <h2>Human Resources</h2>
-        <div className="department-actions">
-          <Link to="/hr/weekly" className="active">Data Entry</Link>
-          <Link to="/hr/reports">Reports</Link>
-        </div>
-      </div>
+    <div className="hub-container hr">
+      {/* Department Header */}
+      <DepartmentHeader
+        title="Human Resources"
+        actions={
+          <>
+            <NavLink
+              to="/hr"
+              end
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              Department Home
+            </NavLink>
+            <NavLink
+              to="/hr/reports"
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              Reports
+            </NavLink>
+          </>
+        }
+      />
 
-      <div className="row g-4">
-        <div className="col-md-6">
-          <div className="card h-100 shadow-sm">
-            <div className="card-body">
-              <h5 className="card-title">Weekly HR Management</h5>
-              <p className="card-text">
-                Track staffing levels, new hires, employee turnover, and performance evaluations on a weekly basis.
-              </p>
-              <Link to="/hr/weekly" className="btn btn-secondary">
-                View Weekly Records
-              </Link>
-            </div>
+      {/* Department Cards */}
+      <div className="department-cards-container hr">
+        {/* Weekly Records */}
+        <Link to="/hr/weekly" className="card-link-wrapper">
+          <div className="department-card">
+            <h4>Weekly HR Management</h4>
+            <p>
+              Track staffing levels, new hires, employee turnover, and
+              performance evaluations on a weekly basis.
+            </p>
+            <span className="btn btn-primary">View Weekly Records</span>
           </div>
-        </div>
+        </Link>
 
-        <div className="col-md-6">
-          <div className="card h-100 shadow-sm">
-            <div className="card-body">
-              <h5 className="card-title">HR Reports & Analytics</h5>
-              <p className="card-text">
-                View comprehensive reports on hiring trends and staff stats
-              </p>
-              <Link to="/hr/reports" className="btn btn-secondary">
-                View Reports
-              </Link>
-            </div>
+        {/* Reports */}
+        <Link to="/hr/reports" className="card-link-wrapper">
+          <div className="department-card hr">
+            <h4>HR Reports & Analytics</h4>
+            <p>
+              View comprehensive reports on hiring trends and staff statistics.
+            </p>
+            <span className="btn btn-primary">View Reports</span>
           </div>
-        </div>
+        </Link>
       </div>
     </div>
   );
